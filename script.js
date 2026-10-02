@@ -380,6 +380,21 @@ function calculateBreakEven() {
 }
 
 
+function updateTaxMode() {
+  const mode =
+    document.getElementById('taxMode').value;
+
+  const priceInput =
+    document.getElementById('taxPrice');
+
+  if (mode === 'add') {
+    priceInput.placeholder = 'Price before tax';
+  } else {
+    priceInput.placeholder = 'Price including tax';
+  }
+}
+
+
 function calculateTax() {
   const price =
     parseFloat(document.getElementById('taxPrice').value);
@@ -390,18 +405,43 @@ function calculateTax() {
   const mode =
     document.getElementById('taxMode').value;
 
-  if (!isNaN(price) && !isNaN(rate)) {
+  const currency =
+    document.getElementById('taxCurrency').value;
 
-    const result =
-      mode === "add"
-        ? price + (price * rate / 100)
-        : price / (1 + rate / 100);
+  const resultBox =
+    document.getElementById('taxResult');
 
-    document.getElementById('taxResult').textContent =
-      `= ${result.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}`;
+  if (
+    isNaN(price) ||
+    isNaN(rate) ||
+    price < 0 ||
+    rate < 0
+  ) {
+    resultBox.textContent =
+      'Please enter a valid price and tax rate.';
+    return;
   }
+
+  let result;
+
+  if (mode === 'add') {
+    result =
+      price + (price * rate / 100);
+  } else {
+    result =
+      price / (1 + rate / 100);
+  }
+
+  if (!Number.isFinite(result)) {
+    resultBox.textContent =
+      'Please enter valid tax values.';
+    return;
+  }
+
+  resultBox.textContent =
+    `Result: ${currency}${result.toLocaleString(undefined, {
+      maximumFractionDigits: 10
+    })}`;
 }
 
 
@@ -434,3 +474,6 @@ function share(platform) {
     '_blank'
   );
 }
+
+
+updateTaxMode();
