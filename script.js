@@ -380,21 +380,6 @@ function calculateBreakEven() {
 }
 
 
-function updateTaxMode() {
-  const mode =
-    document.getElementById('taxMode').value;
-
-  const priceInput =
-    document.getElementById('taxPrice');
-
-  if (mode === 'add') {
-    priceInput.placeholder = 'Price before tax';
-  } else {
-    priceInput.placeholder = 'Price including tax';
-  }
-}
-
-
 function calculateTax() {
   const price =
     parseFloat(document.getElementById('taxPrice').value);
@@ -474,6 +459,3 @@ function share(platform) {
     '_blank'
   );
 }
-
-
-updateTaxMode();
