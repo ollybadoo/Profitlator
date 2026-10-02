@@ -172,12 +172,30 @@
     <div class="section">
       <h2>Tax Calculator</h2>
 
-      <input type="number" id="taxPrice" placeholder="Price">
-      <input type="number" id="taxRate" placeholder="Tax %">
-
-      <select id="taxMode">
+      <select id="taxMode" onchange="updateTaxMode()">
         <option value="add">Add Tax</option>
         <option value="remove">Remove Tax</option>
+      </select>
+
+      <input
+        type="number"
+        id="taxPrice"
+        placeholder="Price before tax"
+        step="any"
+      >
+
+      <input
+        type="number"
+        id="taxRate"
+        placeholder="Tax %"
+        step="any"
+      >
+
+      <select id="taxCurrency">
+        <option value="$">$</option>
+        <option value="₦">₦</option>
+        <option value="€">€</option>
+        <option value="£">£</option>
       </select>
 
       <button onclick="calculateTax()">Calculate</button>
