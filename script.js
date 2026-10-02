@@ -324,17 +324,41 @@ function calculateBreakEven() {
   const selling =
     parseFloat(document.getElementById('sellingPriceUnit').value);
 
+  const currency =
+    document.getElementById('breakEvenCurrency').value;
+
+  const resultBox =
+    document.getElementById('breakEvenResult');
+
   if (
     !isNaN(fixed) &&
     !isNaN(variable) &&
     !isNaN(selling) &&
-    (selling - variable) > 0
+    fixed >= 0 &&
+    variable >= 0 &&
+    selling > variable
   ) {
-    const result =
+    const breakEvenUnits =
       fixed / (selling - variable);
 
-    document.getElementById('breakEvenResult').textContent =
-      `= ${Math.ceil(result)} units`;
+    const roundedUnits =
+      Math.ceil(breakEvenUnits);
+
+    resultBox.innerHTML =
+      `Break-even point: ${roundedUnits} units<br>` +
+      `Fixed Cost: ${currency}${fixed.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      })}<br>` +
+      `Variable Cost per Unit: ${currency}${variable.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      })}<br>` +
+      `Selling Price per Unit: ${currency}${selling.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      })}`;
+
+  } else {
+    resultBox.textContent =
+      'Please enter valid costs and a selling price greater than the variable cost.';
   }
 }
 
