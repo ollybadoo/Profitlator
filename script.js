@@ -300,17 +300,34 @@ function calculateUnitPrice() {
   const total =
     parseFloat(document.getElementById('totalCost').value);
 
-  const qty =
+  const quantity =
     parseFloat(document.getElementById('quantity').value);
 
-  if (!isNaN(total) && !isNaN(qty) && qty > 0) {
-    const result = total / qty;
+  const currency =
+    document.getElementById('unitPriceCurrency').value;
 
-    document.getElementById('unitResult').textContent =
-      `= ${result.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}`;
+  const resultBox =
+    document.getElementById('unitResult');
+
+  if (isNaN(total) || total < 0) {
+    resultBox.textContent =
+      'Please enter a valid total cost.';
+    return;
   }
+
+  if (isNaN(quantity) || quantity <= 0) {
+    resultBox.textContent =
+      'Quantity must be greater than zero.';
+    return;
+  }
+
+  const unitPrice =
+    total / quantity;
+
+  resultBox.textContent =
+    `Unit Price: ${currency}${unitPrice.toLocaleString(undefined, {
+      maximumFractionDigits: 10
+    })}`;
 }
 
 
