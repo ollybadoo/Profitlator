@@ -264,16 +264,33 @@ function calculateProfitMargin() {
   const currency =
     document.getElementById('profitCurrency').value;
 
-  if (!isNaN(cost) && !isNaN(selling) && cost > 0) {
-    const profit = selling - cost;
+  const resultBox =
+    document.getElementById('profitResult');
+
+  if (
+    !isNaN(cost) &&
+    !isNaN(selling) &&
+    cost > 0 &&
+    selling >= 0
+  ) {
+    const profit =
+      selling - cost;
 
     const margin =
       (profit / cost) * 100;
 
-    document.getElementById('profitResult').textContent =
-      `Profit: ${currency}${profit.toLocaleString(undefined, {
+    resultBox.innerHTML =
+      `Profit Amount: ${currency}${profit.toLocaleString(undefined, {
         maximumFractionDigits: 2
-      })} | Margin: ${margin.toFixed(2)}%`;
+      })}<br>` +
+      `Profit Margin: ${margin.toFixed(2)}%<br>` +
+      `Selling Price: ${currency}${selling.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      })}`;
+
+  } else {
+    resultBox.textContent =
+      'Please enter valid cost and selling prices.';
   }
 }
 
