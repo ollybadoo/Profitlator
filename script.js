@@ -276,17 +276,18 @@ function calculateProfitMargin() {
     const profit =
       selling - cost;
 
-    const margin =
+    const profitMargin =
+      (profit / selling) * 100;
+
+    const markup =
       (profit / cost) * 100;
 
     resultBox.innerHTML =
       `Profit Amount: ${currency}${profit.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}<br>` +
-      `Profit Margin: ${margin.toFixed(2)}%<br>` +
-      `Selling Price: ${currency}${selling.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}`;
+      `Profit Margin: ${profitMargin.toFixed(2)}%<br>` +
+      `Markup: ${markup.toFixed(2)}%`;
 
   } else {
     resultBox.textContent =
