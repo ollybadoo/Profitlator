@@ -111,12 +111,25 @@
     </div>
 
 
-    <!-- Unit Price -->
+    <!-- Unit Price Calculator -->
     <div class="section">
       <h2>Unit Price Calculator</h2>
 
       <input type="number" id="totalCost" placeholder="Total Cost">
-      <input type="number" id="quantity" placeholder="Quantity">
+
+      <input
+        type="number"
+        id="quantity"
+        placeholder="Quantity"
+        step="any"
+      >
+
+      <select id="unitPriceCurrency">
+        <option value="$">$</option>
+        <option value="₦">₦</option>
+        <option value="€">€</option>
+        <option value="£">£</option>
+      </select>
 
       <button onclick="calculateUnitPrice()">Calculate</button>
 
