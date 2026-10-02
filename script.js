@@ -10,7 +10,6 @@ function calculate() {
   }
 
   try {
-    // Convert multiplication and division symbols
     expression = expression
       .replace(/×/g, '*')
       .replace(/÷/g, '/')
@@ -32,50 +31,32 @@ function calculate() {
 }
 
 
-/*
-  Safely evaluates a mathematical expression.
-
-  Supports:
-  +  Addition
-  -  Subtraction
-  *  Multiplication
-  /  Division
-
-  Multiplication and division are calculated before
-  addition and subtraction.
-*/
 function evaluateExpression(expression) {
 
-  // Only allow numbers, decimal points, operators and spaces
   if (!/^[0-9+\-*/.\s]+$/.test(expression)) {
     throw new Error('Invalid characters');
   }
 
-  // Remove spaces
   expression = expression.replace(/\s+/g, '');
 
   if (!expression) {
     throw new Error('Empty expression');
   }
 
-  // Expression cannot end with an operator
   if (/[+\-*/.]$/.test(expression)) {
     throw new Error('Expression ends with operator');
   }
 
-  // Expression cannot begin with +, * or /
   if (/^[+*/]/.test(expression)) {
     throw new Error('Invalid starting operator');
   }
 
-  // Split expression into numbers and operators
   const tokens = expression.match(/(\d+(?:\.\d+)?|\.\d+|[+\-*/])/g);
 
   if (!tokens) {
     throw new Error('Invalid expression');
   }
 
-  // Make sure the entire expression was successfully tokenized
   if (tokens.join('') !== expression) {
     throw new Error('Invalid expression');
   }
@@ -101,9 +82,6 @@ function evaluateExpression(expression) {
 
     } else {
 
-      // Support negative numbers such as:
-      // -5 + 10
-      // 10 * -2
       if (
         token === '-' &&
         expectingNumber &&
@@ -245,14 +223,33 @@ function calculateDiscount() {
   const currency =
     document.getElementById('discountCurrency').value;
 
-  if (!isNaN(price) && !isNaN(percent)) {
-    const result =
-      price - (price * (percent / 100));
+  const resultBox =
+    document.getElementById('discountResult');
 
-    document.getElementById('discountResult').textContent =
-      `= ${currency}${result.toLocaleString(undefined, {
+  if (
+    !isNaN(price) &&
+    !isNaN(percent) &&
+    price >= 0 &&
+    percent >= 0 &&
+    percent <= 100
+  ) {
+    const discountAmount =
+      price * (percent / 100);
+
+    const finalPrice =
+      price - discountAmount;
+
+    resultBox.innerHTML =
+      `Discount amount: ${currency}${discountAmount.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      })}<br>` +
+      `Final price: ${currency}${finalPrice.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}`;
+
+  } else {
+    resultBox.textContent =
+      'Please enter a valid price and discount.';
   }
 }
 
