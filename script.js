@@ -1,4 +1,4 @@
-unction calculate() {
+function calculate() {
   const input = document.getElementById('calculation');
   const resultBox = document.getElementById('calcResult');
 
