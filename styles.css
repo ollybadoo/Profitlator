@@ -60,6 +60,18 @@ button:hover {
   background: #0056b3;
 }
 
+.operation-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.operation-buttons button {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  padding: 0.6rem;
+}
+
 .result {
   margin-top: 1rem;
   font-size: 1.2rem;
