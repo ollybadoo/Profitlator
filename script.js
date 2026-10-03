@@ -8,6 +8,8 @@ function calculate() {
 
   let expression = input.value.trim();
 
+  hideCopyButton('calcCopyButton');
+
   if (!expression) {
     resultBox.textContent = 'Please enter a calculation.';
     return;
@@ -31,6 +33,8 @@ function calculate() {
       });
 
     resultBox.textContent = `= ${formattedResult}`;
+
+    showCopyButton('calcCopyButton');
 
     addToHistory(
       'Basic Calculator',
@@ -239,6 +243,8 @@ async function convertCurrency() {
   const resultBox =
     document.getElementById('currencyResult');
 
+  hideCopyButton('currencyCopyButton');
+
   if (isNaN(amount) || !Number.isFinite(amount) || amount < 0) {
     resultBox.textContent =
       'Please enter a valid amount.';
@@ -253,6 +259,8 @@ async function convertCurrency() {
 
     resultBox.textContent =
       `Converted amount: ${getCurrencyDisplay(from)} ${formattedAmount}`;
+
+    showCopyButton('currencyCopyButton');
 
     addToHistory(
       'Currency Converter',
@@ -299,6 +307,8 @@ async function convertCurrency() {
 
     resultBox.textContent =
       `Converted amount: ${getCurrencyDisplay(to)} ${formattedConvertedAmount}`;
+
+    showCopyButton('currencyCopyButton');
 
     addToHistory(
       'Currency Converter',
@@ -348,6 +358,8 @@ function calculateDiscount() {
   const resultBox =
     document.getElementById('discountResult');
 
+  hideCopyButton('discountCopyButton');
+
   if (
     !isNaN(price) &&
     !isNaN(percent) &&
@@ -374,6 +386,8 @@ function calculateDiscount() {
     resultBox.innerHTML =
       `Discount amount: ${currency} ${formattedDiscount}<br>` +
       `Final price: ${currency} ${formattedFinalPrice}`;
+
+    showCopyButton('discountCopyButton');
 
     addToHistory(
       'Discount Calculator',
@@ -403,6 +417,8 @@ function calculateProfitMargin() {
   const resultBox =
     document.getElementById('profitResult');
 
+  hideCopyButton('profitCopyButton');
+
   if (
     !isNaN(cost) &&
     !isNaN(selling) &&
@@ -427,6 +443,8 @@ function calculateProfitMargin() {
       `Profit Amount: ${currency} ${formattedProfit}<br>` +
       `Profit Margin: ${profitMargin.toFixed(2)}%<br>` +
       `Markup: ${markup.toFixed(2)}%`;
+
+    showCopyButton('profitCopyButton');
 
     addToHistory(
       'Profit Margin Tool',
@@ -456,6 +474,8 @@ function calculateUnitPrice() {
   const resultBox =
     document.getElementById('unitResult');
 
+  hideCopyButton('unitCopyButton');
+
   if (isNaN(total) || total < 0) {
     resultBox.textContent =
       'Please enter a valid total cost.';
@@ -478,6 +498,8 @@ function calculateUnitPrice() {
 
   resultBox.textContent =
     `Unit Price: ${currency} ${formattedUnitPrice}`;
+
+  showCopyButton('unitCopyButton');
 
   addToHistory(
     'Unit Price Calculator',
@@ -505,6 +527,8 @@ function calculateBreakEven() {
   const resultBox =
     document.getElementById('breakEvenResult');
 
+  hideCopyButton('breakEvenCopyButton');
+
   if (
     !isNaN(fixed) &&
     !isNaN(variable) &&
@@ -530,6 +554,8 @@ function calculateBreakEven() {
       `Selling Price per Unit: ${currency} ${selling.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}`;
+
+    showCopyButton('breakEvenCopyButton');
 
     addToHistory(
       'Break-even Calculator',
@@ -561,6 +587,8 @@ function calculateTax() {
 
   const resultBox =
     document.getElementById('taxResult');
+
+  hideCopyButton('taxCopyButton');
 
   if (
     isNaN(price) ||
@@ -596,6 +624,8 @@ function calculateTax() {
 
   resultBox.textContent =
     `Result: ${currency} ${formattedResult}`;
+
+  showCopyButton('taxCopyButton');
 
   const modeText =
     mode === 'add'
@@ -796,6 +826,85 @@ function renderHistory(history = getHistory()) {
 function clearHistory() {
   localStorage.removeItem(HISTORY_STORAGE_KEY);
   renderHistory([]);
+}
+
+
+/* Copy Result */
+
+function showCopyButton(buttonId) {
+  const button =
+    document.getElementById(buttonId);
+
+  if (!button) {
+    return;
+  }
+
+  button.style.display = 'inline-block';
+  button.textContent = 'Copy';
+}
+
+
+function hideCopyButton(buttonId) {
+  const button =
+    document.getElementById(buttonId);
+
+  if (!button) {
+    return;
+  }
+
+  button.style.display = 'none';
+  button.textContent = 'Copy';
+}
+
+
+async function copyResult(resultId, buttonId) {
+  const resultBox =
+    document.getElementById(resultId);
+
+  const button =
+    document.getElementById(buttonId);
+
+  if (!resultBox || !button || !resultBox.textContent.trim()) {
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(
+      resultBox.textContent.trim()
+    );
+
+    button.textContent = 'Copied!';
+
+    setTimeout(() => {
+      button.textContent = 'Copy';
+    }, 1500);
+
+  } catch (error) {
+    try {
+      const textArea =
+        document.createElement('textarea');
+
+      textArea.value =
+        resultBox.textContent.trim();
+
+      document.body.appendChild(textArea);
+
+      textArea.select();
+
+      document.execCommand('copy');
+
+      textArea.remove();
+
+      button.textContent = 'Copied!';
+
+      setTimeout(() => {
+        button.textContent = 'Copy';
+      }, 1500);
+
+    } catch (fallbackError) {
+      button.textContent = 'Copy';
+    }
+  }
 }
 
 
