@@ -100,6 +100,56 @@ button:hover {
   pointer-events: none;
 }
 
+
+/* Calculation History */
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.history-header h2 {
+  margin-bottom: 0;
+}
+
+.history-header button {
+  width: auto;
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+}
+
+.calculation-history {
+  margin-top: 1rem;
+}
+
+.history-item {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-calculator {
+  font-weight: bold;
+  color: #0056b3;
+  margin-bottom: 0.25rem;
+}
+
+.history-details {
+  color: #333;
+  line-height: 1.5;
+}
+
+.history-empty {
+  margin: 0;
+  color: #777;
+}
+
+
 footer {
   text-align: center;
   padding: 1rem;
