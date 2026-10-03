@@ -31,6 +31,30 @@ function calculate() {
 }
 
 
+function insertOperation(operation) {
+  const input = document.getElementById('calculation');
+
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
+
+  const currentValue = input.value;
+
+  input.value =
+    currentValue.slice(0, start) +
+    ` ${operation} ` +
+    currentValue.slice(end);
+
+  const newCursorPosition =
+    start + operation.length + 2;
+
+  input.focus();
+  input.setSelectionRange(
+    newCursorPosition,
+    newCursorPosition
+  );
+}
+
+
 function evaluateExpression(expression) {
 
   if (!/^[0-9+\-*/.\s]+$/.test(expression)) {
@@ -192,7 +216,7 @@ function applyOperator(values, operator) {
 
 async function convertCurrency() {
   const amount =
-    parseFloat(document.getElementById('amount').value);
+    parseFormattedNumber(document.getElementById('amount').value);
 
   const from =
     document.getElementById('fromCurrency').value;
@@ -282,10 +306,10 @@ function getCurrencyDisplay(currency) {
 
 function calculateDiscount() {
   const price =
-    parseFloat(document.getElementById('originalPrice').value);
+    parseFormattedNumber(document.getElementById('originalPrice').value);
 
   const percent =
-    parseFloat(document.getElementById('discountPercent').value);
+    parseFormattedNumber(document.getElementById('discountPercent').value);
 
   const currency =
     document.getElementById('discountCurrency').value;
@@ -323,10 +347,10 @@ function calculateDiscount() {
 
 function calculateProfitMargin() {
   const cost =
-    parseFloat(document.getElementById('costPrice').value);
+    parseFormattedNumber(document.getElementById('costPrice').value);
 
   const selling =
-    parseFloat(document.getElementById('sellingPrice').value);
+    parseFormattedNumber(document.getElementById('sellingPrice').value);
 
   const currency =
     document.getElementById('profitCurrency').value;
@@ -365,7 +389,7 @@ function calculateProfitMargin() {
 
 function calculateUnitPrice() {
   const total =
-    parseFloat(document.getElementById('totalCost').value);
+    parseFormattedNumber(document.getElementById('totalCost').value);
 
   const quantity =
     parseFloat(document.getElementById('quantity').value);
@@ -400,13 +424,13 @@ function calculateUnitPrice() {
 
 function calculateBreakEven() {
   const fixed =
-    parseFloat(document.getElementById('fixedCosts').value);
+    parseFormattedNumber(document.getElementById('fixedCosts').value);
 
   const variable =
-    parseFloat(document.getElementById('variableCosts').value);
+    parseFormattedNumber(document.getElementById('variableCosts').value);
 
   const selling =
-    parseFloat(document.getElementById('sellingPriceUnit').value);
+    parseFormattedNumber(document.getElementById('sellingPriceUnit').value);
 
   const currency =
     document.getElementById('breakEvenCurrency').value;
@@ -449,7 +473,7 @@ function calculateBreakEven() {
 
 function calculateTax() {
   const price =
-    parseFloat(document.getElementById('taxPrice').value);
+    parseFormattedNumber(document.getElementById('taxPrice').value);
 
   const rate =
     parseFloat(document.getElementById('taxRate').value);
@@ -497,6 +521,78 @@ function calculateTax() {
 }
 
 
+function parseFormattedNumber(value) {
+  const cleanedValue =
+    value.replace(/,/g, '').trim();
+
+  if (cleanedValue === '') {
+    return NaN;
+  }
+
+  return Number(cleanedValue);
+}
+
+
+function formatInputNumber(input) {
+  const value =
+    input.value.replace(/,/g, '');
+
+  if (value === '') {
+    return;
+  }
+
+  if (!/^\d*\.?\d*$/.test(value)) {
+    return;
+  }
+
+  const parts =
+    value.split('.');
+
+  const integerPart =
+    parts[0];
+
+  const decimalPart =
+    parts.length > 1 ? parts[1] : null;
+
+  const formattedInteger =
+    integerPart === ''
+      ? ''
+      : Number(integerPart).toLocaleString('en-US');
+
+  input.value =
+    decimalPart !== null
+      ? `${formattedInteger}.${decimalPart}`
+      : formattedInteger;
+}
+
+
+function setupFormattedInputs() {
+  const monetaryInputIds = [
+    'amount',
+    'originalPrice',
+    'costPrice',
+    'sellingPrice',
+    'totalCost',
+    'fixedCosts',
+    'variableCosts',
+    'sellingPriceUnit',
+    'taxPrice'
+  ];
+
+  monetaryInputIds.forEach(id => {
+    const input = document.getElementById(id);
+
+    if (!input) {
+      return;
+    }
+
+    input.addEventListener('input', () => {
+      formatInputNumber(input);
+    });
+  });
+}
+
+
 function share(platform) {
   const url =
     encodeURIComponent(window.location.href);
@@ -526,3 +622,6 @@ function share(platform) {
     '_blank'
   );
 }
+
+
+setupFormattedInputs();
