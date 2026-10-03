@@ -27,7 +27,7 @@
   <main>
 
     <!-- Basic Calculator -->
-    <div class="section">
+    <div class="section" id="basicCalculator">
       <h2>Basic Calculator</h2>
 
       <input
@@ -49,11 +49,12 @@
 
       <div class="result" id="calcResult"></div>
       <button type="button" class="copy-button" id="calcCopyButton" onclick="copyResult('calcResult', 'calcCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('basicCalculator')">Clear</button>
     </div>
 
 
     <!-- Currency Converter -->
-    <div class="section">
+    <div class="section" id="currencyCalculator">
       <h2>Currency Converter</h2>
 
       <input
@@ -98,11 +99,12 @@
 
       <div class="result" id="currencyResult"></div>
       <button type="button" class="copy-button" id="currencyCopyButton" onclick="copyResult('currencyResult', 'currencyCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('currencyCalculator')">Clear</button>
     </div>
 
 
     <!-- Discount Calculator -->
-    <div class="section">
+    <div class="section" id="discountCalculator">
       <h2>Discount Calculator</h2>
 
       <input
@@ -143,11 +145,12 @@
 
       <div class="result" id="discountResult"></div>
       <button type="button" class="copy-button" id="discountCopyButton" onclick="copyResult('discountResult', 'discountCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('discountCalculator')">Clear</button>
     </div>
 
 
     <!-- Profit Margin Tool -->
-    <div class="section">
+    <div class="section" id="profitCalculator">
       <h2>Profit Margin Tool</h2>
 
       <input
@@ -185,11 +188,12 @@
 
       <div class="result" id="profitResult"></div>
       <button type="button" class="copy-button" id="profitCopyButton" onclick="copyResult('profitResult', 'profitCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('profitCalculator')">Clear</button>
     </div>
 
 
     <!-- Unit Price Calculator -->
-    <div class="section">
+    <div class="section" id="unitPriceCalculator">
       <h2>Unit Price Calculator</h2>
 
       <input
@@ -226,11 +230,12 @@
 
       <div class="result" id="unitResult"></div>
       <button type="button" class="copy-button" id="unitCopyButton" onclick="copyResult('unitResult', 'unitCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('unitPriceCalculator')">Clear</button>
     </div>
 
 
     <!-- Break-even Calculator -->
-    <div class="section">
+    <div class="section" id="breakEvenCalculator">
       <h2>Break-even Calculator</h2>
 
       <input
@@ -276,11 +281,12 @@
 
       <div class="result" id="breakEvenResult"></div>
       <button type="button" class="copy-button" id="breakEvenCopyButton" onclick="copyResult('breakEvenResult', 'breakEvenCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('breakEvenCalculator')">Clear</button>
     </div>
 
 
     <!-- Tax Calculator -->
-    <div class="section">
+    <div class="section" id="taxCalculator">
       <h2>Tax Calculator</h2>
 
       <select id="taxMode">
@@ -325,6 +331,7 @@
 
       <div class="result" id="taxResult"></div>
       <button type="button" class="copy-button" id="taxCopyButton" onclick="copyResult('taxResult', 'taxCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('taxCalculator')">Clear</button>
     </div>
 
 
