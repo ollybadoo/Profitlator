@@ -38,7 +38,14 @@
         autocomplete="off"
       >
 
-      <button onclick="calculate()">Calculate</button>
+      <div class="operation-buttons">
+        <button type="button" onclick="insertOperation('+')">+</button>
+        <button type="button" onclick="insertOperation('-')">−</button>
+        <button type="button" onclick="insertOperation('×')">×</button>
+        <button type="button" onclick="insertOperation('÷')">÷</button>
+      </div>
+
+      <button type="button" onclick="calculate()">Calculate</button>
 
       <div class="result" id="calcResult"></div>
     </div>
@@ -49,10 +56,11 @@
       <h2>Currency Converter</h2>
 
       <input
-        type="number"
+        type="text"
         id="amount"
         placeholder="Enter amount"
-        step="any"
+        inputmode="decimal"
+        autocomplete="off"
       >
 
       <select id="fromCurrency">
@@ -85,7 +93,7 @@
         <option value="AED">AED — UAE Dirham</option>
       </select>
 
-      <button onclick="convertCurrency()">Convert</button>
+      <button type="button" onclick="convertCurrency()">Convert</button>
 
       <div class="result" id="currencyResult"></div>
     </div>
@@ -95,8 +103,24 @@
     <div class="section">
       <h2>Discount Calculator</h2>
 
-      <input type="number" id="originalPrice" placeholder="Original Price">
-      <input type="number" id="discountPercent" placeholder="Discount %">
+      <input
+        type="text"
+        id="originalPrice"
+        placeholder="Original Price"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <div class="percentage-input">
+        <input
+          type="text"
+          id="discountPercent"
+          placeholder="Discount"
+          inputmode="decimal"
+          autocomplete="off"
+        >
+        <span>%</span>
+      </div>
 
       <select id="discountCurrency">
         <option value="$">$</option>
@@ -105,7 +129,7 @@
         <option value="£">£</option>
       </select>
 
-      <button onclick="calculateDiscount()">Calculate Discount</button>
+      <button type="button" onclick="calculateDiscount()">Calculate Discount</button>
 
       <div class="result" id="discountResult"></div>
     </div>
@@ -115,9 +139,21 @@
     <div class="section">
       <h2>Profit Margin Tool</h2>
 
-      <input type="number" id="costPrice" placeholder="Cost Price">
+      <input
+        type="text"
+        id="costPrice"
+        placeholder="Cost Price"
+        inputmode="decimal"
+        autocomplete="off"
+      >
 
-      <input type="number" id="sellingPrice" placeholder="Selling Price">
+      <input
+        type="text"
+        id="sellingPrice"
+        placeholder="Selling Price"
+        inputmode="decimal"
+        autocomplete="off"
+      >
 
       <select id="profitCurrency">
         <option value="$">$</option>
@@ -126,7 +162,7 @@
         <option value="£">£</option>
       </select>
 
-      <button onclick="calculateProfitMargin()">Calculate</button>
+      <button type="button" onclick="calculateProfitMargin()">Calculate</button>
 
       <div class="result" id="profitResult"></div>
     </div>
@@ -136,7 +172,13 @@
     <div class="section">
       <h2>Unit Price Calculator</h2>
 
-      <input type="number" id="totalCost" placeholder="Total Cost">
+      <input
+        type="text"
+        id="totalCost"
+        placeholder="Total Cost"
+        inputmode="decimal"
+        autocomplete="off"
+      >
 
       <input
         type="number"
@@ -152,7 +194,7 @@
         <option value="£">£</option>
       </select>
 
-      <button onclick="calculateUnitPrice()">Calculate</button>
+      <button type="button" onclick="calculateUnitPrice()">Calculate</button>
 
       <div class="result" id="unitResult"></div>
     </div>
@@ -162,18 +204,28 @@
     <div class="section">
       <h2>Break-even Calculator</h2>
 
-      <input type="number" id="fixedCosts" placeholder="Fixed Cost">
-
       <input
-        type="number"
-        id="variableCosts"
-        placeholder="Variable Cost per Unit"
+        type="text"
+        id="fixedCosts"
+        placeholder="Fixed Cost"
+        inputmode="decimal"
+        autocomplete="off"
       >
 
       <input
-        type="number"
+        type="text"
+        id="variableCosts"
+        placeholder="Variable Cost per Unit"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <input
+        type="text"
         id="sellingPriceUnit"
         placeholder="Selling Price per Unit"
+        inputmode="decimal"
+        autocomplete="off"
       >
 
       <select id="breakEvenCurrency">
@@ -183,7 +235,7 @@
         <option value="£">£</option>
       </select>
 
-      <button onclick="calculateBreakEven()">Calculate</button>
+      <button type="button" onclick="calculateBreakEven()">Calculate</button>
 
       <div class="result" id="breakEvenResult"></div>
     </div>
@@ -199,10 +251,11 @@
       </select>
 
       <input
-        type="number"
+        type="text"
         id="taxPrice"
         placeholder="Price"
-        step="any"
+        inputmode="decimal"
+        autocomplete="off"
       >
 
       <div class="percentage-input">
@@ -222,7 +275,7 @@
         <option value="£">£</option>
       </select>
 
-      <button onclick="calculateTax()">Calculate</button>
+      <button type="button" onclick="calculateTax()">Calculate</button>
 
       <div class="result" id="taxResult"></div>
     </div>
@@ -255,10 +308,10 @@
     <div class="share">
       <p><strong>Share Profitlator:</strong></p>
 
-      <button onclick="share('whatsapp')">WhatsApp</button>
-      <button onclick="share('facebook')">Facebook</button>
-      <button onclick="share('twitter')">Twitter</button>
-      <button onclick="share('linkedin')">LinkedIn</button>
+      <button type="button" onclick="share('whatsapp')">WhatsApp</button>
+      <button type="button" onclick="share('facebook')">Facebook</button>
+      <button type="button" onclick="share('twitter')">Twitter</button>
+      <button type="button" onclick="share('linkedin')">LinkedIn</button>
     </div>
 
   </main>
