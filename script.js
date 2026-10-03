@@ -829,6 +829,47 @@ function clearHistory() {
 }
 
 
+/* Clear Individual Calculator */
+
+function clearCalculator(sectionId) {
+  const section =
+    document.getElementById(sectionId);
+
+  if (!section) {
+    return;
+  }
+
+  const inputs =
+    section.querySelectorAll('input');
+
+  inputs.forEach(input => {
+    input.value = '';
+  });
+
+  const selects =
+    section.querySelectorAll('select');
+
+  selects.forEach(select => {
+    select.selectedIndex = 0;
+  });
+
+  const results =
+    section.querySelectorAll('.result');
+
+  results.forEach(result => {
+    result.textContent = '';
+  });
+
+  const copyButtons =
+    section.querySelectorAll('.copy-button');
+
+  copyButtons.forEach(button => {
+    button.style.display = 'none';
+    button.textContent = 'Copy';
+  });
+}
+
+
 /* Copy Result */
 
 function showCopyButton(buttonId) {
