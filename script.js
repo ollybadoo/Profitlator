@@ -235,7 +235,7 @@ async function convertCurrency() {
 
   if (from === to) {
     resultBox.textContent =
-      `Converted amount: ${getCurrencyDisplay(from)}${amount.toLocaleString(undefined, {
+      `Converted amount: ${getCurrencyDisplay(from)} ${amount.toLocaleString(undefined, {
         maximumFractionDigits: 10
       })}`;
 
@@ -273,7 +273,7 @@ async function convertCurrency() {
     }
 
     resultBox.textContent =
-      `Converted amount: ${getCurrencyDisplay(to)}${convertedAmount.toLocaleString(undefined, {
+      `Converted amount: ${getCurrencyDisplay(to)} ${convertedAmount.toLocaleString(undefined, {
         maximumFractionDigits: 10
       })}`;
 
@@ -293,14 +293,14 @@ function getCurrencyDisplay(currency) {
     CAD: 'C$',
     AUD: 'A$',
     JPY: '¥',
-    CHF: 'CHF ',
-    CNY: 'CNY ',
-    ZAR: 'ZAR ',
+    CHF: 'CHF',
+    CNY: 'CNY',
+    ZAR: 'ZAR',
     INR: '₹',
-    AED: 'AED '
+    AED: 'AED'
   };
 
-  return currencyDisplays[currency] || `${currency} `;
+  return currencyDisplays[currency] || currency;
 }
 
 
@@ -311,8 +311,11 @@ function calculateDiscount() {
   const percent =
     parseFormattedNumber(document.getElementById('discountPercent').value);
 
-  const currency =
+  const currencyCode =
     document.getElementById('discountCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
 
   const resultBox =
     document.getElementById('discountResult');
@@ -331,10 +334,10 @@ function calculateDiscount() {
       price - discountAmount;
 
     resultBox.innerHTML =
-      `Discount amount: ${currency}${discountAmount.toLocaleString(undefined, {
+      `Discount amount: ${currency} ${discountAmount.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}<br>` +
-      `Final price: ${currency}${finalPrice.toLocaleString(undefined, {
+      `Final price: ${currency} ${finalPrice.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}`;
 
@@ -352,8 +355,11 @@ function calculateProfitMargin() {
   const selling =
     parseFormattedNumber(document.getElementById('sellingPrice').value);
 
-  const currency =
+  const currencyCode =
     document.getElementById('profitCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
 
   const resultBox =
     document.getElementById('profitResult');
@@ -374,7 +380,7 @@ function calculateProfitMargin() {
       (profit / cost) * 100;
 
     resultBox.innerHTML =
-      `Profit Amount: ${currency}${profit.toLocaleString(undefined, {
+      `Profit Amount: ${currency} ${profit.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}<br>` +
       `Profit Margin: ${profitMargin.toFixed(2)}%<br>` +
@@ -394,8 +400,11 @@ function calculateUnitPrice() {
   const quantity =
     parseFloat(document.getElementById('quantity').value);
 
-  const currency =
+  const currencyCode =
     document.getElementById('unitPriceCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
 
   const resultBox =
     document.getElementById('unitResult');
@@ -416,7 +425,7 @@ function calculateUnitPrice() {
     total / quantity;
 
   resultBox.textContent =
-    `Unit Price: ${currency}${unitPrice.toLocaleString(undefined, {
+    `Unit Price: ${currency} ${unitPrice.toLocaleString(undefined, {
       maximumFractionDigits: 10
     })}`;
 }
@@ -432,8 +441,11 @@ function calculateBreakEven() {
   const selling =
     parseFormattedNumber(document.getElementById('sellingPriceUnit').value);
 
-  const currency =
+  const currencyCode =
     document.getElementById('breakEvenCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
 
   const resultBox =
     document.getElementById('breakEvenResult');
@@ -454,13 +466,13 @@ function calculateBreakEven() {
 
     resultBox.innerHTML =
       `Break-even point: ${roundedUnits} units<br>` +
-      `Fixed Cost: ${currency}${fixed.toLocaleString(undefined, {
+      `Fixed Cost: ${currency} ${fixed.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}<br>` +
-      `Variable Cost per Unit: ${currency}${variable.toLocaleString(undefined, {
+      `Variable Cost per Unit: ${currency} ${variable.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}<br>` +
-      `Selling Price per Unit: ${currency}${selling.toLocaleString(undefined, {
+      `Selling Price per Unit: ${currency} ${selling.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}`;
 
@@ -481,8 +493,11 @@ function calculateTax() {
   const mode =
     document.getElementById('taxMode').value;
 
-  const currency =
+  const currencyCode =
     document.getElementById('taxCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
 
   const resultBox =
     document.getElementById('taxResult');
@@ -515,7 +530,7 @@ function calculateTax() {
   }
 
   resultBox.textContent =
-    `Result: ${currency}${result.toLocaleString(undefined, {
+    `Result: ${currency} ${result.toLocaleString(undefined, {
       maximumFractionDigits: 10
     })}`;
 }
