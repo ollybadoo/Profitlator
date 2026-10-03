@@ -190,26 +190,93 @@ function applyOperator(values, operator) {
 }
 
 
-function convertCurrency() {
-  const amount = parseFloat(document.getElementById('amount').value);
-  const from = document.getElementById('fromCurrency').value;
-  const to = document.getElementById('toCurrency').value;
+async function convertCurrency() {
+  const amount =
+    parseFloat(document.getElementById('amount').value);
 
-  const rates = {
-    USD: 1,
-    NGN: 1500,
-    EUR: 0.92,
-    GBP: 0.78
+  const from =
+    document.getElementById('fromCurrency').value;
+
+  const to =
+    document.getElementById('toCurrency').value;
+
+  const resultBox =
+    document.getElementById('currencyResult');
+
+  if (isNaN(amount) || !Number.isFinite(amount) || amount < 0) {
+    resultBox.textContent =
+      'Please enter a valid amount.';
+    return;
+  }
+
+  if (from === to) {
+    resultBox.textContent =
+      `Converted amount: ${getCurrencyDisplay(from)}${amount.toLocaleString(undefined, {
+        maximumFractionDigits: 10
+      })}`;
+
+    return;
+  }
+
+  resultBox.textContent = 'Converting...';
+
+  try {
+    const response =
+      await fetch(
+        `https://api.frankfurter.dev/v2/rate/${from}/${to}`
+      );
+
+    if (!response.ok) {
+      throw new Error('Exchange rate unavailable');
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      !data ||
+      typeof data.rate !== 'number' ||
+      !Number.isFinite(data.rate)
+    ) {
+      throw new Error('Invalid exchange rate');
+    }
+
+    const convertedAmount =
+      amount * data.rate;
+
+    if (!Number.isFinite(convertedAmount)) {
+      throw new Error('Invalid conversion result');
+    }
+
+    resultBox.textContent =
+      `Converted amount: ${getCurrencyDisplay(to)}${convertedAmount.toLocaleString(undefined, {
+        maximumFractionDigits: 10
+      })}`;
+
+  } catch (error) {
+    resultBox.textContent =
+      'Exchange rates are currently unavailable. Please try again.';
+  }
+}
+
+
+function getCurrencyDisplay(currency) {
+  const currencyDisplays = {
+    USD: '$',
+    NGN: '₦',
+    EUR: '€',
+    GBP: '£',
+    CAD: 'C$',
+    AUD: 'A$',
+    JPY: '¥',
+    CHF: 'CHF ',
+    CNY: 'CNY ',
+    ZAR: 'ZAR ',
+    INR: '₹',
+    AED: 'AED '
   };
 
-  if (from in rates && to in rates && !isNaN(amount)) {
-    const result = (amount / rates[from]) * rates[to];
-
-    document.getElementById('currencyResult').textContent =
-      `= ${result.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })} ${to}`;
-  }
+  return currencyDisplays[currency] || `${currency} `;
 }
 
 
