@@ -1,3 +1,7 @@
+const HISTORY_STORAGE_KEY = 'profitlatorCalculationHistory';
+const MAX_HISTORY_ITEMS = 10;
+
+
 function calculate() {
   const input = document.getElementById('calculation');
   const resultBox = document.getElementById('calcResult');
@@ -21,9 +25,17 @@ function calculate() {
       throw new Error('Invalid calculation');
     }
 
-    resultBox.textContent = `= ${result.toLocaleString(undefined, {
-      maximumFractionDigits: 10
-    })}`;
+    const formattedResult =
+      result.toLocaleString(undefined, {
+        maximumFractionDigits: 10
+      });
+
+    resultBox.textContent = `= ${formattedResult}`;
+
+    addToHistory(
+      'Basic Calculator',
+      `${input.value.trim()} = ${formattedResult}`
+    );
 
   } catch (error) {
     resultBox.textContent = 'Invalid calculation.';
@@ -234,10 +246,18 @@ async function convertCurrency() {
   }
 
   if (from === to) {
-    resultBox.textContent =
-      `Converted amount: ${getCurrencyDisplay(from)} ${amount.toLocaleString(undefined, {
+    const formattedAmount =
+      amount.toLocaleString(undefined, {
         maximumFractionDigits: 10
-      })}`;
+      });
+
+    resultBox.textContent =
+      `Converted amount: ${getCurrencyDisplay(from)} ${formattedAmount}`;
+
+    addToHistory(
+      'Currency Converter',
+      `${amount.toLocaleString()} ${from} → ${formattedAmount} ${to}`
+    );
 
     return;
   }
@@ -272,10 +292,18 @@ async function convertCurrency() {
       throw new Error('Invalid conversion result');
     }
 
-    resultBox.textContent =
-      `Converted amount: ${getCurrencyDisplay(to)} ${convertedAmount.toLocaleString(undefined, {
+    const formattedConvertedAmount =
+      convertedAmount.toLocaleString(undefined, {
         maximumFractionDigits: 10
-      })}`;
+      });
+
+    resultBox.textContent =
+      `Converted amount: ${getCurrencyDisplay(to)} ${formattedConvertedAmount}`;
+
+    addToHistory(
+      'Currency Converter',
+      `${amount.toLocaleString()} ${from} → ${formattedConvertedAmount} ${to}`
+    );
 
   } catch (error) {
     resultBox.textContent =
@@ -333,13 +361,24 @@ function calculateDiscount() {
     const finalPrice =
       price - discountAmount;
 
+    const formattedDiscount =
+      discountAmount.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      });
+
+    const formattedFinalPrice =
+      finalPrice.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      });
+
     resultBox.innerHTML =
-      `Discount amount: ${currency} ${discountAmount.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}<br>` +
-      `Final price: ${currency} ${finalPrice.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}`;
+      `Discount amount: ${currency} ${formattedDiscount}<br>` +
+      `Final price: ${currency} ${formattedFinalPrice}`;
+
+    addToHistory(
+      'Discount Calculator',
+      `Original: ${currency} ${price.toLocaleString()} | Discount: ${percent}% → Final price: ${currency} ${formattedFinalPrice}`
+    );
 
   } else {
     resultBox.textContent =
@@ -379,12 +418,20 @@ function calculateProfitMargin() {
     const markup =
       (profit / cost) * 100;
 
-    resultBox.innerHTML =
-      `Profit Amount: ${currency} ${profit.toLocaleString(undefined, {
+    const formattedProfit =
+      profit.toLocaleString(undefined, {
         maximumFractionDigits: 2
-      })}<br>` +
+      });
+
+    resultBox.innerHTML =
+      `Profit Amount: ${currency} ${formattedProfit}<br>` +
       `Profit Margin: ${profitMargin.toFixed(2)}%<br>` +
       `Markup: ${markup.toFixed(2)}%`;
+
+    addToHistory(
+      'Profit Margin Tool',
+      `Cost: ${currency} ${cost.toLocaleString()} | Selling: ${currency} ${selling.toLocaleString()} → Profit: ${currency} ${formattedProfit}, Margin: ${profitMargin.toFixed(2)}%`
+    );
 
   } else {
     resultBox.textContent =
@@ -424,10 +471,18 @@ function calculateUnitPrice() {
   const unitPrice =
     total / quantity;
 
-  resultBox.textContent =
-    `Unit Price: ${currency} ${unitPrice.toLocaleString(undefined, {
+  const formattedUnitPrice =
+    unitPrice.toLocaleString(undefined, {
       maximumFractionDigits: 10
-    })}`;
+    });
+
+  resultBox.textContent =
+    `Unit Price: ${currency} ${formattedUnitPrice}`;
+
+  addToHistory(
+    'Unit Price Calculator',
+    `Total: ${currency} ${total.toLocaleString()} ÷ ${quantity.toLocaleString()} → Unit Price: ${currency} ${formattedUnitPrice}`
+  );
 }
 
 
@@ -475,6 +530,11 @@ function calculateBreakEven() {
       `Selling Price per Unit: ${currency} ${selling.toLocaleString(undefined, {
         maximumFractionDigits: 2
       })}`;
+
+    addToHistory(
+      'Break-even Calculator',
+      `Fixed: ${currency} ${fixed.toLocaleString()} | Variable/unit: ${currency} ${variable.toLocaleString()} | Selling/unit: ${currency} ${selling.toLocaleString()} → Break-even: ${roundedUnits} units`
+    );
 
   } else {
     resultBox.textContent =
@@ -529,10 +589,23 @@ function calculateTax() {
     return;
   }
 
-  resultBox.textContent =
-    `Result: ${currency} ${result.toLocaleString(undefined, {
+  const formattedResult =
+    result.toLocaleString(undefined, {
       maximumFractionDigits: 10
-    })}`;
+    });
+
+  resultBox.textContent =
+    `Result: ${currency} ${formattedResult}`;
+
+  const modeText =
+    mode === 'add'
+      ? 'Add Tax'
+      : 'Remove Tax';
+
+  addToHistory(
+    'Tax Calculator',
+    `${modeText}: ${currency} ${price.toLocaleString()} at ${rate}% → ${currency} ${formattedResult}`
+  );
 }
 
 
@@ -608,6 +681,124 @@ function setupFormattedInputs() {
 }
 
 
+/* Calculation History */
+
+function getHistory() {
+  try {
+    const savedHistory =
+      localStorage.getItem(HISTORY_STORAGE_KEY);
+
+    if (!savedHistory) {
+      return [];
+    }
+
+    const history =
+      JSON.parse(savedHistory);
+
+    if (!Array.isArray(history)) {
+      return [];
+    }
+
+    return history;
+  } catch (error) {
+    return [];
+  }
+}
+
+
+function saveHistory(history) {
+  try {
+    localStorage.setItem(
+      HISTORY_STORAGE_KEY,
+      JSON.stringify(history)
+    );
+  } catch (error) {
+    // History saving is optional and should not affect calculations.
+  }
+}
+
+
+function addToHistory(calculatorName, details) {
+  const history =
+    getHistory();
+
+  history.unshift({
+    calculator: calculatorName,
+    details: details
+  });
+
+  const limitedHistory =
+    history.slice(0, MAX_HISTORY_ITEMS);
+
+  saveHistory(limitedHistory);
+  renderHistory(limitedHistory);
+}
+
+
+function renderHistory(history = getHistory()) {
+  const historyBox =
+    document.getElementById('calculationHistory');
+
+  if (!historyBox) {
+    return;
+  }
+
+  historyBox.innerHTML = '';
+
+  if (history.length === 0) {
+    const emptyMessage =
+      document.createElement('p');
+
+    emptyMessage.className =
+      'history-empty';
+
+    emptyMessage.textContent =
+      'No calculations yet.';
+
+    historyBox.appendChild(emptyMessage);
+
+    return;
+  }
+
+  history.forEach(item => {
+    const historyItem =
+      document.createElement('div');
+
+    historyItem.className =
+      'history-item';
+
+    const calculatorName =
+      document.createElement('div');
+
+    calculatorName.className =
+      'history-calculator';
+
+    calculatorName.textContent =
+      item.calculator;
+
+    const details =
+      document.createElement('div');
+
+    details.className =
+      'history-details';
+
+    details.textContent =
+      item.details;
+
+    historyItem.appendChild(calculatorName);
+    historyItem.appendChild(details);
+
+    historyBox.appendChild(historyItem);
+  });
+}
+
+
+function clearHistory() {
+  localStorage.removeItem(HISTORY_STORAGE_KEY);
+  renderHistory([]);
+}
+
+
 function share(platform) {
   const url =
     encodeURIComponent(window.location.href);
@@ -640,3 +831,4 @@ function share(platform) {
 
 
 setupFormattedInputs();
+renderHistory();
