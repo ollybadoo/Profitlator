@@ -87,6 +87,13 @@ button:hover {
   font-size: 0.9rem;
 }
 
+.clear-button {
+  width: auto;
+  margin-top: 0.6rem;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.9rem;
+}
+
 .percentage-input {
   position: relative;
   width: 100%;
