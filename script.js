@@ -461,6 +461,81 @@ function calculateProfitMargin() {
 }
 
 
+/* Commission Calculator */
+
+function calculateCommission() {
+  const salesAmount =
+    parseFormattedNumber(
+      document.getElementById('salesAmount').value
+    );
+
+  const commissionRate =
+    parseFloat(
+      document.getElementById('commissionRate').value
+    );
+
+  const currencyCode =
+    document.getElementById('commissionCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
+
+  const resultBox =
+    document.getElementById('commissionResult');
+
+  hideCopyButton('commissionCopyButton');
+
+  if (
+    isNaN(salesAmount) ||
+    isNaN(commissionRate) ||
+    !Number.isFinite(salesAmount) ||
+    !Number.isFinite(commissionRate) ||
+    salesAmount < 0 ||
+    commissionRate < 0
+  ) {
+    resultBox.textContent =
+      'Please enter a valid sales amount and commission rate.';
+    return;
+  }
+
+  const commission =
+    salesAmount * commissionRate / 100;
+
+  const totalAfterCommission =
+    salesAmount - commission;
+
+  if (
+    !Number.isFinite(commission) ||
+    !Number.isFinite(totalAfterCommission)
+  ) {
+    resultBox.textContent =
+      'Please enter valid commission values.';
+    return;
+  }
+
+  const formattedCommission =
+    commission.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  const formattedTotalAfterCommission =
+    totalAfterCommission.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  resultBox.innerHTML =
+    `Commission: ${currency} ${formattedCommission}<br>` +
+    `Total After Commission: ${currency} ${formattedTotalAfterCommission}`;
+
+  showCopyButton('commissionCopyButton');
+
+  addToHistory(
+    'Commission Calculator',
+    `Sales: ${currency} ${salesAmount.toLocaleString()} | Commission: ${commissionRate}% → Commission: ${currency} ${formattedCommission}, Total After Commission: ${currency} ${formattedTotalAfterCommission}`
+  );
+}
+
+
 function calculateUnitPrice() {
   const total =
     parseFormattedNumber(document.getElementById('totalCost').value);
@@ -756,6 +831,7 @@ function setupFormattedInputs() {
     'originalPrice',
     'costPrice',
     'sellingPrice',
+    'salesAmount',
     'totalCost',
     'fixedCosts',
     'variableCosts',
