@@ -34,7 +34,7 @@
         type="text"
         id="calculation"
         placeholder="Enter calculation e.g. 10 + 5 × 2"
-        inputmode="text"
+        inputmode="decimal"
         autocomplete="off"
       >
 
@@ -377,10 +377,12 @@
     <div class="share">
       <p><strong>Share Profitlator:</strong></p>
 
-      <button type="button" onclick="share('whatsapp')">WhatsApp</button>
-      <button type="button" onclick="share('facebook')">Facebook</button>
-      <button type="button" onclick="share('twitter')">Twitter</button>
-      <button type="button" onclick="share('linkedin')">LinkedIn</button>
+      <div class="share-buttons">
+        <button type="button" onclick="share('whatsapp')">WhatsApp</button>
+        <button type="button" onclick="share('facebook')">Facebook</button>
+        <button type="button" onclick="share('x')">X</button>
+        <button type="button" onclick="share('instagram')">Instagram</button>
+      </div>
     </div>
 
   </main>
