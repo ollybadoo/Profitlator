@@ -536,6 +536,81 @@ function calculateMarkup() {
 }
 
 
+/* ROI Calculator */
+
+function calculateROI() {
+  const initialInvestment =
+    parseFormattedNumber(
+      document.getElementById('roiInitialInvestment').value
+    );
+
+  const finalValue =
+    parseFormattedNumber(
+      document.getElementById('roiFinalValue').value
+    );
+
+  const currencyCode =
+    document.getElementById('roiCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
+
+  const resultBox =
+    document.getElementById('roiResult');
+
+  hideCopyButton('roiCopyButton');
+
+  if (
+    isNaN(initialInvestment) ||
+    isNaN(finalValue) ||
+    !Number.isFinite(initialInvestment) ||
+    !Number.isFinite(finalValue) ||
+    initialInvestment <= 0 ||
+    finalValue <= 0
+  ) {
+    resultBox.textContent =
+      'Please enter a valid initial investment and final value.';
+    return;
+  }
+
+  const profitLoss =
+    finalValue - initialInvestment;
+
+  const roi =
+    (profitLoss / initialInvestment) * 100;
+
+  if (
+    !Number.isFinite(profitLoss) ||
+    !Number.isFinite(roi)
+  ) {
+    resultBox.textContent =
+      'Please enter valid investment values.';
+    return;
+  }
+
+  const formattedProfitLoss =
+    profitLoss.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  const formattedROI =
+    roi.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  resultBox.innerHTML =
+    `Profit/Loss: ${currency} ${formattedProfitLoss}<br>` +
+    `ROI: ${formattedROI}%`;
+
+  showCopyButton('roiCopyButton');
+
+  addToHistory(
+    'ROI Calculator',
+    `Initial Investment: ${currency} ${initialInvestment.toLocaleString()} | Final Value: ${currency} ${finalValue.toLocaleString()} → Profit/Loss: ${currency} ${formattedProfitLoss}, ROI: ${formattedROI}%`
+  );
+}
+
+
 /* Commission Calculator */
 
 function calculateCommission() {
@@ -907,6 +982,8 @@ function setupFormattedInputs() {
     'costPrice',
     'sellingPrice',
     'markupCostPrice',
+    'roiInitialInvestment',
+    'roiFinalValue',
     'salesAmount',
     'totalCost',
     'fixedCosts',
