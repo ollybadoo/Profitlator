@@ -461,6 +461,81 @@ function calculateProfitMargin() {
 }
 
 
+/* Markup Calculator */
+
+function calculateMarkup() {
+  const costPrice =
+    parseFormattedNumber(
+      document.getElementById('markupCostPrice').value
+    );
+
+  const markupRate =
+    parseFloat(
+      document.getElementById('markupRate').value
+    );
+
+  const currencyCode =
+    document.getElementById('markupCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
+
+  const resultBox =
+    document.getElementById('markupResult');
+
+  hideCopyButton('markupCopyButton');
+
+  if (
+    isNaN(costPrice) ||
+    isNaN(markupRate) ||
+    !Number.isFinite(costPrice) ||
+    !Number.isFinite(markupRate) ||
+    costPrice <= 0 ||
+    markupRate < 0
+  ) {
+    resultBox.textContent =
+      'Please enter a valid cost price and markup rate.';
+    return;
+  }
+
+  const markupAmount =
+    costPrice * markupRate / 100;
+
+  const sellingPrice =
+    costPrice + markupAmount;
+
+  if (
+    !Number.isFinite(markupAmount) ||
+    !Number.isFinite(sellingPrice)
+  ) {
+    resultBox.textContent =
+      'Please enter valid markup values.';
+    return;
+  }
+
+  const formattedMarkupAmount =
+    markupAmount.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  const formattedSellingPrice =
+    sellingPrice.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  resultBox.innerHTML =
+    `Markup Amount: ${currency} ${formattedMarkupAmount}<br>` +
+    `Selling Price: ${currency} ${formattedSellingPrice}`;
+
+  showCopyButton('markupCopyButton');
+
+  addToHistory(
+    'Markup Calculator',
+    `Cost: ${currency} ${costPrice.toLocaleString()} | Markup: ${markupRate}% → Markup Amount: ${currency} ${formattedMarkupAmount}, Selling Price: ${currency} ${formattedSellingPrice}`
+  );
+}
+
+
 /* Commission Calculator */
 
 function calculateCommission() {
@@ -831,6 +906,7 @@ function setupFormattedInputs() {
     'originalPrice',
     'costPrice',
     'sellingPrice',
+    'markupCostPrice',
     'salesAmount',
     'totalCost',
     'fixedCosts',
