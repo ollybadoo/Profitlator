@@ -26,9 +26,33 @@
 
   <main>
 
+    <!-- Favorites / Quick Access -->
+    <div class="section favorites-section" id="favoritesSection">
+      <div class="favorites-header">
+        <h2>⭐ Favorites</h2>
+      </div>
+
+      <div id="favoritesList" class="favorites-list">
+        <p class="favorites-empty">
+          Favorite your most-used calculators for quick access.
+        </p>
+      </div>
+    </div>
+
+
     <!-- Basic Calculator -->
-    <div class="section" id="basicCalculator">
-      <h2>Basic Calculator</h2>
+    <div class="section calculator-section" id="basicCalculator">
+
+      <div class="calculator-title">
+        <h2>Basic Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="basicCalculator"
+          aria-label="Favorite Basic Calculator"
+          onclick="toggleFavorite('basicCalculator', 'Basic Calculator')"
+        >☆</button>
+      </div>
 
       <input
         type="text"
@@ -54,8 +78,18 @@
 
 
     <!-- Currency Converter -->
-    <div class="section" id="currencyCalculator">
-      <h2>Currency Converter</h2>
+    <div class="section calculator-section" id="currencyCalculator">
+
+      <div class="calculator-title">
+        <h2>Currency Converter</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="currencyCalculator"
+          aria-label="Favorite Currency Converter"
+          onclick="toggleFavorite('currencyCalculator', 'Currency Converter')"
+        >☆</button>
+      </div>
 
       <input
         type="text"
@@ -104,8 +138,18 @@
 
 
     <!-- Discount Calculator -->
-    <div class="section" id="discountCalculator">
-      <h2>Discount Calculator</h2>
+    <div class="section calculator-section" id="discountCalculator">
+
+      <div class="calculator-title">
+        <h2>Discount Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="discountCalculator"
+          aria-label="Favorite Discount Calculator"
+          onclick="toggleFavorite('discountCalculator', 'Discount Calculator')"
+        >☆</button>
+      </div>
 
       <input
         type="text"
@@ -150,8 +194,18 @@
 
 
     <!-- Profit Margin Tool -->
-    <div class="section" id="profitCalculator">
-      <h2>Profit Margin Tool</h2>
+    <div class="section calculator-section" id="profitCalculator">
+
+      <div class="calculator-title">
+        <h2>Profit Margin Tool</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="profitCalculator"
+          aria-label="Favorite Profit Margin Tool"
+          onclick="toggleFavorite('profitCalculator', 'Profit Margin Tool')"
+        >☆</button>
+      </div>
 
       <input
         type="text"
@@ -193,8 +247,18 @@
 
 
     <!-- Unit Price Calculator -->
-    <div class="section" id="unitPriceCalculator">
-      <h2>Unit Price Calculator</h2>
+    <div class="section calculator-section" id="unitPriceCalculator">
+
+      <div class="calculator-title">
+        <h2>Unit Price Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="unitPriceCalculator"
+          aria-label="Favorite Unit Price Calculator"
+          onclick="toggleFavorite('unitPriceCalculator', 'Unit Price Calculator')"
+        >☆</button>
+      </div>
 
       <input
         type="text"
@@ -235,8 +299,18 @@
 
 
     <!-- Break-even Calculator -->
-    <div class="section" id="breakEvenCalculator">
-      <h2>Break-even Calculator</h2>
+    <div class="section calculator-section" id="breakEvenCalculator">
+
+      <div class="calculator-title">
+        <h2>Break-even Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="breakEvenCalculator"
+          aria-label="Favorite Break-even Calculator"
+          onclick="toggleFavorite('breakEvenCalculator', 'Break-even Calculator')"
+        >☆</button>
+      </div>
 
       <input
         type="text"
@@ -286,8 +360,18 @@
 
 
     <!-- Tax Calculator -->
-    <div class="section" id="taxCalculator">
-      <h2>Tax Calculator</h2>
+    <div class="section calculator-section" id="taxCalculator">
+
+      <div class="calculator-title">
+        <h2>Tax Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="taxCalculator"
+          aria-label="Favorite Tax Calculator"
+          onclick="toggleFavorite('taxCalculator', 'Tax Calculator')"
+        >☆</button>
+      </div>
 
       <select id="taxMode">
         <option value="add">Add Tax</option>
@@ -387,11 +471,9 @@
 
   </main>
 
-
   <footer>
     <strong>Powered by Di-Gi</strong>
   </footer>
-
 
   <script src="script.js"></script>
 
