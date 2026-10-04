@@ -611,6 +611,90 @@ function calculateROI() {
 }
 
 
+/* Savings Calculator */
+
+function calculateSavings() {
+  const startingSavings =
+    parseFormattedNumber(
+      document.getElementById('startingSavings').value
+    );
+
+  const monthlyContribution =
+    parseFormattedNumber(
+      document.getElementById('monthlyContribution').value
+    );
+
+  const savingsPeriod =
+    parseFloat(
+      document.getElementById('savingsPeriod').value
+    );
+
+  const currencyCode =
+    document.getElementById('savingsCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
+
+  const resultBox =
+    document.getElementById('savingsResult');
+
+  hideCopyButton('savingsCopyButton');
+
+  if (
+    isNaN(startingSavings) ||
+    isNaN(monthlyContribution) ||
+    isNaN(savingsPeriod) ||
+    !Number.isFinite(startingSavings) ||
+    !Number.isFinite(monthlyContribution) ||
+    !Number.isFinite(savingsPeriod) ||
+    startingSavings < 0 ||
+    monthlyContribution < 0 ||
+    savingsPeriod <= 0 ||
+    !Number.isInteger(savingsPeriod)
+  ) {
+    resultBox.textContent =
+      'Please enter valid savings amounts and a savings period.';
+    return;
+  }
+
+  const totalContributions =
+    monthlyContribution * savingsPeriod;
+
+  const totalSavings =
+    startingSavings + totalContributions;
+
+  if (
+    !Number.isFinite(totalContributions) ||
+    !Number.isFinite(totalSavings)
+  ) {
+    resultBox.textContent =
+      'Please enter valid savings values.';
+    return;
+  }
+
+  const formattedContributions =
+    totalContributions.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  const formattedTotalSavings =
+    totalSavings.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  resultBox.innerHTML =
+    `Total Contributions: ${currency} ${formattedContributions}<br>` +
+    `Total Savings: ${currency} ${formattedTotalSavings}`;
+
+  showCopyButton('savingsCopyButton');
+
+  addToHistory(
+    'Savings Calculator',
+    `Starting: ${currency} ${startingSavings.toLocaleString()} | Monthly: ${currency} ${monthlyContribution.toLocaleString()} | Period: ${savingsPeriod} months → Total Savings: ${currency} ${formattedTotalSavings}`
+  );
+}
+
+
 /* Commission Calculator */
 
 function calculateCommission() {
@@ -989,7 +1073,9 @@ function setupFormattedInputs() {
     'fixedCosts',
     'variableCosts',
     'sellingPriceUnit',
-    'taxPrice'
+    'taxPrice',
+    'startingSavings',
+    'monthlyContribution'
   ];
 
   monetaryInputIds.forEach(id => {
