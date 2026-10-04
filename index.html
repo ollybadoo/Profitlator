@@ -322,6 +322,63 @@
     </div>
 
 
+    <!-- ROI Calculator -->
+    <div class="section calculator-section" id="roiCalculator">
+
+      <div class="calculator-title">
+        <h2>ROI Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="roiCalculator"
+          aria-label="Favorite ROI Calculator"
+          onclick="toggleFavorite('roiCalculator', 'ROI Calculator')"
+        >☆</button>
+      </div>
+
+      <p class="calculator-description">
+        Calculate your return on investment and see your profit or loss.
+      </p>
+
+      <input
+        type="text"
+        id="roiInitialInvestment"
+        placeholder="Initial Investment"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <input
+        type="text"
+        id="roiFinalValue"
+        placeholder="Final Value"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <select id="roiCurrency">
+        <option value="USD">$ — US Dollar</option>
+        <option value="NGN">₦ — Nigerian Naira</option>
+        <option value="EUR">€ — Euro</option>
+        <option value="GBP">£ — British Pound</option>
+        <option value="CAD">C$ — Canadian Dollar</option>
+        <option value="AUD">A$ — Australian Dollar</option>
+        <option value="JPY">¥ — Japanese Yen</option>
+        <option value="CHF">CHF — Swiss Franc</option>
+        <option value="CNY">CNY — Chinese Yuan</option>
+        <option value="ZAR">ZAR — South African Rand</option>
+        <option value="INR">₹ — Indian Rupee</option>
+        <option value="AED">AED — UAE Dirham</option>
+      </select>
+
+      <button type="button" onclick="calculateROI()">Calculate ROI</button>
+
+      <div class="result" id="roiResult"></div>
+      <button type="button" class="copy-button" id="roiCopyButton" onclick="copyResult('roiResult', 'roiCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('roiCalculator')">Clear</button>
+    </div>
+
+
     <!-- Commission Calculator -->
     <div class="section calculator-section" id="commissionCalculator">
 
