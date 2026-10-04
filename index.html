@@ -246,6 +246,66 @@
     </div>
 
 
+    <!-- Commission Calculator -->
+    <div class="section calculator-section" id="commissionCalculator">
+
+      <div class="calculator-title">
+        <h2>Commission Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="commissionCalculator"
+          aria-label="Favorite Commission Calculator"
+          onclick="toggleFavorite('commissionCalculator', 'Commission Calculator')"
+        >☆</button>
+      </div>
+
+      <p class="calculator-description">
+        Calculate your commission earnings from a sale.
+      </p>
+
+      <input
+        type="text"
+        id="salesAmount"
+        placeholder="Sales Amount"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <div class="percentage-input">
+        <input
+          type="number"
+          id="commissionRate"
+          placeholder="Commission Rate (%)"
+          step="any"
+          min="0"
+        >
+        <span>%</span>
+      </div>
+
+      <select id="commissionCurrency">
+        <option value="USD">$ — US Dollar</option>
+        <option value="NGN">₦ — Nigerian Naira</option>
+        <option value="EUR">€ — Euro</option>
+        <option value="GBP">£ — British Pound</option>
+        <option value="CAD">C$ — Canadian Dollar</option>
+        <option value="AUD">A$ — Australian Dollar</option>
+        <option value="JPY">¥ — Japanese Yen</option>
+        <option value="CHF">CHF — Swiss Franc</option>
+        <option value="CNY">CNY — Chinese Yuan</option>
+        <option value="ZAR">ZAR — South African Rand</option>
+        <option value="INR">₹ — Indian Rupee</option>
+        <option value="AED">AED — UAE Dirham</option>
+      </select>
+
+      <button type="button" onclick="calculateCommission()">Calculate Commission</button>
+
+      <div class="result" id="commissionResult"></div>
+      <button type="button" class="copy-button" id="commissionCopyButton" onclick="copyResult('commissionResult', 'commissionCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('commissionCalculator')">Clear</button>
+    </div>
+
+
     <!-- Unit Price Calculator -->
     <div class="section calculator-section" id="unitPriceCalculator">
 
