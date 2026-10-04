@@ -17,6 +17,7 @@ function calculate() {
 
   try {
     expression = expression
+      .replace(/,/g, '')
       .replace(/×/g, '*')
       .replace(/÷/g, '/')
       .replace(/−/g, '-');
@@ -684,6 +685,69 @@ function formatInputNumber(input) {
 }
 
 
+function formatCalculatorExpression(input) {
+  const oldValue = input.value;
+  const cursorPosition = input.selectionStart || 0;
+
+  const digitsBeforeCursor =
+    oldValue
+      .slice(0, cursorPosition)
+      .replace(/,/g, '')
+      .length;
+
+  const cleanedValue =
+    oldValue.replace(/,/g, '');
+
+  const formattedValue =
+    cleanedValue.replace(/\d+(?:\.\d+)?/g, number => {
+      const parts = number.split('.');
+
+      const integerPart = parts[0];
+      const decimalPart =
+        parts.length > 1 ? parts[1] : null;
+
+      const formattedInteger =
+        integerPart === ''
+          ? ''
+          : Number(integerPart).toLocaleString('en-US');
+
+      return decimalPart !== null
+        ? `${formattedInteger}.${decimalPart}`
+        : formattedInteger;
+    });
+
+  input.value = formattedValue;
+
+  let newCursorPosition = 0;
+  let digitCount = 0;
+
+  for (
+    let i = 0;
+    i < formattedValue.length;
+    i++
+  ) {
+    if (formattedValue[i] !== ',') {
+      digitCount++;
+    }
+
+    newCursorPosition++;
+
+    if (digitCount >= digitsBeforeCursor) {
+      break;
+    }
+  }
+
+  if (digitsBeforeCursor === 0) {
+    newCursorPosition = 0;
+  }
+
+  input.setSelectionRange(
+    newCursorPosition,
+    newCursorPosition
+  );
+}
+
+
 function setupFormattedInputs() {
   const monetaryInputIds = [
     'amount',
@@ -708,6 +772,15 @@ function setupFormattedInputs() {
       formatInputNumber(input);
     });
   });
+
+  const calculatorInput =
+    document.getElementById('calculation');
+
+  if (calculatorInput) {
+    calculatorInput.addEventListener('input', () => {
+      formatCalculatorExpression(calculatorInput);
+    });
+  }
 }
 
 
@@ -949,9 +1022,12 @@ async function copyResult(resultId, buttonId) {
 }
 
 
-function share(platform) {
+async function share(platform) {
   const url =
-    encodeURIComponent(window.location.href);
+    window.location.href;
+
+  const encodedUrl =
+    encodeURIComponent(url);
 
   const text =
     encodeURIComponent(
@@ -961,17 +1037,29 @@ function share(platform) {
   const shareLinks = {
 
     whatsapp:
-      `https://wa.me/?text=${text} ${url}`,
+      `https://wa.me/?text=${text}%20${encodedUrl}`,
 
     facebook:
-      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
 
-    twitter:
-      `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
-
-    linkedin:
-      `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`
+    x:
+      `https://twitter.com/intent/tweet?text=${text}&url=${encodedUrl}`
   };
+
+  if (platform === 'instagram') {
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch (error) {
+      // Opening Instagram still works if clipboard access is unavailable.
+    }
+
+    window.open(
+      'https://www.instagram.com/',
+      '_blank'
+    );
+
+    return;
+  }
 
   window.open(
     shareLinks[platform],
