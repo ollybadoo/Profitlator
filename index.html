@@ -54,6 +54,10 @@
         >☆</button>
       </div>
 
+      <p class="calculator-description">
+        Perform quick calculations with multiple numbers and operations.
+      </p>
+
       <input
         type="text"
         id="calculation"
@@ -90,6 +94,10 @@
           onclick="toggleFavorite('currencyCalculator', 'Currency Converter')"
         >☆</button>
       </div>
+
+      <p class="calculator-description">
+        Convert amounts between major world currencies.
+      </p>
 
       <input
         type="text"
@@ -151,6 +159,10 @@
         >☆</button>
       </div>
 
+      <p class="calculator-description">
+        Calculate discounts and find the final price after savings.
+      </p>
+
       <input
         type="text"
         id="originalPrice"
@@ -207,6 +219,10 @@
         >☆</button>
       </div>
 
+      <p class="calculator-description">
+        Calculate your profit, margin, and markup from your costs and selling price.
+      </p>
+
       <input
         type="text"
         id="costPrice"
@@ -243,6 +259,66 @@
       <div class="result" id="profitResult"></div>
       <button type="button" class="copy-button" id="profitCopyButton" onclick="copyResult('profitResult', 'profitCopyButton')">Copy</button>
       <button type="button" class="clear-button" onclick="clearCalculator('profitCalculator')">Clear</button>
+    </div>
+
+
+    <!-- Markup Calculator -->
+    <div class="section calculator-section" id="markupCalculator">
+
+      <div class="calculator-title">
+        <h2>Markup Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="markupCalculator"
+          aria-label="Favorite Markup Calculator"
+          onclick="toggleFavorite('markupCalculator', 'Markup Calculator')"
+        >☆</button>
+      </div>
+
+      <p class="calculator-description">
+        Calculate your markup and selling price from your cost.
+      </p>
+
+      <input
+        type="text"
+        id="markupCostPrice"
+        placeholder="Cost Price"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <div class="percentage-input">
+        <input
+          type="number"
+          id="markupRate"
+          placeholder="Markup (%)"
+          step="any"
+          min="0"
+        >
+        <span>%</span>
+      </div>
+
+      <select id="markupCurrency">
+        <option value="USD">$ — US Dollar</option>
+        <option value="NGN">₦ — Nigerian Naira</option>
+        <option value="EUR">€ — Euro</option>
+        <option value="GBP">£ — British Pound</option>
+        <option value="CAD">C$ — Canadian Dollar</option>
+        <option value="AUD">A$ — Australian Dollar</option>
+        <option value="JPY">¥ — Japanese Yen</option>
+        <option value="CHF">CHF — Swiss Franc</option>
+        <option value="CNY">CNY — Chinese Yuan</option>
+        <option value="ZAR">ZAR — South African Rand</option>
+        <option value="INR">₹ — Indian Rupee</option>
+        <option value="AED">AED — UAE Dirham</option>
+      </select>
+
+      <button type="button" onclick="calculateMarkup()">Calculate Markup</button>
+
+      <div class="result" id="markupResult"></div>
+      <button type="button" class="copy-button" id="markupCopyButton" onclick="copyResult('markupResult', 'markupCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('markupCalculator')">Clear</button>
     </div>
 
 
@@ -320,6 +396,10 @@
         >☆</button>
       </div>
 
+      <p class="calculator-description">
+        Calculate the price per unit from your total cost and quantity.
+      </p>
+
       <input
         type="text"
         id="totalCost"
@@ -371,6 +451,10 @@
           onclick="toggleFavorite('breakEvenCalculator', 'Break-even Calculator')"
         >☆</button>
       </div>
+
+      <p class="calculator-description">
+        Find how many units you need to sell to cover your costs.
+      </p>
 
       <input
         type="text"
@@ -432,6 +516,10 @@
           onclick="toggleFavorite('taxCalculator', 'Tax Calculator')"
         >☆</button>
       </div>
+
+      <p class="calculator-description">
+        Calculate prices with tax added or work backward to remove tax.
+      </p>
 
       <select id="taxMode">
         <option value="add">Add Tax</option>
