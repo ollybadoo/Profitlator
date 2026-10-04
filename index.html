@@ -379,6 +379,71 @@
     </div>
 
 
+    <!-- Savings Calculator -->
+    <div class="section calculator-section" id="savingsCalculator">
+
+      <div class="calculator-title">
+        <h2>Savings Calculator</h2>
+        <button
+          type="button"
+          class="favorite-button"
+          data-calculator-id="savingsCalculator"
+          aria-label="Favorite Savings Calculator"
+          onclick="toggleFavorite('savingsCalculator', 'Savings Calculator')"
+        >☆</button>
+      </div>
+
+      <p class="calculator-description">
+        Estimate how much you can save based on your starting balance and monthly contributions.
+      </p>
+
+      <input
+        type="text"
+        id="startingSavings"
+        placeholder="Starting Savings"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <input
+        type="text"
+        id="monthlyContribution"
+        placeholder="Monthly Contribution"
+        inputmode="decimal"
+        autocomplete="off"
+      >
+
+      <input
+        type="number"
+        id="savingsPeriod"
+        placeholder="Savings Period (Months)"
+        min="1"
+        step="1"
+      >
+
+      <select id="savingsCurrency">
+        <option value="USD">$ — US Dollar</option>
+        <option value="NGN">₦ — Nigerian Naira</option>
+        <option value="EUR">€ — Euro</option>
+        <option value="GBP">£ — British Pound</option>
+        <option value="CAD">C$ — Canadian Dollar</option>
+        <option value="AUD">A$ — Australian Dollar</option>
+        <option value="JPY">¥ — Japanese Yen</option>
+        <option value="CHF">CHF — Swiss Franc</option>
+        <option value="CNY">CNY — Chinese Yuan</option>
+        <option value="ZAR">ZAR — South African Rand</option>
+        <option value="INR">₹ — Indian Rupee</option>
+        <option value="AED">AED — UAE Dirham</option>
+      </select>
+
+      <button type="button" onclick="calculateSavings()">Calculate Savings</button>
+
+      <div class="result" id="savingsResult"></div>
+      <button type="button" class="copy-button" id="savingsCopyButton" onclick="copyResult('savingsResult', 'savingsCopyButton')">Copy</button>
+      <button type="button" class="clear-button" onclick="clearCalculator('savingsCalculator')">Clear</button>
+    </div>
+
+
     <!-- Commission Calculator -->
     <div class="section calculator-section" id="commissionCalculator">
 
