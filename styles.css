@@ -179,6 +179,37 @@ button:hover {
 }
 
 
+/* Share Buttons */
+
+.share {
+  text-align: center;
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.share-buttons button {
+  width: auto;
+  min-height: 40px;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  transition: transform 0.15s ease;
+}
+
+.share-buttons button:hover {
+  transform: translateY(-1px);
+}
+
+
+/* Footer */
+
 footer {
   text-align: center;
   padding: 1rem;
@@ -299,6 +330,16 @@ footer {
     line-height: 1.5;
   }
 
+  .share-buttons {
+    gap: 0.4rem;
+  }
+
+  .share-buttons button {
+    min-height: 42px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.9rem;
+  }
+
   footer {
     margin-top: 2rem;
   }
@@ -351,5 +392,14 @@ footer {
 
   .history-header button {
     font-size: 0.9rem;
+  }
+
+  .share-buttons {
+    gap: 0.3rem;
+  }
+
+  .share-buttons button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
   }
 }
