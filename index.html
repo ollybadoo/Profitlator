@@ -11,6 +11,74 @@
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    /* Explore Calculators */
+    .explore-section {
+      text-align: center;
+    }
+
+    .explore-section h2 {
+      margin-bottom: 8px;
+    }
+
+    .explore-description {
+      margin-bottom: 18px;
+    }
+
+    .calculator-navigation {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .calculator-nav-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 10px 12px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      background: inherit;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      text-align: center;
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        opacity 0.15s ease;
+    }
+
+    .calculator-nav-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .calculator-nav-button:active {
+      transform: translateY(0);
+      opacity: 0.8;
+    }
+
+    .calculator-nav-button:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 700px) {
+      .calculator-navigation {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .calculator-nav-button {
+        min-height: 48px;
+        padding: 9px 8px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -26,16 +94,113 @@
 
   <main>
 
-    <!-- Favorites / Quick Access -->
-    <div class="section favorites-section" id="favoritesSection">
-      <div class="favorites-header">
-        <h2>⭐ Favorites</h2>
-      </div>
+    <!-- Explore Calculators -->
+    <div class="section explore-section" id="exploreCalculators">
 
-      <div id="favoritesList" class="favorites-list">
-        <p class="favorites-empty">
-          Favorite your most-used calculators for quick access.
-        </p>
+      <h2>Explore Calculators</h2>
+
+      <p class="explore-description">
+        Choose a calculator to jump straight to the tool you need.
+      </p>
+
+      <div class="calculator-navigation">
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('basicCalculator')"
+        >
+          Basic Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('discountCalculator')"
+        >
+          Discount Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('profitCalculator')"
+        >
+          Profit Margin
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('breakEvenCalculator')"
+        >
+          Break-Even Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('unitPriceCalculator')"
+        >
+          Unit Price Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('taxCalculator')"
+        >
+          Tax Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('currencyCalculator')"
+        >
+          Currency Converter
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('commissionCalculator')"
+        >
+          Commission Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('markupCalculator')"
+        >
+          Markup Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('roiCalculator')"
+        >
+          ROI Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('savingsCalculator')"
+        >
+          Savings Calculator
+        </button>
+
+        <button
+          type="button"
+          class="calculator-nav-button"
+          onclick="scrollToCalculator('loanCalculator')"
+        >
+          Loan/Payment Calculator
+        </button>
+
       </div>
     </div>
 
@@ -45,13 +210,6 @@
 
       <div class="calculator-title">
         <h2>Basic Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="basicCalculator"
-          aria-label="Favorite Basic Calculator"
-          onclick="toggleFavorite('basicCalculator', 'Basic Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -86,13 +244,6 @@
 
       <div class="calculator-title">
         <h2>Currency Converter</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="currencyCalculator"
-          aria-label="Favorite Currency Converter"
-          onclick="toggleFavorite('currencyCalculator', 'Currency Converter')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -150,13 +301,6 @@
 
       <div class="calculator-title">
         <h2>Discount Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="discountCalculator"
-          aria-label="Favorite Discount Calculator"
-          onclick="toggleFavorite('discountCalculator', 'Discount Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -210,13 +354,6 @@
 
       <div class="calculator-title">
         <h2>Profit Margin Tool</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="profitCalculator"
-          aria-label="Favorite Profit Margin Tool"
-          onclick="toggleFavorite('profitCalculator', 'Profit Margin Tool')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -267,13 +404,6 @@
 
       <div class="calculator-title">
         <h2>Markup Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="markupCalculator"
-          aria-label="Favorite Markup Calculator"
-          onclick="toggleFavorite('markupCalculator', 'Markup Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -327,13 +457,6 @@
 
       <div class="calculator-title">
         <h2>ROI Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="roiCalculator"
-          aria-label="Favorite ROI Calculator"
-          onclick="toggleFavorite('roiCalculator', 'ROI Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -384,13 +507,6 @@
 
       <div class="calculator-title">
         <h2>Savings Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="savingsCalculator"
-          aria-label="Favorite Savings Calculator"
-          onclick="toggleFavorite('savingsCalculator', 'Savings Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -449,13 +565,6 @@
 
       <div class="calculator-title">
         <h2>Loan/Payment Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="loanCalculator"
-          aria-label="Favorite Loan/Payment Calculator"
-          onclick="toggleFavorite('loanCalculator', 'Loan/Payment Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -517,13 +626,6 @@
 
       <div class="calculator-title">
         <h2>Commission Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="commissionCalculator"
-          aria-label="Favorite Commission Calculator"
-          onclick="toggleFavorite('commissionCalculator', 'Commission Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -577,13 +679,6 @@
 
       <div class="calculator-title">
         <h2>Unit Price Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="unitPriceCalculator"
-          aria-label="Favorite Unit Price Calculator"
-          onclick="toggleFavorite('unitPriceCalculator', 'Unit Price Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -633,13 +728,6 @@
 
       <div class="calculator-title">
         <h2>Break-even Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="breakEvenCalculator"
-          aria-label="Favorite Break-even Calculator"
-          onclick="toggleFavorite('breakEvenCalculator', 'Break-even Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
@@ -698,13 +786,6 @@
 
       <div class="calculator-title">
         <h2>Tax Calculator</h2>
-        <button
-          type="button"
-          class="favorite-button"
-          data-calculator-id="taxCalculator"
-          aria-label="Favorite Tax Calculator"
-          onclick="toggleFavorite('taxCalculator', 'Tax Calculator')"
-        >☆</button>
       </div>
 
       <p class="calculator-description">
