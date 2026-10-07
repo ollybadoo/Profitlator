@@ -1,8 +1,6 @@
 const HISTORY_STORAGE_KEY = 'profitlatorCalculationHistory';
 const MAX_HISTORY_ITEMS = 10;
 
-const FAVORITES_STORAGE_KEY = 'profitlatorFavorites';
-
 
 function calculate() {
   const input = document.getElementById('calculation');
@@ -1333,154 +1331,7 @@ function clearHistory() {
 }
 
 
-/* Favorites / Quick Access */
-
-function getFavorites() {
-  try {
-    const savedFavorites =
-      localStorage.getItem(FAVORITES_STORAGE_KEY);
-
-    if (!savedFavorites) {
-      return [];
-    }
-
-    const favorites =
-      JSON.parse(savedFavorites);
-
-    if (!Array.isArray(favorites)) {
-      return [];
-    }
-
-    return favorites;
-  } catch (error) {
-    return [];
-  }
-}
-
-
-function saveFavorites(favorites) {
-  try {
-    localStorage.setItem(
-      FAVORITES_STORAGE_KEY,
-      JSON.stringify(favorites)
-    );
-  } catch (error) {
-    // Favorites saving is optional and should not affect the website.
-  }
-}
-
-
-function toggleFavorite(calculatorId, calculatorName) {
-  let favorites =
-    getFavorites();
-
-  const existingIndex =
-    favorites.findIndex(
-      favorite => favorite.id === calculatorId
-    );
-
-  if (existingIndex !== -1) {
-    favorites.splice(existingIndex, 1);
-  } else {
-    favorites.push({
-      id: calculatorId,
-      name: calculatorName
-    });
-  }
-
-  saveFavorites(favorites);
-
-  updateFavoriteButtons();
-  renderFavorites();
-}
-
-
-function updateFavoriteButtons() {
-  const favorites =
-    getFavorites();
-
-  const favoriteIds =
-    favorites.map(favorite => favorite.id);
-
-  const buttons =
-    document.querySelectorAll('.favorite-button');
-
-  buttons.forEach(button => {
-    const calculatorId =
-      button.dataset.calculatorId;
-
-    const isFavorite =
-      favoriteIds.includes(calculatorId);
-
-    button.classList.toggle(
-      'is-favorite',
-      isFavorite
-    );
-
-    button.textContent =
-      isFavorite ? '★' : '☆';
-
-    button.setAttribute(
-      'aria-label',
-      isFavorite
-        ? 'Unfavorite calculator'
-        : 'Favorite calculator'
-    );
-
-    button.setAttribute(
-      'aria-pressed',
-      isFavorite ? 'true' : 'false'
-    );
-  });
-}
-
-
-function renderFavorites() {
-  const favoritesList =
-    document.getElementById('favoritesList');
-
-  if (!favoritesList) {
-    return;
-  }
-
-  const favorites =
-    getFavorites();
-
-  favoritesList.innerHTML = '';
-
-  if (favorites.length === 0) {
-    const emptyMessage =
-      document.createElement('p');
-
-    emptyMessage.className =
-      'favorites-empty';
-
-    emptyMessage.textContent =
-      'Favorite your most-used calculators for quick access.';
-
-    favoritesList.appendChild(emptyMessage);
-
-    return;
-  }
-
-  favorites.forEach(favorite => {
-    const favoriteButton =
-      document.createElement('button');
-
-    favoriteButton.type = 'button';
-    favoriteButton.className = 'favorite-card';
-    favoriteButton.textContent =
-      `⭐ ${favorite.name}`;
-
-    favoriteButton.addEventListener(
-      'click',
-      () => scrollToCalculator(favorite.id)
-    );
-
-    favoritesList.appendChild(favoriteButton);
-  });
-}
-
+/* Calculator Navigation */
 
 function scrollToCalculator(calculatorId) {
   const calculator =
@@ -1667,5 +1518,3 @@ async function share(platform) {
 
 setupFormattedInputs();
 renderHistory();
-updateFavoriteButtons();
-renderFavorites();
