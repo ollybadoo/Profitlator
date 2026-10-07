@@ -51,37 +51,6 @@ h1 {
   margin: 0;
 }
 
-.favorite-button {
-  width: 42px;
-  min-width: 42px;
-  height: 42px;
-  min-height: 42px;
-  margin: 0;
-  padding: 0;
-  border-radius: 50%;
-  background: #f2f6fa;
-  color: #777;
-  border: 1px solid #ddd;
-  font-size: 1.35rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.favorite-button:hover {
-  background: #e8f1fb;
-  color: #0056b3;
-  transform: scale(1.03);
-}
-
-.favorite-button.is-favorite {
-  background: #fff4cc;
-  color: #e0a800;
-  border-color: #e0a800;
-}
-
 
 /* Calculator Description */
 
@@ -94,43 +63,72 @@ h1 {
 }
 
 
-/* Favorites / Quick Access */
+/* Explore Calculators */
 
-.favorites-section {
-  margin-bottom: 1rem;
+.explore-section {
+  padding: 1rem;
 }
 
-.favorites-header h2 {
-  margin-bottom: 0.75rem;
+.explore-header {
+  text-align: center;
+  margin-bottom: 0.8rem;
 }
 
-.favorites-list {
-  display: flex;
-  flex-wrap: wrap;
+.explore-header h2 {
+  margin-bottom: 0.35rem;
+}
+
+.explore-header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.calculator-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
-.favorite-card {
-  width: auto;
+.calculator-nav-button {
+  width: 100%;
   min-height: 40px;
   margin: 0;
-  padding: 0.5rem 0.8rem;
-  border-radius: 20px;
-  background: #eef5fc;
-  color: #0056b3;
-  border: 1px solid #cbdff3;
-  font-size: 0.9rem;
-  font-weight: bold;
+  padding: 0.45rem 0.55rem;
+
+  background: #eef6fc;
+  color: #174a73;
+
+  border: 1px solid #c7d8e8;
+  border-radius: 8px;
+
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
 }
 
-.favorite-card:hover {
-  background: #dfeefb;
+.calculator-nav-button:hover {
+  background: #e1f0fa;
+  border-color: #a9c8df;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
-.favorites-empty {
-  margin: 0;
-  color: #777;
-  font-size: 0.95rem;
+.calculator-nav-button:active {
+  background: #d4e8f6;
+  border-color: #94b9d5;
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 
@@ -348,6 +346,36 @@ footer {
     margin-bottom: 1rem;
   }
 
+  /* Explore Calculators - Mobile */
+
+  .explore-section {
+    padding: 0.9rem;
+  }
+
+  .explore-header {
+    margin-bottom: 0.65rem;
+  }
+
+  .explore-header h2 {
+    margin-bottom: 0.3rem;
+  }
+
+  .explore-header p {
+    font-size: 0.85rem;
+  }
+
+  .calculator-nav-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .calculator-nav-button {
+    min-height: 40px;
+    padding: 0.45rem 0.4rem;
+    font-size: 0.78rem;
+    border-radius: 7px;
+  }
+
   input,
   select,
   button {
@@ -373,32 +401,9 @@ footer {
     margin-bottom: 0;
   }
 
-  .favorite-button {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
-    min-height: 44px;
-    font-size: 1.3rem;
-  }
-
   .calculator-description {
     font-size: 0.9rem;
     margin-bottom: 0.9rem;
-  }
-
-  .favorites-section {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .favorites-list {
-    gap: 0.4rem;
-  }
-
-  .favorite-card {
-    min-height: 42px;
-    padding: 0.45rem 0.7rem;
-    font-size: 0.85rem;
   }
 
   .operation-buttons {
@@ -504,6 +509,20 @@ footer {
     font-size: 1.25rem;
   }
 
+  /* Explore Calculators - Very Small Phones */
+
+  .calculator-nav-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  .calculator-nav-button {
+    min-height: 40px;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.74rem;
+    border-radius: 7px;
+  }
+
   .operation-buttons {
     gap: 0.3rem;
   }
@@ -511,18 +530,6 @@ footer {
   .operation-buttons button {
     font-size: 1.05rem;
     min-height: 44px;
-  }
-
-  .favorite-button {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    min-height: 42px;
-  }
-
-  .favorite-card {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.82rem;
   }
 
   .copy-button,
