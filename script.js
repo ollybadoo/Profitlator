@@ -695,6 +695,119 @@ function calculateSavings() {
 }
 
 
+/* Loan/Payment Calculator */
+
+function calculateLoan() {
+  const loanAmount =
+    parseFormattedNumber(
+      document.getElementById('loanAmount').value
+    );
+
+  const annualInterestRate =
+    parseFloat(
+      document.getElementById('loanInterestRate').value
+    );
+
+  const loanTermYears =
+    parseFloat(
+      document.getElementById('loanTerm').value
+    );
+
+  const currencyCode =
+    document.getElementById('loanCurrency').value;
+
+  const currency =
+    getCurrencyDisplay(currencyCode);
+
+  const resultBox =
+    document.getElementById('loanResult');
+
+  hideCopyButton('loanCopyButton');
+
+  if (
+    isNaN(loanAmount) ||
+    isNaN(annualInterestRate) ||
+    isNaN(loanTermYears) ||
+    !Number.isFinite(loanAmount) ||
+    !Number.isFinite(annualInterestRate) ||
+    !Number.isFinite(loanTermYears) ||
+    loanAmount <= 0 ||
+    annualInterestRate < 0 ||
+    loanTermYears <= 0 ||
+    !Number.isInteger(loanTermYears)
+  ) {
+    resultBox.textContent =
+      'Please enter valid loan details.';
+    return;
+  }
+
+  const monthlyRate =
+    annualInterestRate / 12 / 100;
+
+  const totalPayments =
+    loanTermYears * 12;
+
+  let monthlyPayment;
+
+  if (annualInterestRate === 0) {
+    monthlyPayment =
+      loanAmount / totalPayments;
+  } else {
+    const compoundFactor =
+      Math.pow(1 + monthlyRate, totalPayments);
+
+    monthlyPayment =
+      loanAmount *
+      monthlyRate *
+      compoundFactor /
+      (compoundFactor - 1);
+  }
+
+  const totalPayment =
+    monthlyPayment * totalPayments;
+
+  const totalInterest =
+    totalPayment - loanAmount;
+
+  if (
+    !Number.isFinite(monthlyPayment) ||
+    !Number.isFinite(totalPayment) ||
+    !Number.isFinite(totalInterest)
+  ) {
+    resultBox.textContent =
+      'Please enter valid loan details.';
+    return;
+  }
+
+  const formattedMonthlyPayment =
+    monthlyPayment.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  const formattedTotalPayment =
+    totalPayment.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  const formattedTotalInterest =
+    totalInterest.toLocaleString(undefined, {
+      maximumFractionDigits: 2
+    });
+
+  resultBox.innerHTML =
+    `Monthly Payment: ${currency} ${formattedMonthlyPayment}<br>` +
+    `Total Payment: ${currency} ${formattedTotalPayment}<br>` +
+    `Total Interest: ${currency} ${formattedTotalInterest}`;
+
+  showCopyButton('loanCopyButton');
+
+  addToHistory(
+    'Loan/Payment Calculator',
+    `Loan: ${currency} ${loanAmount.toLocaleString()} | Rate: ${annualInterestRate}% | Term: ${loanTermYears} years → Monthly Payment: ${currency} ${formattedMonthlyPayment}`
+  );
+}
+
+
 /* Commission Calculator */
 
 function calculateCommission() {
@@ -1075,7 +1188,8 @@ function setupFormattedInputs() {
     'sellingPriceUnit',
     'taxPrice',
     'startingSavings',
-    'monthlyContribution'
+    'monthlyContribution',
+    'loanAmount'
   ];
 
   monetaryInputIds.forEach(id => {
