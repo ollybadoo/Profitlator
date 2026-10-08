@@ -23,8 +23,8 @@ h1 {
 
 .header-logo {
   display: block;
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
   margin: 0.2rem auto 0.8rem;
 }
@@ -221,12 +221,16 @@ button:active {
 
 .calculator-actions .clear-button {
   grid-area: clear;
+  justify-self: end;
   width: 100%;
+  max-width: 100px;
 }
 
 .calculator-actions .copy-button {
   grid-area: copy;
+  justify-self: start;
   width: 100%;
+  max-width: 100px;
 }
 
 
@@ -236,10 +240,11 @@ button:active {
 
 .copy-button,
 .clear-button {
-  min-height: 34px;
+  min-width: 0;
+  min-height: 32px;
   margin: 0;
-  padding: 0.35rem 0.65rem;
-  font-size: 0.84rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
   border-radius: 5px;
 }
 
@@ -433,6 +438,11 @@ footer {
     font-size: 2rem;
   }
 
+  .header-logo {
+    width: 68px;
+    height: 68px;
+  }
+
   .tagline {
     font-size: 1rem;
     line-height: 1.5;
@@ -496,6 +506,10 @@ footer {
   /* Action buttons */
 
   .calculator-actions {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "calculate calculate"
+      "clear copy";
     gap: 0.4rem;
     margin-top: 0.5rem;
   }
@@ -505,6 +519,15 @@ footer {
     min-height: 38px;
     padding: 0.45rem 0.7rem;
     font-size: 0.86rem;
+  }
+
+  .calculator-actions .clear-button,
+  .calculator-actions .copy-button {
+    max-width: 90px;
+    min-width: 0;
+    min-height: 34px;
+    padding: 0.35rem 0.45rem;
+    font-size: 0.8rem;
   }
 
 
@@ -528,16 +551,6 @@ footer {
     font-size: 1.05rem;
     line-height: 1.6;
     margin-top: 0.7rem;
-  }
-
-
-  /* Copy/Clear */
-
-  .copy-button,
-  .clear-button {
-    min-height: 35px;
-    padding: 0.38rem 0.6rem;
-    font-size: 0.83rem;
   }
 
 
@@ -621,6 +634,11 @@ footer {
     font-size: 1.8rem;
   }
 
+  .header-logo {
+    width: 64px;
+    height: 64px;
+  }
+
   .tagline {
     font-size: 0.95rem;
   }
@@ -654,6 +672,10 @@ footer {
 
 
   .calculator-actions {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "calculate calculate"
+      "clear copy";
     gap: 0.3rem;
   }
 
@@ -666,8 +688,12 @@ footer {
 
   .copy-button,
   .clear-button {
-    padding: 0.38rem 0.5rem;
-    min-height: 35px;
+    min-width: 0;
+    max-width: 82px;
+    width: 100%;
+    padding: 0.32rem 0.4rem;
+    min-height: 33px;
+    font-size: 0.78rem;
   }
 
 
