@@ -423,14 +423,15 @@ footer {
 
   /* Mobile Calculate Buttons */
 
-  .section > button {
-    width:  auto;
-    min-width: 105px;
-    min-height: 40px;
-    margin: 0.5rem auto;
-    padding: 0.5rem 0.85rem;
-    font-size: 0.95rem;
-  }
+.section > button {
+  display: block;
+  width: fit-content;
+  min-width: 105px;
+  min-height: 40px;
+  margin: 0.5rem auto;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.95rem;
+}
 
 
   /* Mobile Operation Buttons */
