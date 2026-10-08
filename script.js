@@ -1,1097 +1,1114 @@
 const HISTORY_STORAGE_KEY = 'profitlatorCalculationHistory';
 const MAX_HISTORY_ITEMS = 10;
 
-
 function calculate() {
-  const input = document.getElementById('calculation');
-  const resultBox = document.getElementById('calcResult');
+const input = document.getElementById('calculation');
+const resultBox = document.getElementById('calcResult');
 
-  let expression = input.value.trim();
+hideCopyButton('calcCopyButton');
 
-  hideCopyButton('calcCopyButton');
+let expression = input.value.trim();
 
-  if (!expression) {
-    resultBox.textContent = 'Please enter a calculation.';
-    return;
-  }
-
-  try {
-    expression = expression
-      .replace(/,/g, '')
-      .replace(/×/g, '*')
-      .replace(/÷/g, '/')
-      .replace(/−/g, '-');
-
-    const result = evaluateExpression(expression);
-
-    if (!Number.isFinite(result)) {
-      throw new Error('Invalid calculation');
-    }
-
-    const formattedResult =
-      result.toLocaleString(undefined, {
-        maximumFractionDigits: 10
-      });
-
-    resultBox.textContent = `= ${formattedResult}`;
-
-    showCopyButton('calcCopyButton');
-
-    addToHistory(
-      'Basic Calculator',
-      `${input.value.trim()} = ${formattedResult}`
-    );
-
-  } catch (error) {
-    resultBox.textContent = 'Invalid calculation.';
-  }
+if (!expression) {
+resultBox.textContent = 'Please enter a calculation.';
+return;
 }
 
+try {
+expression = expression
+.replace(/,/g, '')
+.replace(/×/g, '*')
+.replace(/÷/g, '/')
+.replace(/−/g, '-');
+
+const result = evaluateExpression(expression);
+
+if (!Number.isFinite(result)) {
+  throw new Error('Invalid calculation');
+}
+
+const formattedResult =
+  result.toLocaleString(undefined, {
+    maximumFractionDigits: 10
+  });
+
+resultBox.textContent = `= ${formattedResult}`;
+
+showCopyButton('calcCopyButton');
+
+addToHistory(
+  'Basic Calculator',
+  `${input.value.trim()} = ${formattedResult}`
+);
+
+} catch (error) {
+resultBox.textContent = 'Invalid calculation.';
+}
+}
 
 function insertOperation(operation) {
-  const input = document.getElementById('calculation');
+const input = document.getElementById('calculation');
 
-  const start = input.selectionStart;
-  const end = input.selectionEnd;
+const start = input.selectionStart;
+const end = input.selectionEnd;
 
-  const currentValue = input.value;
+const currentValue = input.value;
 
-  input.value =
-    currentValue.slice(0, start) +
-    ` ${operation} ` +
-    currentValue.slice(end);
+input.value =
+currentValue.slice(0, start) +
+"${operation}" +
+currentValue.slice(end);
 
-  const newCursorPosition =
-    start + operation.length + 2;
+const newCursorPosition =
+start + operation.length + 2;
 
-  input.focus();
-  input.setSelectionRange(
-    newCursorPosition,
-    newCursorPosition
-  );
+input.focus();
+input.setSelectionRange(
+newCursorPosition,
+newCursorPosition
+);
 }
-
 
 function evaluateExpression(expression) {
 
-  if (!/^[0-9+\-*/.\s]+$/.test(expression)) {
-    throw new Error('Invalid characters');
+if (!/^[0-9+-*/.\s]+$/.test(expression)) {
+throw new Error('Invalid characters');
+}
+
+expression = expression.replace(/\s+/g, '');
+
+if (!expression) {
+throw new Error('Empty expression');
+}
+
+if (/[+-*/.]$/.test(expression)) {
+throw new Error('Expression ends with operator');
+}
+
+if (/^[+*/]/.test(expression)) {
+throw new Error('Invalid starting operator');
+}
+
+const tokens = expression.match(/(\d+(?:.\d+)?|.\d+|[+-*/])/g);
+
+if (!tokens) {
+throw new Error('Invalid expression');
+}
+
+if (tokens.join('') !== expression) {
+throw new Error('Invalid expression');
+}
+
+const values = [];
+const operators = [];
+
+let expectingNumber = true;
+
+for (let i = 0; i < tokens.length; i++) {
+const token = tokens[i];
+
+if (!isNaN(token)) {
+
+  const number = Number(token);
+
+  if (!Number.isFinite(number)) {
+    throw new Error('Invalid number');
   }
 
-  expression = expression.replace(/\s+/g, '');
+  values.push(number);
+  expectingNumber = false;
 
-  if (!expression) {
-    throw new Error('Empty expression');
-  }
+} else {
 
-  if (/[+\-*/.]$/.test(expression)) {
-    throw new Error('Expression ends with operator');
-  }
+  if (
+    token === '-' &&
+    expectingNumber &&
+    (i === 0 || ['+', '-', '*', '/'].includes(tokens[i - 1]))
+  ) {
+    const nextToken = tokens[i + 1];
 
-  if (/^[+*/]/.test(expression)) {
-    throw new Error('Invalid starting operator');
-  }
-
-  const tokens = expression.match(/(\d+(?:\.\d+)?|\.\d+|[+\-*/])/g);
-
-  if (!tokens) {
-    throw new Error('Invalid expression');
-  }
-
-  if (tokens.join('') !== expression) {
-    throw new Error('Invalid expression');
-  }
-
-  const values = [];
-  const operators = [];
-
-  let expectingNumber = true;
-
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-
-    if (!isNaN(token)) {
-
-      const number = Number(token);
-
-      if (!Number.isFinite(number)) {
-        throw new Error('Invalid number');
-      }
-
-      values.push(number);
-      expectingNumber = false;
-
-    } else {
-
-      if (
-        token === '-' &&
-        expectingNumber &&
-        (i === 0 || ['+', '-', '*', '/'].includes(tokens[i - 1]))
-      ) {
-        const nextToken = tokens[i + 1];
-
-        if (
-          nextToken === undefined ||
-          isNaN(nextToken)
-        ) {
-          throw new Error('Invalid negative number');
-        }
-
-        values.push(-Number(nextToken));
-        i++;
-        expectingNumber = false;
-        continue;
-      }
-
-      if (expectingNumber) {
-        throw new Error('Two operators together');
-      }
-
-      while (
-        operators.length > 0 &&
-        precedence(operators[operators.length - 1]) >= precedence(token)
-      ) {
-        applyOperator(values, operators.pop());
-      }
-
-      operators.push(token);
-      expectingNumber = true;
+    if (
+      nextToken === undefined ||
+      isNaN(nextToken)
+    ) {
+      throw new Error('Invalid negative number');
     }
+
+    values.push(-Number(nextToken));
+    i++;
+    expectingNumber = false;
+    continue;
   }
 
   if (expectingNumber) {
-    throw new Error('Missing number');
+    throw new Error('Two operators together');
   }
 
-  while (operators.length > 0) {
+  while (
+    operators.length > 0 &&
+    precedence(operators[operators.length - 1]) >= precedence(token)
+  ) {
     applyOperator(values, operators.pop());
   }
 
-  if (values.length !== 1) {
-    throw new Error('Invalid calculation');
-  }
-
-  return values[0];
+  operators.push(token);
+  expectingNumber = true;
 }
 
+}
+
+if (expectingNumber) {
+throw new Error('Missing number');
+}
+
+while (operators.length > 0) {
+applyOperator(values, operators.pop());
+}
+
+if (values.length !== 1) {
+throw new Error('Invalid calculation');
+}
+
+return values[0];
+}
 
 function precedence(operator) {
-  if (operator === '+' || operator === '-') {
-    return 1;
-  }
-
-  if (operator === '*' || operator === '/') {
-    return 2;
-  }
-
-  return 0;
+if (operator === '+' || operator === '-') {
+return 1;
 }
 
+if (operator === '*' || operator === '/') {
+return 2;
+}
+
+return 0;
+}
 
 function applyOperator(values, operator) {
-  if (values.length < 2) {
-    throw new Error('Invalid calculation');
-  }
-
-  const right = values.pop();
-  const left = values.pop();
-
-  let result;
-
-  switch (operator) {
-    case '+':
-      result = left + right;
-      break;
-
-    case '-':
-      result = left - right;
-      break;
-
-    case '*':
-      result = left * right;
-      break;
-
-    case '/':
-      if (right === 0) {
-        throw new Error('Cannot divide by zero');
-      }
-
-      result = left / right;
-      break;
-
-    default:
-      throw new Error('Invalid operator');
-  }
-
-  if (!Number.isFinite(result)) {
-    throw new Error('Invalid result');
-  }
-
-  values.push(result);
+if (values.length < 2) {
+throw new Error('Invalid calculation');
 }
 
+const right = values.pop();
+const left = values.pop();
+
+let result;
+
+switch (operator) {
+case '+':
+result = left + right;
+break;
+
+case '-':
+  result = left - right;
+  break;
+
+case '*':
+  result = left * right;
+  break;
+
+case '/':
+  if (right === 0) {
+    throw new Error('Cannot divide by zero');
+  }
+
+  result = left / right;
+  break;
+
+default:
+  throw new Error('Invalid operator');
+
+}
+
+if (!Number.isFinite(result)) {
+throw new Error('Invalid result');
+}
+
+values.push(result);
+}
 
 async function convertCurrency() {
-  const amount =
-    parseFormattedNumber(document.getElementById('amount').value);
+const amount =
+parseFormattedNumber(document.getElementById('amount').value);
 
-  const from =
-    document.getElementById('fromCurrency').value;
+const from =
+document.getElementById('fromCurrency').value;
 
-  const to =
-    document.getElementById('toCurrency').value;
+const to =
+document.getElementById('toCurrency').value;
 
-  const resultBox =
-    document.getElementById('currencyResult');
+const resultBox =
+document.getElementById('currencyResult');
 
-  hideCopyButton('currencyCopyButton');
+hideCopyButton('currencyCopyButton');
 
-  if (isNaN(amount) || !Number.isFinite(amount) || amount < 0) {
-    resultBox.textContent =
-      'Please enter a valid amount.';
-    return;
-  }
-
-  if (from === to) {
-    const formattedAmount =
-      amount.toLocaleString(undefined, {
-        maximumFractionDigits: 10
-      });
-
-    resultBox.textContent =
-      `Converted amount: ${getCurrencyDisplay(from)} ${formattedAmount}`;
-
-    showCopyButton('currencyCopyButton');
-
-    addToHistory(
-      'Currency Converter',
-      `${amount.toLocaleString()} ${from} → ${formattedAmount} ${to}`
-    );
-
-    return;
-  }
-
-  resultBox.textContent = 'Converting...';
-
-  try {
-    const response =
-      await fetch(
-        `https://api.frankfurter.dev/v2/rate/${from}/${to}`
-      );
-
-    if (!response.ok) {
-      throw new Error('Exchange rate unavailable');
-    }
-
-    const data =
-      await response.json();
-
-    if (
-      !data ||
-      typeof data.rate !== 'number' ||
-      !Number.isFinite(data.rate)
-    ) {
-      throw new Error('Invalid exchange rate');
-    }
-
-    const convertedAmount =
-      amount * data.rate;
-
-    if (!Number.isFinite(convertedAmount)) {
-      throw new Error('Invalid conversion result');
-    }
-
-    const formattedConvertedAmount =
-      convertedAmount.toLocaleString(undefined, {
-        maximumFractionDigits: 10
-      });
-
-    resultBox.textContent =
-      `Converted amount: ${getCurrencyDisplay(to)} ${formattedConvertedAmount}`;
-
-    showCopyButton('currencyCopyButton');
-
-    addToHistory(
-      'Currency Converter',
-      `${amount.toLocaleString()} ${from} → ${formattedConvertedAmount} ${to}`
-    );
-
-  } catch (error) {
-    resultBox.textContent =
-      'Exchange rates are currently unavailable. Please try again.';
-  }
+if (isNaN(amount) || !Number.isFinite(amount) || amount < 0) {
+resultBox.textContent =
+'Please enter a valid amount.';
+return;
 }
 
+if (from === to) {
+const formattedAmount =
+amount.toLocaleString(undefined, {
+maximumFractionDigits: 10
+});
+
+resultBox.textContent =
+  `Converted amount: ${getCurrencyDisplay(from)} ${formattedAmount}`;
+
+showCopyButton('currencyCopyButton');
+
+addToHistory(
+  'Currency Converter',
+  `${amount.toLocaleString()} ${from} → ${formattedAmount} ${to}`
+);
+
+return;
+
+}
+
+resultBox.textContent = 'Converting...';
+
+try {
+const response =
+await fetch(
+"https://api.frankfurter.dev/v2/rate/${from}/${to}"
+);
+
+if (!response.ok) {
+  throw new Error('Exchange rate unavailable');
+}
+
+const data =
+  await response.json();
+
+if (
+  !data ||
+  typeof data.rate !== 'number' ||
+  !Number.isFinite(data.rate)
+) {
+  throw new Error('Invalid exchange rate');
+}
+
+const convertedAmount =
+  amount * data.rate;
+
+if (!Number.isFinite(convertedAmount)) {
+  throw new Error('Invalid conversion result');
+}
+
+const formattedConvertedAmount =
+  convertedAmount.toLocaleString(undefined, {
+    maximumFractionDigits: 10
+  });
+
+resultBox.textContent =
+  `Converted amount: ${getCurrencyDisplay(to)} ${formattedConvertedAmount}`;
+
+showCopyButton('currencyCopyButton');
+
+addToHistory(
+  'Currency Converter',
+  `${amount.toLocaleString()} ${from} → ${formattedConvertedAmount} ${to}`
+);
+
+} catch (error) {
+resultBox.textContent =
+'Exchange rates are currently unavailable. Please try again.';
+}
+}
 
 function getCurrencyDisplay(currency) {
-  const currencyDisplays = {
-    USD: '$',
-    NGN: '₦',
-    EUR: '€',
-    GBP: '£',
-    CAD: 'C$',
-    AUD: 'A$',
-    JPY: '¥',
-    CHF: 'CHF',
-    CNY: 'CNY',
-    ZAR: 'ZAR',
-    INR: '₹',
-    AED: 'AED'
-  };
+const currencyDisplays = {
+USD: '$',
+NGN: '₦',
+EUR: '€',
+GBP: '£',
+CAD: 'C$',
+AUD: 'A$',
+JPY: '¥',
+CHF: 'CHF',
+CNY: 'CNY',
+ZAR: 'ZAR',
+INR: '₹',
+AED: 'AED'
+};
 
-  return currencyDisplays[currency] || currency;
+return currencyDisplays[currency] || currency;
 }
-
 
 function calculateDiscount() {
-  const price =
-    parseFormattedNumber(document.getElementById('originalPrice').value);
+const price =
+parseFormattedNumber(document.getElementById('originalPrice').value);
 
-  const percent =
-    parseFormattedNumber(document.getElementById('discountPercent').value);
+const percent =
+parseFormattedNumber(document.getElementById('discountPercent').value);
 
-  const currencyCode =
-    document.getElementById('discountCurrency').value;
+const currencyCode =
+document.getElementById('discountCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('discountResult');
+const resultBox =
+document.getElementById('discountResult');
 
-  hideCopyButton('discountCopyButton');
+hideCopyButton('discountCopyButton');
 
-  if (
-    !isNaN(price) &&
-    !isNaN(percent) &&
-    price >= 0 &&
-    percent >= 0 &&
-    percent <= 100
-  ) {
-    const discountAmount =
-      price * (percent / 100);
+if (
+!isNaN(price) &&
+!isNaN(percent) &&
+price >= 0 &&
+percent >= 0 &&
+percent <= 100
+) {
+const discountAmount =
+price * (percent / 100);
 
-    const finalPrice =
-      price - discountAmount;
+const finalPrice =
+  price - discountAmount;
 
-    const formattedDiscount =
-      discountAmount.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      });
+const formattedDiscount =
+  discountAmount.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  });
 
-    const formattedFinalPrice =
-      finalPrice.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      });
+const formattedFinalPrice =
+  finalPrice.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  });
 
-    resultBox.innerHTML =
-      `Discount amount: ${currency} ${formattedDiscount}<br>` +
-      `Final price: ${currency} ${formattedFinalPrice}`;
+resultBox.innerHTML =
+  `Discount amount: ${currency} ${formattedDiscount}<br>` +
+  `Final price: ${currency} ${formattedFinalPrice}`;
 
-    showCopyButton('discountCopyButton');
+showCopyButton('discountCopyButton');
 
-    addToHistory(
-      'Discount Calculator',
-      `Original: ${currency} ${price.toLocaleString()} | Discount: ${percent}% → Final price: ${currency} ${formattedFinalPrice}`
-    );
+addToHistory(
+  'Discount Calculator',
+  `Original: ${currency} ${price.toLocaleString()} | Discount: ${percent}% → Final price: ${currency} ${formattedFinalPrice}`
+);
 
-  } else {
-    resultBox.textContent =
-      'Please enter a valid price and discount.';
-  }
+} else {
+resultBox.textContent =
+'Please enter a valid price and discount.';
 }
-
+}
 
 function calculateProfitMargin() {
-  const cost =
-    parseFormattedNumber(document.getElementById('costPrice').value);
+const cost =
+parseFormattedNumber(document.getElementById('costPrice').value);
 
-  const selling =
-    parseFormattedNumber(document.getElementById('sellingPrice').value);
+const selling =
+parseFormattedNumber(document.getElementById('sellingPrice').value);
 
-  const currencyCode =
-    document.getElementById('profitCurrency').value;
+const currencyCode =
+document.getElementById('profitCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('profitResult');
+const resultBox =
+document.getElementById('profitResult');
 
-  hideCopyButton('profitCopyButton');
+hideCopyButton('profitCopyButton');
 
-  if (
-    !isNaN(cost) &&
-    !isNaN(selling) &&
-    cost > 0 &&
-    selling >= 0
-  ) {
-    const profit =
-      selling - cost;
+if (
+!isNaN(cost) &&
+!isNaN(selling) &&
+cost > 0 &&
+selling >= 0
+) {
+const profit =
+selling - cost;
 
-    const profitMargin =
-      (profit / selling) * 100;
+const profitMargin =
+  (profit / selling) * 100;
 
-    const markup =
-      (profit / cost) * 100;
+const markup =
+  (profit / cost) * 100;
 
-    const formattedProfit =
-      profit.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      });
+const formattedProfit =
+  profit.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  });
 
-    resultBox.innerHTML =
-      `Profit Amount: ${currency} ${formattedProfit}<br>` +
-      `Profit Margin: ${profitMargin.toFixed(2)}%<br>` +
-      `Markup: ${markup.toFixed(2)}%`;
+resultBox.innerHTML =
+  `Profit Amount: ${currency} ${formattedProfit}<br>` +
+  `Profit Margin: ${profitMargin.toFixed(2)}%<br>` +
+  `Markup: ${markup.toFixed(2)}%`;
 
-    showCopyButton('profitCopyButton');
+showCopyButton('profitCopyButton');
 
-    addToHistory(
-      'Profit Margin Tool',
-      `Cost: ${currency} ${cost.toLocaleString()} | Selling: ${currency} ${selling.toLocaleString()} → Profit: ${currency} ${formattedProfit}, Margin: ${profitMargin.toFixed(2)}%`
-    );
+addToHistory(
+  'Profit Margin Tool',
+  `Cost: ${currency} ${cost.toLocaleString()} | Selling: ${currency} ${selling.toLocaleString()} → Profit: ${currency} ${formattedProfit}, Margin: ${profitMargin.toFixed(2)}%`
+);
 
-  } else {
-    resultBox.textContent =
-      'Please enter valid cost and selling prices.';
-  }
+} else {
+resultBox.textContent =
+'Please enter valid cost and selling prices.';
 }
-
+}
 
 /* Markup Calculator */
 
 function calculateMarkup() {
-  const costPrice =
-    parseFormattedNumber(
-      document.getElementById('markupCostPrice').value
-    );
+const costPrice =
+parseFormattedNumber(
+document.getElementById('markupCostPrice').value
+);
 
-  const markupRate =
-    parseFloat(
-      document.getElementById('markupRate').value
-    );
+const markupRate =
+parseFloat(
+document.getElementById('markupRate').value
+);
 
-  const currencyCode =
-    document.getElementById('markupCurrency').value;
+const currencyCode =
+document.getElementById('markupCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('markupResult');
+const resultBox =
+document.getElementById('markupResult');
 
-  hideCopyButton('markupCopyButton');
+hideCopyButton('markupCopyButton');
 
-  if (
-    isNaN(costPrice) ||
-    isNaN(markupRate) ||
-    !Number.isFinite(costPrice) ||
-    !Number.isFinite(markupRate) ||
-    costPrice <= 0 ||
-    markupRate < 0
-  ) {
-    resultBox.textContent =
-      'Please enter a valid cost price and markup rate.';
-    return;
-  }
-
-  const markupAmount =
-    costPrice * markupRate / 100;
-
-  const sellingPrice =
-    costPrice + markupAmount;
-
-  if (
-    !Number.isFinite(markupAmount) ||
-    !Number.isFinite(sellingPrice)
-  ) {
-    resultBox.textContent =
-      'Please enter valid markup values.';
-    return;
-  }
-
-  const formattedMarkupAmount =
-    markupAmount.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  const formattedSellingPrice =
-    sellingPrice.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  resultBox.innerHTML =
-    `Markup Amount: ${currency} ${formattedMarkupAmount}<br>` +
-    `Selling Price: ${currency} ${formattedSellingPrice}`;
-
-  showCopyButton('markupCopyButton');
-
-  addToHistory(
-    'Markup Calculator',
-    `Cost: ${currency} ${costPrice.toLocaleString()} | Markup: ${markupRate}% → Markup Amount: ${currency} ${formattedMarkupAmount}, Selling Price: ${currency} ${formattedSellingPrice}`
-  );
+if (
+isNaN(costPrice) ||
+isNaN(markupRate) ||
+!Number.isFinite(costPrice) ||
+!Number.isFinite(markupRate) ||
+costPrice <= 0 ||
+markupRate < 0
+) {
+resultBox.textContent =
+'Please enter a valid cost price and markup rate.';
+return;
 }
 
+const markupAmount =
+costPrice * markupRate / 100;
+
+const sellingPrice =
+costPrice + markupAmount;
+
+if (
+!Number.isFinite(markupAmount) ||
+!Number.isFinite(sellingPrice)
+) {
+resultBox.textContent =
+'Please enter valid markup values.';
+return;
+}
+
+const formattedMarkupAmount =
+markupAmount.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+const formattedSellingPrice =
+sellingPrice.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+resultBox.innerHTML =
+"Markup Amount: ${currency} ${formattedMarkupAmount}<br>" +
+"Selling Price: ${currency} ${formattedSellingPrice}";
+
+showCopyButton('markupCopyButton');
+
+addToHistory(
+'Markup Calculator',
+"Cost: ${currency} ${costPrice.toLocaleString()} | Markup: ${markupRate}% → Markup Amount: ${currency} ${formattedMarkupAmount}, Selling Price: ${currency} ${formattedSellingPrice}"
+);
+}
 
 /* ROI Calculator */
 
 function calculateROI() {
-  const initialInvestment =
-    parseFormattedNumber(
-      document.getElementById('roiInitialInvestment').value
-    );
+const initialInvestment =
+parseFormattedNumber(
+document.getElementById('roiInitialInvestment').value
+);
 
-  const finalValue =
-    parseFormattedNumber(
-      document.getElementById('roiFinalValue').value
-    );
+const finalValue =
+parseFormattedNumber(
+document.getElementById('roiFinalValue').value
+);
 
-  const currencyCode =
-    document.getElementById('roiCurrency').value;
+const currencyCode =
+document.getElementById('roiCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('roiResult');
+const resultBox =
+document.getElementById('roiResult');
 
-  hideCopyButton('roiCopyButton');
+hideCopyButton('roiCopyButton');
 
-  if (
-    isNaN(initialInvestment) ||
-    isNaN(finalValue) ||
-    !Number.isFinite(initialInvestment) ||
-    !Number.isFinite(finalValue) ||
-    initialInvestment <= 0 ||
-    finalValue <= 0
-  ) {
-    resultBox.textContent =
-      'Please enter a valid initial investment and final value.';
-    return;
-  }
-
-  const profitLoss =
-    finalValue - initialInvestment;
-
-  const roi =
-    (profitLoss / initialInvestment) * 100;
-
-  if (
-    !Number.isFinite(profitLoss) ||
-    !Number.isFinite(roi)
-  ) {
-    resultBox.textContent =
-      'Please enter valid investment values.';
-    return;
-  }
-
-  const formattedProfitLoss =
-    profitLoss.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  const formattedROI =
-    roi.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  resultBox.innerHTML =
-    `Profit/Loss: ${currency} ${formattedProfitLoss}<br>` +
-    `ROI: ${formattedROI}%`;
-
-  showCopyButton('roiCopyButton');
-
-  addToHistory(
-    'ROI Calculator',
-    `Initial Investment: ${currency} ${initialInvestment.toLocaleString()} | Final Value: ${currency} ${finalValue.toLocaleString()} → Profit/Loss: ${currency} ${formattedProfitLoss}, ROI: ${formattedROI}%`
-  );
+if (
+isNaN(initialInvestment) ||
+isNaN(finalValue) ||
+!Number.isFinite(initialInvestment) ||
+!Number.isFinite(finalValue) ||
+initialInvestment <= 0 ||
+finalValue <= 0
+) {
+resultBox.textContent =
+'Please enter a valid initial investment and final value.';
+return;
 }
 
+const profitLoss =
+finalValue - initialInvestment;
+
+const roi =
+(profitLoss / initialInvestment) * 100;
+
+if (
+!Number.isFinite(profitLoss) ||
+!Number.isFinite(roi)
+) {
+resultBox.textContent =
+'Please enter valid investment values.';
+return;
+}
+
+const formattedProfitLoss =
+profitLoss.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+const formattedROI =
+roi.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+resultBox.innerHTML =
+"Profit/Loss: ${currency} ${formattedProfitLoss}<br>" +
+"ROI: ${formattedROI}%";
+
+showCopyButton('roiCopyButton');
+
+addToHistory(
+'ROI Calculator',
+"Initial Investment: ${currency} ${initialInvestment.toLocaleString()} | Final Value: ${currency} ${finalValue.toLocaleString()} → Profit/Loss: ${currency} ${formattedProfitLoss}, ROI: ${formattedROI}%"
+);
+}
 
 /* Savings Calculator */
 
 function calculateSavings() {
-  const startingSavings =
-    parseFormattedNumber(
-      document.getElementById('startingSavings').value
-    );
+const startingSavings =
+parseFormattedNumber(
+document.getElementById('startingSavings').value
+);
 
-  const monthlyContribution =
-    parseFormattedNumber(
-      document.getElementById('monthlyContribution').value
-    );
+const monthlyContribution =
+parseFormattedNumber(
+document.getElementById('monthlyContribution').value
+);
 
-  const savingsPeriod =
-    parseFloat(
-      document.getElementById('savingsPeriod').value
-    );
+const savingsPeriod =
+parseFloat(
+document.getElementById('savingsPeriod').value
+);
 
-  const currencyCode =
-    document.getElementById('savingsCurrency').value;
+const currencyCode =
+document.getElementById('savingsCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('savingsResult');
+const resultBox =
+document.getElementById('savingsResult');
 
-  hideCopyButton('savingsCopyButton');
+hideCopyButton('savingsCopyButton');
 
-  if (
-    isNaN(startingSavings) ||
-    isNaN(monthlyContribution) ||
-    isNaN(savingsPeriod) ||
-    !Number.isFinite(startingSavings) ||
-    !Number.isFinite(monthlyContribution) ||
-    !Number.isFinite(savingsPeriod) ||
-    startingSavings < 0 ||
-    monthlyContribution < 0 ||
-    savingsPeriod <= 0 ||
-    !Number.isInteger(savingsPeriod)
-  ) {
-    resultBox.textContent =
-      'Please enter valid savings amounts and a savings period.';
-    return;
-  }
-
-  const totalContributions =
-    monthlyContribution * savingsPeriod;
-
-  const totalSavings =
-    startingSavings + totalContributions;
-
-  if (
-    !Number.isFinite(totalContributions) ||
-    !Number.isFinite(totalSavings)
-  ) {
-    resultBox.textContent =
-      'Please enter valid savings values.';
-    return;
-  }
-
-  const formattedContributions =
-    totalContributions.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  const formattedTotalSavings =
-    totalSavings.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  resultBox.innerHTML =
-    `Total Contributions: ${currency} ${formattedContributions}<br>` +
-    `Total Savings: ${currency} ${formattedTotalSavings}`;
-
-  showCopyButton('savingsCopyButton');
-
-  addToHistory(
-    'Savings Calculator',
-    `Starting: ${currency} ${startingSavings.toLocaleString()} | Monthly: ${currency} ${monthlyContribution.toLocaleString()} | Period: ${savingsPeriod} months → Total Savings: ${currency} ${formattedTotalSavings}`
-  );
+if (
+isNaN(startingSavings) ||
+isNaN(monthlyContribution) ||
+isNaN(savingsPeriod) ||
+!Number.isFinite(startingSavings) ||
+!Number.isFinite(monthlyContribution) ||
+!Number.isFinite(savingsPeriod) ||
+startingSavings < 0 ||
+monthlyContribution < 0 ||
+savingsPeriod <= 0 ||
+!Number.isInteger(savingsPeriod)
+) {
+resultBox.textContent =
+'Please enter valid savings amounts and a savings period.';
+return;
 }
 
+const totalContributions =
+monthlyContribution * savingsPeriod;
+
+const totalSavings =
+startingSavings + totalContributions;
+
+if (
+!Number.isFinite(totalContributions) ||
+!Number.isFinite(totalSavings)
+) {
+resultBox.textContent =
+'Please enter valid savings values.';
+return;
+}
+
+const formattedContributions =
+totalContributions.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+const formattedTotalSavings =
+totalSavings.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+resultBox.innerHTML =
+"Total Contributions: ${currency} ${formattedContributions}<br>" +
+"Total Savings: ${currency} ${formattedTotalSavings}";
+
+showCopyButton('savingsCopyButton');
+
+addToHistory(
+'Savings Calculator',
+"Starting: ${currency} ${startingSavings.toLocaleString()} | Monthly: ${currency} ${monthlyContribution.toLocaleString()} | Period: ${savingsPeriod} months → Total Savings: ${currency} ${formattedTotalSavings}"
+);
+}
 
 /* Loan/Payment Calculator */
 
 function calculateLoan() {
-  const loanAmount =
-    parseFormattedNumber(
-      document.getElementById('loanAmount').value
-    );
+const loanAmount =
+parseFormattedNumber(
+document.getElementById('loanAmount').value
+);
 
-  const annualInterestRate =
-    parseFloat(
-      document.getElementById('loanInterestRate').value
-    );
+const annualInterestRate =
+parseFloat(
+document.getElementById('loanInterestRate').value
+);
 
-  const loanTermYears =
-    parseFloat(
-      document.getElementById('loanTerm').value
-    );
+const loanTermYears =
+parseFloat(
+document.getElementById('loanTerm').value
+);
 
-  const currencyCode =
-    document.getElementById('loanCurrency').value;
+const currencyCode =
+document.getElementById('loanCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('loanResult');
+const resultBox =
+document.getElementById('loanResult');
 
-  hideCopyButton('loanCopyButton');
+hideCopyButton('loanCopyButton');
 
-  if (
-    isNaN(loanAmount) ||
-    isNaN(annualInterestRate) ||
-    isNaN(loanTermYears) ||
-    !Number.isFinite(loanAmount) ||
-    !Number.isFinite(annualInterestRate) ||
-    !Number.isFinite(loanTermYears) ||
-    loanAmount <= 0 ||
-    annualInterestRate < 0 ||
-    loanTermYears <= 0 ||
-    !Number.isInteger(loanTermYears)
-  ) {
-    resultBox.textContent =
-      'Please enter valid loan details.';
-    return;
-  }
-
-  const monthlyRate =
-    annualInterestRate / 12 / 100;
-
-  const totalPayments =
-    loanTermYears * 12;
-
-  let monthlyPayment;
-
-  if (annualInterestRate === 0) {
-    monthlyPayment =
-      loanAmount / totalPayments;
-  } else {
-    const compoundFactor =
-      Math.pow(1 + monthlyRate, totalPayments);
-
-    monthlyPayment =
-      loanAmount *
-      monthlyRate *
-      compoundFactor /
-      (compoundFactor - 1);
-  }
-
-  const totalPayment =
-    monthlyPayment * totalPayments;
-
-  const totalInterest =
-    totalPayment - loanAmount;
-
-  if (
-    !Number.isFinite(monthlyPayment) ||
-    !Number.isFinite(totalPayment) ||
-    !Number.isFinite(totalInterest)
-  ) {
-    resultBox.textContent =
-      'Please enter valid loan details.';
-    return;
-  }
-
-  const formattedMonthlyPayment =
-    monthlyPayment.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  const formattedTotalPayment =
-    totalPayment.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  const formattedTotalInterest =
-    totalInterest.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  resultBox.innerHTML =
-    `Monthly Payment: ${currency} ${formattedMonthlyPayment}<br>` +
-    `Total Payment: ${currency} ${formattedTotalPayment}<br>` +
-    `Total Interest: ${currency} ${formattedTotalInterest}`;
-
-  showCopyButton('loanCopyButton');
-
-  addToHistory(
-    'Loan/Payment Calculator',
-    `Loan: ${currency} ${loanAmount.toLocaleString()} | Rate: ${annualInterestRate}% | Term: ${loanTermYears} years → Monthly Payment: ${currency} ${formattedMonthlyPayment}`
-  );
+if (
+isNaN(loanAmount) ||
+isNaN(annualInterestRate) ||
+isNaN(loanTermYears) ||
+!Number.isFinite(loanAmount) ||
+!Number.isFinite(annualInterestRate) ||
+!Number.isFinite(loanTermYears) ||
+loanAmount <= 0 ||
+annualInterestRate < 0 ||
+loanTermYears <= 0 ||
+!Number.isInteger(loanTermYears)
+) {
+resultBox.textContent =
+'Please enter valid loan details.';
+return;
 }
 
+const monthlyRate =
+annualInterestRate / 12 / 100;
+
+const totalPayments =
+loanTermYears * 12;
+
+let monthlyPayment;
+
+if (annualInterestRate === 0) {
+monthlyPayment =
+loanAmount / totalPayments;
+} else {
+const compoundFactor =
+Math.pow(1 + monthlyRate, totalPayments);
+
+monthlyPayment =
+  loanAmount *
+  monthlyRate *
+  compoundFactor /
+  (compoundFactor - 1);
+
+}
+
+const totalPayment =
+monthlyPayment * totalPayments;
+
+const totalInterest =
+totalPayment - loanAmount;
+
+if (
+!Number.isFinite(monthlyPayment) ||
+!Number.isFinite(totalPayment) ||
+!Number.isFinite(totalInterest)
+) {
+resultBox.textContent =
+'Please enter valid loan details.';
+return;
+}
+
+const formattedMonthlyPayment =
+monthlyPayment.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+const formattedTotalPayment =
+totalPayment.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+const formattedTotalInterest =
+totalInterest.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+resultBox.innerHTML =
+"Monthly Payment: ${currency} ${formattedMonthlyPayment}<br>" +
+"Total Payment: ${currency} ${formattedTotalPayment}<br>" +
+"Total Interest: ${currency} ${formattedTotalInterest}";
+
+showCopyButton('loanCopyButton');
+
+addToHistory(
+'Loan/Payment Calculator',
+"Loan: ${currency} ${loanAmount.toLocaleString()} | Rate: ${annualInterestRate}% | Term: ${loanTermYears} years → Monthly Payment: ${currency} ${formattedMonthlyPayment}"
+);
+}
 
 /* Commission Calculator */
 
 function calculateCommission() {
-  const salesAmount =
-    parseFormattedNumber(
-      document.getElementById('salesAmount').value
-    );
+const salesAmount =
+parseFormattedNumber(
+document.getElementById('salesAmount').value
+);
 
-  const commissionRate =
-    parseFloat(
-      document.getElementById('commissionRate').value
-    );
+const commissionRate =
+parseFloat(
+document.getElementById('commissionRate').value
+);
 
-  const currencyCode =
-    document.getElementById('commissionCurrency').value;
+const currencyCode =
+document.getElementById('commissionCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('commissionResult');
+const resultBox =
+document.getElementById('commissionResult');
 
-  hideCopyButton('commissionCopyButton');
+hideCopyButton('commissionCopyButton');
 
-  if (
-    isNaN(salesAmount) ||
-    isNaN(commissionRate) ||
-    !Number.isFinite(salesAmount) ||
-    !Number.isFinite(commissionRate) ||
-    salesAmount < 0 ||
-    commissionRate < 0
-  ) {
-    resultBox.textContent =
-      'Please enter a valid sales amount and commission rate.';
-    return;
-  }
-
-  const commission =
-    salesAmount * commissionRate / 100;
-
-  const totalAfterCommission =
-    salesAmount - commission;
-
-  if (
-    !Number.isFinite(commission) ||
-    !Number.isFinite(totalAfterCommission)
-  ) {
-    resultBox.textContent =
-      'Please enter valid commission values.';
-    return;
-  }
-
-  const formattedCommission =
-    commission.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  const formattedTotalAfterCommission =
-    totalAfterCommission.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-
-  resultBox.innerHTML =
-    `Commission: ${currency} ${formattedCommission}<br>` +
-    `Total After Commission: ${currency} ${formattedTotalAfterCommission}`;
-
-  showCopyButton('commissionCopyButton');
-
-  addToHistory(
-    'Commission Calculator',
-    `Sales: ${currency} ${salesAmount.toLocaleString()} | Commission: ${commissionRate}% → Commission: ${currency} ${formattedCommission}, Total After Commission: ${currency} ${formattedTotalAfterCommission}`
-  );
+if (
+isNaN(salesAmount) ||
+isNaN(commissionRate) ||
+!Number.isFinite(salesAmount) ||
+!Number.isFinite(commissionRate) ||
+salesAmount < 0 ||
+commissionRate < 0
+) {
+resultBox.textContent =
+'Please enter a valid sales amount and commission rate.';
+return;
 }
 
+const commission =
+salesAmount * commissionRate / 100;
+
+const totalAfterCommission =
+salesAmount - commission;
+
+if (
+!Number.isFinite(commission) ||
+!Number.isFinite(totalAfterCommission)
+) {
+resultBox.textContent =
+'Please enter valid commission values.';
+return;
+}
+
+const formattedCommission =
+commission.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+const formattedTotalAfterCommission =
+totalAfterCommission.toLocaleString(undefined, {
+maximumFractionDigits: 2
+});
+
+resultBox.innerHTML =
+"Commission: ${currency} ${formattedCommission}<br>" +
+"Total After Commission: ${currency} ${formattedTotalAfterCommission}";
+
+showCopyButton('commissionCopyButton');
+
+addToHistory(
+'Commission Calculator',
+"Sales: ${currency} ${salesAmount.toLocaleString()} | Commission: ${commissionRate}% → Commission: ${currency} ${formattedCommission}, Total After Commission: ${currency} ${formattedTotalAfterCommission}"
+);
+}
 
 function calculateUnitPrice() {
-  const total =
-    parseFormattedNumber(document.getElementById('totalCost').value);
+const total =
+parseFormattedNumber(document.getElementById('totalCost').value);
 
-  const quantity =
-    parseFloat(document.getElementById('quantity').value);
+const quantity =
+parseFloat(document.getElementById('quantity').value);
 
-  const currencyCode =
-    document.getElementById('unitPriceCurrency').value;
+const currencyCode =
+document.getElementById('unitPriceCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('unitResult');
+const resultBox =
+document.getElementById('unitResult');
 
-  hideCopyButton('unitCopyButton');
+hideCopyButton('unitCopyButton');
 
-  if (isNaN(total) || total < 0) {
-    resultBox.textContent =
-      'Please enter a valid total cost.';
-    return;
-  }
-
-  if (isNaN(quantity) || quantity <= 0) {
-    resultBox.textContent =
-      'Quantity must be greater than zero.';
-    return;
-  }
-
-  const unitPrice =
-    total / quantity;
-
-  const formattedUnitPrice =
-    unitPrice.toLocaleString(undefined, {
-      maximumFractionDigits: 10
-    });
-
-  resultBox.textContent =
-    `Unit Price: ${currency} ${formattedUnitPrice}`;
-
-  showCopyButton('unitCopyButton');
-
-  addToHistory(
-    'Unit Price Calculator',
-    `Total: ${currency} ${total.toLocaleString()} ÷ ${quantity.toLocaleString()} → Unit Price: ${currency} ${formattedUnitPrice}`
-  );
+if (isNaN(total) || total < 0) {
+resultBox.textContent =
+'Please enter a valid total cost.';
+return;
 }
 
+if (isNaN(quantity) || quantity <= 0) {
+resultBox.textContent =
+'Quantity must be greater than zero.';
+return;
+}
+
+const unitPrice =
+total / quantity;
+
+const formattedUnitPrice =
+unitPrice.toLocaleString(undefined, {
+maximumFractionDigits: 10
+});
+
+resultBox.textContent =
+"Unit Price: ${currency} ${formattedUnitPrice}";
+
+showCopyButton('unitCopyButton');
+
+addToHistory(
+'Unit Price Calculator',
+"Total: ${currency} ${total.toLocaleString()} ÷ ${quantity.toLocaleString()} → Unit Price: ${currency} ${formattedUnitPrice}"
+);
+}
 
 function calculateBreakEven() {
-  const fixed =
-    parseFormattedNumber(document.getElementById('fixedCosts').value);
+const fixed =
+parseFormattedNumber(document.getElementById('fixedCosts').value);
 
-  const variable =
-    parseFormattedNumber(document.getElementById('variableCosts').value);
+const variable =
+parseFormattedNumber(document.getElementById('variableCosts').value);
 
-  const selling =
-    parseFormattedNumber(document.getElementById('sellingPriceUnit').value);
+const selling =
+parseFormattedNumber(document.getElementById('sellingPriceUnit').value);
 
-  const currencyCode =
-    document.getElementById('breakEvenCurrency').value;
+const currencyCode =
+document.getElementById('breakEvenCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('breakEvenResult');
+const resultBox =
+document.getElementById('breakEvenResult');
 
-  hideCopyButton('breakEvenCopyButton');
+hideCopyButton('breakEvenCopyButton');
 
-  if (
-    !isNaN(fixed) &&
-    !isNaN(variable) &&
-    !isNaN(selling) &&
-    fixed >= 0 &&
-    variable >= 0 &&
-    selling > variable
-  ) {
-    const breakEvenUnits =
-      fixed / (selling - variable);
+if (
+!isNaN(fixed) &&
+!isNaN(variable) &&
+!isNaN(selling) &&
+fixed >= 0 &&
+variable >= 0 &&
+selling > variable
+) {
+const breakEvenUnits =
+fixed / (selling - variable);
 
-    const roundedUnits =
-      Math.ceil(breakEvenUnits);
+const roundedUnits =
+  Math.ceil(breakEvenUnits);
 
-    resultBox.innerHTML =
-      `Break-even point: ${roundedUnits} units<br>` +
-      `Fixed Cost: ${currency} ${fixed.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}<br>` +
-      `Variable Cost per Unit: ${currency} ${variable.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}<br>` +
-      `Selling Price per Unit: ${currency} ${selling.toLocaleString(undefined, {
-        maximumFractionDigits: 2
-      })}`;
+resultBox.innerHTML =
+  `Break-even point: ${roundedUnits} units<br>` +
+  `Fixed Cost: ${currency} ${fixed.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  })}<br>` +
+  `Variable Cost per Unit: ${currency} ${variable.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  })}<br>` +
+  `Selling Price per Unit: ${currency} ${selling.toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  })}`;
 
-    showCopyButton('breakEvenCopyButton');
+showCopyButton('breakEvenCopyButton');
 
-    addToHistory(
-      'Break-even Calculator',
-      `Fixed: ${currency} ${fixed.toLocaleString()} | Variable/unit: ${currency} ${variable.toLocaleString()} | Selling/unit: ${currency} ${selling.toLocaleString()} → Break-even: ${roundedUnits} units`
-    );
+addToHistory(
+  'Break-even Calculator',
+  `Fixed: ${currency} ${fixed.toLocaleString()} | Variable/unit: ${currency} ${variable.toLocaleString()} | Selling/unit: ${currency} ${selling.toLocaleString()} → Break-even: ${roundedUnits} units`
+);
 
-  } else {
-    resultBox.textContent =
-      'Please enter valid costs and a selling price greater than the variable cost.';
-  }
+} else {
+resultBox.textContent =
+'Please enter valid costs and a selling price greater than the variable cost.';
 }
-
+}
 
 function calculateTax() {
-  const price =
-    parseFormattedNumber(document.getElementById('taxPrice').value);
+const price =
+parseFormattedNumber(document.getElementById('taxPrice').value);
 
-  const rate =
-    parseFloat(document.getElementById('taxRate').value);
+const rate =
+parseFloat(document.getElementById('taxRate').value);
 
-  const mode =
-    document.getElementById('taxMode').value;
+const mode =
+document.getElementById('taxMode').value;
 
-  const currencyCode =
-    document.getElementById('taxCurrency').value;
+const currencyCode =
+document.getElementById('taxCurrency').value;
 
-  const currency =
-    getCurrencyDisplay(currencyCode);
+const currency =
+getCurrencyDisplay(currencyCode);
 
-  const resultBox =
-    document.getElementById('taxResult');
+const resultBox =
+document.getElementById('taxResult');
 
-  hideCopyButton('taxCopyButton');
+hideCopyButton('taxCopyButton');
 
-  if (
-    isNaN(price) ||
-    isNaN(rate) ||
-    price < 0 ||
-    rate < 0
-  ) {
-    resultBox.textContent =
-      'Please enter a valid price and tax rate.';
-    return;
-  }
-
-  let result;
-
-  if (mode === 'add') {
-    result =
-      price + (price * rate / 100);
-  } else {
-    result =
-      price / (1 + rate / 100);
-  }
-
-  if (!Number.isFinite(result)) {
-    resultBox.textContent =
-      'Please enter valid tax values.';
-    return;
-  }
-
-  const formattedResult =
-    result.toLocaleString(undefined, {
-      maximumFractionDigits: 10
-    });
-
-  resultBox.textContent =
-    `Result: ${currency} ${formattedResult}`;
-
-  showCopyButton('taxCopyButton');
-
-  const modeText =
-    mode === 'add'
-      ? 'Add Tax'
-      : 'Remove Tax';
-
-  addToHistory(
-    'Tax Calculator',
-    `${modeText}: ${currency} ${price.toLocaleString()} at ${rate}% → ${currency} ${formattedResult}`
-  );
+if (
+isNaN(price) ||
+isNaN(rate) ||
+price < 0 ||
+rate < 0
+) {
+resultBox.textContent =
+'Please enter a valid price and tax rate.';
+return;
 }
 
+let result;
+
+if (mode === 'add') {
+result =
+price + (price * rate / 100);
+} else {
+result =
+price / (1 + rate / 100);
+}
+
+if (!Number.isFinite(result)) {
+resultBox.textContent =
+'Please enter valid tax values.';
+return;
+}
+
+const formattedResult =
+result.toLocaleString(undefined, {
+maximumFractionDigits: 10
+});
+
+resultBox.textContent =
+"Result: ${currency} ${formattedResult}";
+
+showCopyButton('taxCopyButton');
+
+const modeText =
+mode === 'add'
+? 'Add Tax'
+: 'Remove Tax';
+
+addToHistory(
+'Tax Calculator',
+"${modeText}: ${currency} ${price.toLocaleString()} at ${rate}% → ${currency} ${formattedResult}"
+);
+}
 
 function parseFormattedNumber(value) {
-  const cleanedValue =
-    value.replace(/,/g, '').trim();
+const cleanedValue =
+value.replace(/,/g, '').trim();
 
-  if (cleanedValue === '') {
-    return NaN;
-  }
-
-  return Number(cleanedValue);
+if (cleanedValue === '') {
+return NaN;
 }
 
+return Number(cleanedValue);
+}
 
 function formatInputNumber(input) {
-  const value =
-    input.value.replace(/,/g, '');
+const value =
+input.value.replace(/,/g, '');
 
-  if (value === '') {
-    return;
-  }
+if (value === '') {
+return;
+}
 
-  if (!/^\d*\.?\d*$/.test(value)) {
-    return;
-  }
+if (!/^\d*.?\d*$/.test(value)) {
+return;
+}
 
-  const parts =
-    value.split('.');
+const parts =
+value.split('.');
 
-  const integerPart =
-    parts[0];
+const integerPart =
+parts[0];
 
+const decimalPart =
+parts.length > 1 ? parts[1] : null;
+
+const formattedInteger =
+integerPart === ''
+? ''
+: Number(integerPart).toLocaleString('en-US');
+
+input.value =
+decimalPart !== null
+? "${formattedInteger}.${decimalPart}"
+: formattedInteger;
+}
+
+function formatCalculatorExpression(input) {
+const oldValue = input.value;
+const cursorPosition = input.selectionStart || 0;
+
+const digitsBeforeCursor =
+oldValue
+.slice(0, cursorPosition)
+.replace(/,/g, '')
+.length;
+
+const cleanedValue =
+oldValue.replace(/,/g, '');
+
+const formattedValue =
+cleanedValue.replace(/\d+(?:.\d+)?/g, number => {
+const parts = number.split('.');
+
+  const integerPart = parts[0];
   const decimalPart =
     parts.length > 1 ? parts[1] : null;
 
@@ -1100,419 +1117,381 @@ function formatInputNumber(input) {
       ? ''
       : Number(integerPart).toLocaleString('en-US');
 
-  input.value =
-    decimalPart !== null
-      ? `${formattedInteger}.${decimalPart}`
-      : formattedInteger;
+  return decimalPart !== null
+    ? `${formattedInteger}.${decimalPart}`
+    : formattedInteger;
+});
+
+input.value = formattedValue;
+
+let newCursorPosition = 0;
+let digitCount = 0;
+
+for (
+let i = 0;
+i < formattedValue.length;
+i++
+) {
+if (formattedValue[i] !== ',') {
+digitCount++;
 }
 
+newCursorPosition++;
 
-function formatCalculatorExpression(input) {
-  const oldValue = input.value;
-  const cursorPosition = input.selectionStart || 0;
-
-  const digitsBeforeCursor =
-    oldValue
-      .slice(0, cursorPosition)
-      .replace(/,/g, '')
-      .length;
-
-  const cleanedValue =
-    oldValue.replace(/,/g, '');
-
-  const formattedValue =
-    cleanedValue.replace(/\d+(?:\.\d+)?/g, number => {
-      const parts = number.split('.');
-
-      const integerPart = parts[0];
-      const decimalPart =
-        parts.length > 1 ? parts[1] : null;
-
-      const formattedInteger =
-        integerPart === ''
-          ? ''
-          : Number(integerPart).toLocaleString('en-US');
-
-      return decimalPart !== null
-        ? `${formattedInteger}.${decimalPart}`
-        : formattedInteger;
-    });
-
-  input.value = formattedValue;
-
-  let newCursorPosition = 0;
-  let digitCount = 0;
-
-  for (
-    let i = 0;
-    i < formattedValue.length;
-    i++
-  ) {
-    if (formattedValue[i] !== ',') {
-      digitCount++;
-    }
-
-    newCursorPosition++;
-
-    if (digitCount >= digitsBeforeCursor) {
-      break;
-    }
-  }
-
-  if (digitsBeforeCursor === 0) {
-    newCursorPosition = 0;
-  }
-
-  input.setSelectionRange(
-    newCursorPosition,
-    newCursorPosition
-  );
+if (digitCount >= digitsBeforeCursor) {
+  break;
 }
 
+}
+
+if (digitsBeforeCursor === 0) {
+newCursorPosition = 0;
+}
+
+input.setSelectionRange(
+newCursorPosition,
+newCursorPosition
+);
+}
 
 function setupFormattedInputs() {
-  const monetaryInputIds = [
-    'amount',
-    'originalPrice',
-    'costPrice',
-    'sellingPrice',
-    'markupCostPrice',
-    'roiInitialInvestment',
-    'roiFinalValue',
-    'salesAmount',
-    'totalCost',
-    'fixedCosts',
-    'variableCosts',
-    'sellingPriceUnit',
-    'taxPrice',
-    'startingSavings',
-    'monthlyContribution',
-    'loanAmount'
-  ];
+const monetaryInputIds = [
+'amount',
+'originalPrice',
+'costPrice',
+'sellingPrice',
+'markupCostPrice',
+'roiInitialInvestment',
+'roiFinalValue',
+'salesAmount',
+'totalCost',
+'fixedCosts',
+'variableCosts',
+'sellingPriceUnit',
+'taxPrice',
+'startingSavings',
+'monthlyContribution',
+'loanAmount'
+];
 
-  monetaryInputIds.forEach(id => {
-    const input = document.getElementById(id);
+monetaryInputIds.forEach(id => {
+const input = document.getElementById(id);
 
-    if (!input) {
-      return;
-    }
-
-    input.addEventListener('input', () => {
-      formatInputNumber(input);
-    });
-  });
-
-  const calculatorInput =
-    document.getElementById('calculation');
-
-  if (calculatorInput) {
-    calculatorInput.addEventListener('input', () => {
-      formatCalculatorExpression(calculatorInput);
-    });
-  }
+if (!input) {
+  return;
 }
 
+input.addEventListener('input', () => {
+  formatInputNumber(input);
+});
+
+});
+
+const calculatorInput =
+document.getElementById('calculation');
+
+if (calculatorInput) {
+calculatorInput.addEventListener('input', () => {
+formatCalculatorExpression(calculatorInput);
+});
+}
+}
 
 /* Calculation History */
 
 function getHistory() {
-  try {
-    const savedHistory =
-      localStorage.getItem(HISTORY_STORAGE_KEY);
+try {
+const savedHistory =
+localStorage.getItem(HISTORY_STORAGE_KEY);
 
-    if (!savedHistory) {
-      return [];
-    }
-
-    const history =
-      JSON.parse(savedHistory);
-
-    if (!Array.isArray(history)) {
-      return [];
-    }
-
-    return history;
-  } catch (error) {
-    return [];
-  }
+if (!savedHistory) {
+  return [];
 }
 
+const history =
+  JSON.parse(savedHistory);
+
+if (!Array.isArray(history)) {
+  return [];
+}
+
+return history;
+
+} catch (error) {
+return [];
+}
+}
 
 function saveHistory(history) {
-  try {
-    localStorage.setItem(
-      HISTORY_STORAGE_KEY,
-      JSON.stringify(history)
-    );
-  } catch (error) {
-    // History saving is optional and should not affect calculations.
-  }
+try {
+localStorage.setItem(
+HISTORY_STORAGE_KEY,
+JSON.stringify(history)
+);
+} catch (error) {
+// History saving is optional and should not affect calculations.
 }
-
+}
 
 function addToHistory(calculatorName, details) {
-  const history =
-    getHistory();
+const history =
+getHistory();
 
-  history.unshift({
-    calculator: calculatorName,
-    details: details
-  });
+history.unshift({
+calculator: calculatorName,
+details: details
+});
 
-  const limitedHistory =
-    history.slice(0, MAX_HISTORY_ITEMS);
+const limitedHistory =
+history.slice(0, MAX_HISTORY_ITEMS);
 
-  saveHistory(limitedHistory);
-  renderHistory(limitedHistory);
+saveHistory(limitedHistory);
+renderHistory(limitedHistory);
 }
-
 
 function renderHistory(history = getHistory()) {
-  const historyBox =
-    document.getElementById('calculationHistory');
+const historyBox =
+document.getElementById('calculationHistory');
 
-  if (!historyBox) {
-    return;
-  }
-
-  historyBox.innerHTML = '';
-
-  if (history.length === 0) {
-    const emptyMessage =
-      document.createElement('p');
-
-    emptyMessage.className =
-      'history-empty';
-
-    emptyMessage.textContent =
-      'No calculations yet.';
-
-    historyBox.appendChild(emptyMessage);
-
-    return;
-  }
-
-  history.forEach(item => {
-    const historyItem =
-      document.createElement('div');
-
-    historyItem.className =
-      'history-item';
-
-    const calculatorName =
-      document.createElement('div');
-
-    calculatorName.className =
-      'history-calculator';
-
-    calculatorName.textContent =
-      item.calculator;
-
-    const details =
-      document.createElement('div');
-
-    details.className =
-      'history-details';
-
-    details.textContent =
-      item.details;
-
-    historyItem.appendChild(calculatorName);
-    historyItem.appendChild(details);
-
-    historyBox.appendChild(historyItem);
-  });
+if (!historyBox) {
+return;
 }
 
+historyBox.innerHTML = '';
+
+if (history.length === 0) {
+const emptyMessage =
+document.createElement('p');
+
+emptyMessage.className =
+  'history-empty';
+
+emptyMessage.textContent =
+  'No calculations yet.';
+
+historyBox.appendChild(emptyMessage);
+
+return;
+
+}
+
+history.forEach(item => {
+const historyItem =
+document.createElement('div');
+
+historyItem.className =
+  'history-item';
+
+const calculatorName =
+  document.createElement('div');
+
+calculatorName.className =
+  'history-calculator';
+
+calculatorName.textContent =
+  item.calculator;
+
+const details =
+  document.createElement('div');
+
+details.className =
+  'history-details';
+
+details.textContent =
+  item.details;
+
+historyItem.appendChild(calculatorName);
+historyItem.appendChild(details);
+
+historyBox.appendChild(historyItem);
+
+});
+}
 
 function clearHistory() {
-  localStorage.removeItem(HISTORY_STORAGE_KEY);
-  renderHistory([]);
+localStorage.removeItem(HISTORY_STORAGE_KEY);
+renderHistory([]);
 }
-
 
 /* Calculator Navigation */
 
 function scrollToCalculator(calculatorId) {
-  const calculator =
-    document.getElementById(calculatorId);
+const calculator =
+document.getElementById(calculatorId);
 
-  if (!calculator) {
-    return;
-  }
-
-  calculator.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+if (!calculator) {
+return;
 }
 
+calculator.scrollIntoView({
+behavior: 'smooth',
+block: 'start'
+});
+}
 
 /* Clear Individual Calculator */
 
 function clearCalculator(sectionId) {
-  const section =
-    document.getElementById(sectionId);
+const section =
+document.getElementById(sectionId);
 
-  if (!section) {
-    return;
-  }
-
-  const inputs =
-    section.querySelectorAll('input');
-
-  inputs.forEach(input => {
-    input.value = '';
-  });
-
-  const selects =
-    section.querySelectorAll('select');
-
-  selects.forEach(select => {
-    select.selectedIndex = 0;
-  });
-
-  const results =
-    section.querySelectorAll('.result');
-
-  results.forEach(result => {
-    result.textContent = '';
-  });
-
-  const copyButtons =
-    section.querySelectorAll('.copy-button');
-
-  copyButtons.forEach(button => {
-    button.style.display = 'none';
-    button.textContent = 'Copy';
-  });
+if (!section) {
+return;
 }
 
+const inputs =
+section.querySelectorAll('input');
+
+inputs.forEach(input => {
+input.value = '';
+});
+
+const selects =
+section.querySelectorAll('select');
+
+selects.forEach(select => {
+select.selectedIndex = 0;
+});
+
+const results =
+section.querySelectorAll('.result');
+
+results.forEach(result => {
+result.textContent = '';
+});
+
+const copyButtons =
+section.querySelectorAll('.copy-button');
+
+copyButtons.forEach(button => {
+button.classList.remove('is-visible');
+button.textContent = 'Copy';
+});
+}
 
 /* Copy Result */
 
 function showCopyButton(buttonId) {
-  const button =
-    document.getElementById(buttonId);
+const button =
+document.getElementById(buttonId);
 
-  if (!button) {
-    return;
-  }
-
-  button.style.display = 'inline-block';
-  button.textContent = 'Copy';
+if (!button) {
+return;
 }
 
+button.classList.add('is-visible');
+button.textContent = 'Copy';
+}
 
 function hideCopyButton(buttonId) {
-  const button =
-    document.getElementById(buttonId);
+const button =
+document.getElementById(buttonId);
 
-  if (!button) {
-    return;
-  }
+if (!button) {
+return;
+}
 
-  button.style.display = 'none';
+button.classList.remove('is-visible');
+button.textContent = 'Copy';
+}
+
+async function copyResult(resultId, buttonId) {
+const resultBox =
+document.getElementById(resultId);
+
+const button =
+document.getElementById(buttonId);
+
+if (!resultBox || !button || !resultBox.textContent.trim()) {
+return;
+}
+
+try {
+await navigator.clipboard.writeText(
+resultBox.textContent.trim()
+);
+
+button.textContent = 'Copied!';
+
+setTimeout(() => {
+  button.textContent = 'Copy';
+}, 1500);
+
+} catch (error) {
+try {
+const textArea =
+document.createElement('textarea');
+
+  textArea.value =
+    resultBox.textContent.trim();
+
+  document.body.appendChild(textArea);
+
+  textArea.select();
+
+  document.execCommand('copy');
+
+  textArea.remove();
+
+  button.textContent = 'Copied!';
+
+  setTimeout(() => {
+    button.textContent = 'Copy';
+  }, 1500);
+
+} catch (fallbackError) {
   button.textContent = 'Copy';
 }
 
-
-async function copyResult(resultId, buttonId) {
-  const resultBox =
-    document.getElementById(resultId);
-
-  const button =
-    document.getElementById(buttonId);
-
-  if (!resultBox || !button || !resultBox.textContent.trim()) {
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(
-      resultBox.textContent.trim()
-    );
-
-    button.textContent = 'Copied!';
-
-    setTimeout(() => {
-      button.textContent = 'Copy';
-    }, 1500);
-
-  } catch (error) {
-    try {
-      const textArea =
-        document.createElement('textarea');
-
-      textArea.value =
-        resultBox.textContent.trim();
-
-      document.body.appendChild(textArea);
-
-      textArea.select();
-
-      document.execCommand('copy');
-
-      textArea.remove();
-
-      button.textContent = 'Copied!';
-
-      setTimeout(() => {
-        button.textContent = 'Copy';
-      }, 1500);
-
-    } catch (fallbackError) {
-      button.textContent = 'Copy';
-    }
-  }
 }
-
+}
 
 async function share(platform) {
-  const url =
-    window.location.href;
+const url =
+window.location.href;
 
-  const encodedUrl =
-    encodeURIComponent(url);
+const encodedUrl =
+encodeURIComponent(url);
 
-  const text =
-    encodeURIComponent(
-      "Check out this awesome free profit calculator called Profitlator!"
-    );
+const text =
+encodeURIComponent(
+"Check out this awesome free profit calculator called Profitlator!"
+);
 
-  const shareLinks = {
+const shareLinks = {
 
-    whatsapp:
-      `https://wa.me/?text=${text}%20${encodedUrl}`,
+whatsapp:
+  `https://wa.me/?text=${text}%20${encodedUrl}`,
 
-    facebook:
-      `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+facebook:
+  `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
 
-    x:
-      `https://twitter.com/intent/tweet?text=${text}&url=${encodedUrl}`
-  };
+x:
+  `https://twitter.com/intent/tweet?text=${text}&url=${encodedUrl}`
 
-  if (platform === 'instagram') {
-    try {
-      await navigator.clipboard.writeText(url);
-    } catch (error) {
-      // Opening Instagram still works if clipboard access is unavailable.
-    }
+};
 
-    window.open(
-      'https://www.instagram.com/',
-      '_blank'
-    );
-
-    return;
-  }
-
-  window.open(
-    shareLinks[platform],
-    '_blank'
-  );
+if (platform === 'instagram') {
+try {
+await navigator.clipboard.writeText(url);
+} catch (error) {
+// Opening Instagram still works if clipboard access is unavailable.
 }
 
+window.open(
+  'https://www.instagram.com/',
+  '_blank'
+);
+
+return;
+
+}
+
+window.open(
+shareLinks[platform],
+'_blank'
+);
+}
 
 /* Start Website */
 
