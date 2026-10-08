@@ -1,631 +1,695 @@
+/* =========================
+   GENERAL
+========================= */
+
 body {
-font-family: 'Segoe UI', sans-serif;
-margin: 0;
-background: #f2f6fa;
-color: #333;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f2f6fa;
+  color: #333;
 }
 
 header {
-background: #0056b3;
-color: white;
-text-align: center;
-padding: 2rem 1rem;
+  background: #0056b3;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
 }
 
 h1 {
-font-size: 2.5rem;
-margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .header-logo {
-display: block;
-width: 60px;
-height: 60px;
-object-fit: contain;
-margin: 0.2rem auto 0.8rem;
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin: 0.2rem auto 0.8rem;
 }
 
 .tagline {
-font-size: 1.1rem;
-font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: bold;
+  line-height: 1.5;
 }
 
 .section {
-background: white;
-max-width: 600px;
-margin: 2rem auto;
-padding: 1.5rem;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  background: white;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
 
 .section h2 {
-margin-top: 0;
-color: #0056b3;
+  margin-top: 0;
+  color: #0056b3;
 }
 
-/* Calculator Titles */
+
+/* =========================
+   CALCULATOR TITLES
+========================= */
 
 .calculator-title {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 0.75rem;
-margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .calculator-title h2 {
-margin: 0;
+  margin: 0;
 }
 
-/* Calculator Description */
+
+/* =========================
+   DESCRIPTION
+========================= */
 
 .calculator-description {
-margin-top: -0.35rem;
-margin-bottom: 1rem;
-color: #666;
-font-size: 0.95rem;
-line-height: 1.5;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-/* Explore Calculators */
+
+/* =========================
+   EXPLORE
+========================= */
 
 .explore-section {
-padding: 1rem;
+  padding: 1rem;
 }
 
 .explore-header {
-text-align: center;
-margin-bottom: 0.8rem;
+  text-align: center;
+  margin-bottom: 0.8rem;
 }
 
 .explore-header h2 {
-margin-bottom: 0.35rem;
+  margin-bottom: 0.35rem;
 }
 
 .explore-header p {
-margin: 0;
-color: #666;
-font-size: 0.9rem;
-line-height: 1.4;
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
-.calculator-nav-grid {
-display: grid;
-grid-template-columns: repeat(4, minmax(0, 1fr));
-gap: 0.5rem;
+.calculator-navigation {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
 .calculator-nav-button {
-width: 100%;
-min-height: 40px;
-margin: 0;
-padding: 0.45rem 0.55rem;
-background: #eef6fc;
-color: #174a73;
-border: 1px solid #c7d8e8;
-border-radius: 8px;
-font-size: 0.82rem;
-font-weight: 600;
-line-height: 1.2;
-text-align: center;
-cursor: pointer;
-transition:
-background-color 0.15s ease,
-border-color 0.15s ease,
-transform 0.1s ease,
-box-shadow 0.15s ease;
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  padding: 0.45rem 0.55rem;
+  background: #eef6fc;
+  color: #174a73;
+  border: 1px solid #c7d8e8;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
 }
 
 .calculator-nav-button:hover {
-background: #e1f0fa;
-border-color: #a9c8df;
-box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
-transform: translateY(-1px);
+  background: #e1f0fa;
+  border-color: #a9c8df;
+  transform: translateY(-1px);
 }
 
 .calculator-nav-button:active {
-background: #d4e8f6;
-border-color: #94b9d5;
-transform: translateY(1px);
-box-shadow: none;
+  background: #d4e8f6;
+  transform: translateY(1px);
 }
 
-/* Inputs and Selects */
+
+/* =========================
+   INPUTS
+========================= */
 
 input,
 select {
-margin: 0.5rem 0;
-padding: 0.6rem;
-width: 100%;
-font-size: 1rem;
-border-radius: 5px;
-border: 1px solid #ccc;
-box-sizing: border-box;
-min-height: 44px;
+  margin: 0.5rem 0;
+  padding: 0.6rem;
+  width: 100%;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  min-height: 44px;
+  background: white;
 }
 
-/* Calculator Action Buttons */
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
 
 button {
-width: auto;
-background: #007bff;
-color: white;
-font-weight: bold;
-cursor: pointer;
-border: none;
-min-height: 38px;
-padding: 0.45rem 0.85rem;
-font-size: 0.95rem;
-border-radius: 5px;
+  width: auto;
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  min-height: 36px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
 }
 
 button:hover {
-background: #0056b3;
+  background: #0056b3;
 }
 
-/* Calculator Action Row */
+button:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================
+   CALCULATOR ACTIONS
+
+   Calculate = top row
+   Clear + Copy = bottom row
+========================= */
 
 .calculator-actions {
-display: grid;
-grid-template-columns: 1fr auto 1fr;
-align-items: center;
-gap: 0.6rem;
-width: 100%;
-margin: 0.65rem 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "calculate calculate"
+    "clear copy";
+  gap: 0.45rem;
+  width: 100%;
+  margin: 0.55rem 0 0;
 }
-
-/* Clear Button */
-
-.calculator-actions .clear-button {
-justify-self: start;
-}
-
-/* Calculate Button */
 
 .calculator-actions .calculate-button {
-justify-self: center;
-min-width: 110px;
+  grid-area: calculate;
+  justify-self: center;
+  width: auto;
+  min-width: 120px;
 }
 
-/* Copy Button */
+.calculator-actions .clear-button {
+  grid-area: clear;
+  width: 100%;
+}
 
 .calculator-actions .copy-button {
-justify-self: end;
+  grid-area: copy;
+  width: 100%;
 }
 
-/* Copy and Clear Buttons */
+
+/* =========================
+   CLEAR + COPY
+========================= */
 
 .copy-button,
 .clear-button {
-width: auto;
-min-width: 70px;
-min-height: 34px;
-margin: 0;
-padding: 0.35rem 0.7rem;
-font-size: 0.85rem;
-border-radius: 5px;
+  min-height: 34px;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.84rem;
+  border-radius: 5px;
 }
 
-/*
-Copy remains invisible until a successful calculation.
-Visibility is used instead of display:none so its space remains
-reserved and the Calculate button stays exactly in the center.
-*/
-
 .copy-button {
-visibility: hidden;
-opacity: 0;
-pointer-events: none;
-transition: opacity 0.15s ease;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
 }
 
 .copy-button.is-visible {
-visibility: visible;
-opacity: 1;
-pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* Basic Calculator Operation Buttons */
+
+/* =========================
+   BASIC OPERATIONS
+========================= */
 
 .operation-buttons {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
 }
 
 .operation-buttons button {
-width: 100%;
-margin: 0.5rem 0;
-font-size: 1.2rem;
-padding: 0.55rem;
-min-height: 42px;
+  width: 100%;
+  margin: 0.35rem 0;
+  font-size: 1.1rem;
+  padding: 0.45rem;
+  min-height: 38px;
 }
 
-/* Results */
+
+/* =========================
+   RESULTS
+========================= */
 
 .result {
-margin-top: 0.85rem;
-font-size: 1.2rem;
-color: green;
-font-weight: bold;
-line-height: 1.5;
-overflow-wrap: anywhere;
-word-break: break-word;
-min-height: 0;
+  margin-top: 0.75rem;
+  font-size: 1.1rem;
+  color: green;
+  font-weight: bold;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-height: 0;
 }
 
-/* Percentage Input */
+
+/* =========================
+   PERCENTAGE INPUT
+========================= */
 
 .percentage-input {
-position: relative;
-width: 100%;
-margin: 0.5rem 0;
+  position: relative;
+  width: 100%;
+  margin: 0.5rem 0;
 }
 
 .percentage-input input {
-margin: 0;
-padding-right: 2.5rem;
+  margin: 0;
+  padding-right: 2.5rem;
 }
 
 .percentage-input span {
-position: absolute;
-right: 0.8rem;
-top: 50%;
-transform: translateY(-50%);
-font-weight: bold;
-color: #555;
-pointer-events: none;
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: #555;
+  pointer-events: none;
 }
 
-/* Calculation History */
+
+/* =========================
+   HISTORY
+========================= */
 
 .history-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .history-header h2 {
-margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .history-header button {
-width: auto;
-min-height: 36px;
-margin: 0;
-padding: 0.4rem 0.7rem;
+  width: auto;
+  min-height: 34px;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.84rem;
 }
 
 .calculation-history {
-margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .history-item {
-padding: 0.8rem 0;
-border-bottom: 1px solid #ddd;
-overflow-wrap: anywhere;
-word-break: break-word;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #ddd;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .history-item:last-child {
-border-bottom: none;
+  border-bottom: none;
 }
 
 .history-calculator {
-font-weight: bold;
-color: #0056b3;
-margin-bottom: 0.25rem;
+  font-weight: bold;
+  color: #0056b3;
+  margin-bottom: 0.25rem;
 }
 
 .history-details {
-color: #333;
-line-height: 1.5;
-overflow-wrap: anywhere;
-word-break: break-word;
+  color: #333;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .history-empty {
-margin: 0;
-color: #777;
+  margin: 0;
+  color: #777;
 }
 
-/* Share Buttons */
+
+/* =========================
+   SHARE
+========================= */
 
 .share {
-text-align: center;
+  text-align: center;
 }
 
 .share-buttons {
-display: flex;
-justify-content: center;
-align-items: center;
-flex-wrap: wrap;
-gap: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .share-buttons button {
-width: auto;
-min-height: 36px;
-margin: 0;
-padding: 0.4rem 0.7rem;
-font-size: 0.85rem;
-border-radius: 20px;
-transition: transform 0.15s ease;
+  width: auto;
+  min-height: 34px;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.84rem;
+  border-radius: 20px;
+  transition: transform 0.15s ease;
 }
 
 .share-buttons button:hover {
-transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
-/* Footer */
+
+/* =========================
+   FOOTER
+========================= */
 
 footer {
-text-align: center;
-padding: 1rem;
-margin-top: 3rem;
-background: #eee;
-font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3rem;
+  background: #eee;
+  font-weight: bold;
 }
 
-/* Mobile Polish */
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
 
-header {
-padding: 1.5rem 1rem;
+  header {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .section {
+    margin: 1rem 0.75rem;
+    padding: 1.1rem;
+    border-radius: 10px;
+  }
+
+  .section h2 {
+    font-size: 1.35rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+
+  /* Explore */
+
+  .explore-section {
+    padding: 0.9rem;
+  }
+
+  .explore-header {
+    margin-bottom: 0.65rem;
+  }
+
+  .explore-header h2 {
+    margin-bottom: 0.3rem;
+  }
+
+  .explore-header p {
+    font-size: 0.85rem;
+  }
+
+  .calculator-navigation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .calculator-nav-button {
+    min-height: 40px;
+    padding: 0.45rem 0.4rem;
+    font-size: 0.78rem;
+    border-radius: 7px;
+  }
+
+
+  /* Inputs */
+
+  input,
+  select {
+    font-size: 1rem;
+    min-height: 46px;
+    margin: 0.4rem 0;
+    padding: 0.7rem;
+  }
+
+
+  /* Action buttons */
+
+  .calculator-actions {
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .calculator-actions .calculate-button {
+    min-width: 110px;
+    min-height: 38px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.86rem;
+  }
+
+
+  /* Operations */
+
+  .operation-buttons {
+    gap: 0.4rem;
+  }
+
+  .operation-buttons button {
+    min-height: 42px;
+    margin: 0.35rem 0;
+    padding: 0.5rem 0.3rem;
+    font-size: 1.1rem;
+  }
+
+
+  /* Results */
+
+  .result {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-top: 0.7rem;
+  }
+
+
+  /* Copy/Clear */
+
+  .copy-button,
+  .clear-button {
+    min-height: 35px;
+    padding: 0.38rem 0.6rem;
+    font-size: 0.83rem;
+  }
+
+
+  /* Percentage */
+
+  .percentage-input {
+    margin: 0.4rem 0;
+  }
+
+  .percentage-input input {
+    min-height: 46px;
+  }
+
+
+  /* History */
+
+  .history-header {
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .history-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .history-header button {
+    min-height: 36px;
+    padding: 0.4rem 0.65rem;
+    white-space: nowrap;
+  }
+
+  .calculation-history {
+    margin-top: 0.75rem;
+  }
+
+  .history-item {
+    padding: 0.75rem 0;
+  }
+
+  .history-calculator {
+    font-size: 0.95rem;
+  }
+
+  .history-details {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+
+  /* Share */
+
+  .share-buttons {
+    gap: 0.4rem;
+  }
+
+  .share-buttons button {
+    min-height: 36px;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.83rem;
+  }
+
+  footer {
+    margin-top: 2rem;
+  }
 }
 
-h1 {
-font-size: 2rem;
-}
 
-.tagline {
-font-size: 1rem;
-line-height: 1.5;
-}
-
-.section {
-margin: 1rem 0.75rem;
-padding: 1.1rem;
-border-radius: 10px;
-}
-
-.section h2 {
-font-size: 1.35rem;
-line-height: 1.3;
-margin-bottom: 1rem;
-}
-
-/* Explore Calculators - Mobile */
-
-.explore-section {
-padding: 0.9rem;
-}
-
-.explore-header {
-margin-bottom: 0.65rem;
-}
-
-.explore-header h2 {
-margin-bottom: 0.3rem;
-}
-
-.explore-header p {
-font-size: 0.85rem;
-}
-
-.calculator-nav-grid {
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 0.45rem;
-}
-
-.calculator-nav-button {
-min-height: 40px;
-padding: 0.45rem 0.4rem;
-font-size: 0.78rem;
-border-radius: 7px;
-}
-
-/* Mobile Inputs */
-
-input,
-select {
-font-size: 1rem;
-min-height: 46px;
-margin: 0.4rem 0;
-padding: 0.7rem;
-}
-
-/* Mobile Calculator Action Row */
-
-.calculator-actions {
-grid-template-columns: 1fr auto 1fr;
-gap: 0.4rem;
-margin-top: 0.55rem;
-}
-
-.calculator-actions .calculate-button {
-min-width: 105px;
-min-height: 40px;
-padding: 0.5rem 0.75rem;
-font-size: 0.9rem;
-}
-
-/* Mobile Operation Buttons */
-
-.operation-buttons {
-gap: 0.4rem;
-}
-
-.operation-buttons button {
-min-height: 44px;
-margin: 0.4rem 0;
-padding: 0.55rem 0.3rem;
-font-size: 1.15rem;
-}
-
-/* Mobile Results */
-
-.result {
-font-size: 1.05rem;
-line-height: 1.6;
-margin-top: 0.75rem;
-}
-
-/* Mobile Copy and Clear */
-
-.copy-button,
-.clear-button {
-min-width: 68px;
-min-height: 36px;
-width: auto;
-padding: 0.4rem 0.65rem;
-margin: 0;
-font-size: 0.85rem;
-}
-
-.percentage-input {
-margin: 0.4rem 0;
-}
-
-.percentage-input input {
-min-height: 46px;
-}
-
-/* Mobile History */
-
-.history-header {
-align-items: center;
-gap: 0.75rem;
-}
-
-.history-header h2 {
-font-size: 1.3rem;
-}
-
-.history-header button {
-min-height: 38px;
-padding: 0.45rem 0.7rem;
-white-space: nowrap;
-}
-
-.calculation-history {
-margin-top: 0.75rem;
-}
-
-.history-item {
-padding: 0.75rem 0;
-}
-
-.history-calculator {
-font-size: 0.95rem;
-}
-
-.history-details {
-font-size: 0.95rem;
-line-height: 1.5;
-}
-
-/* Mobile Share Buttons */
-
-.share-buttons {
-gap: 0.4rem;
-}
-
-.share-buttons button {
-min-height: 38px;
-padding: 0.4rem 0.7rem;
-font-size: 0.85rem;
-}
-
-footer {
-margin-top: 2rem;
-}
-}
-
-/* Very Small Phones */
+/* =========================
+   VERY SMALL PHONES
+========================= */
 
 @media (max-width: 380px) {
 
-.section {
-margin-left: 0.5rem;
-margin-right: 0.5rem;
-padding: 0.9rem;
-}
+  .section {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding: 0.9rem;
+  }
 
-h1 {
-font-size: 1.8rem;
-}
+  h1 {
+    font-size: 1.8rem;
+  }
 
-.tagline {
-font-size: 0.95rem;
-}
+  .tagline {
+    font-size: 0.95rem;
+  }
 
-.section h2 {
-font-size: 1.25rem;
-}
+  .section h2 {
+    font-size: 1.25rem;
+  }
 
-/* Explore Calculators - Very Small Phones */
 
-.calculator-nav-grid {
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 0.4rem;
-}
+  .calculator-navigation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
 
-.calculator-nav-button {
-min-height: 40px;
-padding: 0.4rem 0.3rem;
-font-size: 0.74rem;
-border-radius: 7px;
-}
+  .calculator-nav-button {
+    min-height: 40px;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.74rem;
+    border-radius: 7px;
+  }
 
-.operation-buttons {
-gap: 0.3rem;
-}
 
-.operation-buttons button {
-font-size: 1.05rem;
-min-height: 44px;
-}
+  .operation-buttons {
+    gap: 0.3rem;
+  }
 
-.calculator-actions {
-gap: 0.3rem;
-}
+  .operation-buttons button {
+    font-size: 1.05rem;
+    min-height: 42px;
+  }
 
-.calculator-actions .calculate-button {
-min-width: 92px;
-padding-left: 0.45rem;
-padding-right: 0.45rem;
-font-size: 0.82rem;
-}
 
-.copy-button,
-.clear-button {
-padding: 0.4rem 0.55rem;
-min-width: 62px;
-min-height: 36px;
-}
+  .calculator-actions {
+    gap: 0.3rem;
+  }
 
-.history-header {
-align-items: flex-start;
-}
+  .calculator-actions .calculate-button {
+    min-width: 95px;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    font-size: 0.8rem;
+  }
 
-.history-header h2 {
-font-size: 1.2rem;
-}
+  .copy-button,
+  .clear-button {
+    padding: 0.38rem 0.5rem;
+    min-height: 35px;
+  }
 
-.history-header button {
-font-size: 0.9rem;
-}
 
-.share-buttons {
-gap: 0.3rem;
-}
+  .history-header {
+    align-items: flex-start;
+  }
 
-.share-buttons button {
-padding: 0.4rem 0.6rem;
-font-size: 0.85rem;
-}
+  .history-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .history-header button {
+    font-size: 0.85rem;
+  }
+
+
+  .share-buttons {
+    gap: 0.3rem;
+  }
+
+  .share-buttons button {
+    padding: 0.38rem 0.55rem;
+    font-size: 0.82rem;
+  }
 }
