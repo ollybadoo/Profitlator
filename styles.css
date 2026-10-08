@@ -172,7 +172,8 @@ button:hover {
 
 /* Regular Calculate Buttons */
 
-.calculator-section > button {
+.calculator-section > button:not(.copy-button):not(.clear-button) {
+  display: block;
   width: fit-content;
   min-width: 110px;
   min-height: 38px;
@@ -423,7 +424,7 @@ footer {
 
   /* Mobile Calculate Buttons */
 
-.calculator-section > button {
+.calculator-section > button:not(.copy-button):not(.clear-button) {
   display: block;
   width: fit-content;
   min-width: 105px;
