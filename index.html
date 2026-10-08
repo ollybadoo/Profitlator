@@ -1,875 +1,1144 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta name="google-site-verification" content="cnUIjIHI_-h1bFN1tn1kG3lTnPnrpnXtZulu0KxfTtc" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Profitlator is your smart profit partner — helping everyday people and small businesses price better, earn more, and grow faster.">
-  <meta name="keywords" content="profit calculator, currency converter, business tools, discount tool, small business, earn online, pricing tool">
-  <meta name="author" content="Di-Gi">
-  <title>Profitlator</title>  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/png" href="favicon.png" />  <style>
-    .explore-section {
-      text-align: center;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .explore-section h2 {
-      margin-bottom: 8px;
-    }
+  <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE">
 
-    .explore-description {
-      margin-bottom: 18px;
-    }
+  <title>Profitlator</title>
 
-    .calculator-navigation {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-    .calculator-nav-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 10px 12px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 10px;
-      background: inherit;
-      cursor: pointer;
-      font: inherit;
-      font-weight: 600;
-      text-align: center;
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        opacity 0.15s ease;
-    }
+<body>
 
-    .calculator-nav-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+<header>
+  <img src="favicon.png" alt="Profitlator logo" class="header-logo">
 
-    .calculator-nav-button:active {
-      transform: translateY(0);
-      opacity: 0.8;
-    }
+  <h1>Profitlator</h1>
 
-    .calculator-nav-button:focus-visible {
-      outline: 2px solid currentColor;
-      outline-offset: 2px;
-    }
-
-    @media (max-width: 700px) {
-      .calculator-navigation {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .calculator-nav-button {
-        min-height: 48px;
-        padding: 9px 8px;
-        font-size: 0.9rem;
-      }
-    }
-  </style></head><body><header>
-  <h1>Profitlator</h1>  <img src="favicon.png" alt="Profitlator logo" class="header-logo">  <p class="tagline">
+  <p class="tagline">
     <strong>
-      Profitlator is your smart profit partner — helping everyday people and small businesses price better, earn more, and grow faster.
+      Profitlator is your smart profit partner — helping everyday people and
+      small businesses price better, earn more, and grow faster.
     </strong>
   </p>
-</header><main>  <!-- Explore Calculators -->  <div class="section explore-section" id="exploreCalculators"><h2>Explore Calculators</h2>
+</header>
 
-<p class="explore-description">
-  Choose a calculator to jump straight to the tool you need.
-</p>
 
-<div class="calculator-navigation">
+<!-- =========================
+     EXPLORE CALCULATORS
+========================= -->
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('basicCalculator')">
-    Basic Calculator
-  </button>
+<section class="section explore-section">
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('discountCalculator')">
-    Discount Calculator
-  </button>
+  <div class="explore-header">
+    <h2>Explore Calculators</h2>
+    <p>Choose a calculator to jump straight to the tool you need.</p>
+  </div>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('profitCalculator')">
-    Profit Margin
-  </button>
+  <div class="calculator-navigation">
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('breakEvenCalculator')">
-    Break-Even Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('basicCalculator')">
+      Basic Calculator
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('unitPriceCalculator')">
-    Unit Price Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('discountCalculator')">
+      Discount Calculator
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('taxCalculator')">
-    Tax Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('profitCalculator')">
+      Profit Margin
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('currencyCalculator')">
-    Currency Converter
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('breakEvenCalculator')">
+      Break-Even Calculator
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('commissionCalculator')">
-    Commission Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('unitPriceCalculator')">
+      Unit Price Calculator
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('markupCalculator')">
-    Markup Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('taxCalculator')">
+      Tax Calculator
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('roiCalculator')">
-    ROI Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('currencyCalculator')">
+      Currency Converter
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('savingsCalculator')">
-    Savings Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('commissionCalculator')">
+      Commission Calculator
+    </button>
 
-  <button type="button" class="calculator-nav-button" onclick="scrollToCalculator('loanCalculator')">
-    Loan/Payment Calculator
-  </button>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('markupCalculator')">
+      Markup Calculator
+    </button>
 
-</div>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('roiCalculator')">
+      ROI Calculator
+    </button>
 
-  </div>  <!-- Basic Calculator -->  <div class="section calculator-section" id="basicCalculator"><div class="calculator-title">
-  <h2>Basic Calculator</h2>
-</div>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('savingsCalculator')">
+      Savings Calculator
+    </button>
 
-<p class="calculator-description">
-  Perform quick calculations with multiple numbers and operations.
-</p>
+    <button class="calculator-nav-button"
+      onclick="scrollToCalculator('loanCalculator')">
+      Loan/Payment Calculator
+    </button>
 
-<input
-  type="text"
-  id="calculation"
-  placeholder="Enter calculation e.g. 10 + 5 × 2"
-  inputmode="decimal"
-  autocomplete="off"
->
+  </div>
 
-<div class="operation-buttons">
-  <button type="button" onclick="insertOperation('+')">+</button>
-  <button type="button" onclick="insertOperation('-')">−</button>
-  <button type="button" onclick="insertOperation('×')">×</button>
-  <button type="button" onclick="insertOperation('÷')">÷</button>
-</div>
+</section>
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('basicCalculator')">
-    Clear
-  </button>
 
-  <button type="button" class="calculate-button" onclick="calculate()">
-    Calculate
-  </button>
+<!-- =========================
+     BASIC CALCULATOR
+========================= -->
 
-  <button type="button" class="copy-button" id="calcCopyButton" onclick="copyResult('calcResult', 'calcCopyButton')">
-    Copy
-  </button>
-</div>
+<section class="section" id="basicCalculator">
 
-<div class="result" id="calcResult"></div>
+  <div class="calculator-title">
+    <h2>Basic Calculator</h2>
+  </div>
 
-  </div>  <!-- Currency Converter -->  <div class="section calculator-section" id="currencyCalculator"><div class="calculator-title">
-  <h2>Currency Converter</h2>
-</div>
+  <p class="calculator-description">
+    Perform quick calculations with multiple numbers and operations.
+  </p>
 
-<p class="calculator-description">
-  Convert amounts between major world currencies.
-</p>
-
-<input
-  type="text"
-  id="amount"
-  placeholder="Enter amount"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<select id="fromCurrency">
-  <option value="USD">USD — US Dollar</option>
-  <option value="NGN">NGN — Nigerian Naira</option>
-  <option value="EUR">EUR — Euro</option>
-  <option value="GBP">GBP — British Pound</option>
-  <option value="CAD">CAD — Canadian Dollar</option>
-  <option value="AUD">AUD — Australian Dollar</option>
-  <option value="JPY">JPY — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">INR — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
-
-<select id="toCurrency">
-  <option value="USD">USD — US Dollar</option>
-  <option value="NGN">NGN — Nigerian Naira</option>
-  <option value="EUR">EUR — Euro</option>
-  <option value="GBP">GBP — British Pound</option>
-  <option value="CAD">CAD — Canadian Dollar</option>
-  <option value="AUD">AUD — Australian Dollar</option>
-  <option value="JPY">JPY — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">INR — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
-
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('currencyCalculator')">
-    Clear
-  </button>
-
-  <button type="button" class="calculate-button" onclick="convertCurrency()">
-    Convert
-  </button>
-
-  <button type="button" class="copy-button" id="currencyCopyButton" onclick="copyResult('currencyResult', 'currencyCopyButton')">
-    Copy
-  </button>
-</div>
-
-<div class="result" id="currencyResult"></div>
-
-  </div>  <!-- Discount Calculator -->  <div class="section calculator-section" id="discountCalculator"><div class="calculator-title">
-  <h2>Discount Calculator</h2>
-</div>
-
-<p class="calculator-description">
-  Calculate discounts and find the final price after savings.
-</p>
-
-<input
-  type="text"
-  id="originalPrice"
-  placeholder="Original Price"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<div class="percentage-input">
   <input
     type="text"
-    id="discountPercent"
-    placeholder="Discount"
+    id="calculation"
+    placeholder="Enter calculation e.g. 10 + 5 × 2"
     inputmode="decimal"
     autocomplete="off"
   >
-  <span>%</span>
-</div>
 
-<select id="discountCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+  <div class="operation-buttons">
+    <button type="button" onclick="insertOperation('+')">+</button>
+    <button type="button" onclick="insertOperation('−')">−</button>
+    <button type="button" onclick="insertOperation('×')">×</button>
+    <button type="button" onclick="insertOperation('÷')">÷</button>
+  </div>
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('discountCalculator')">
-    Clear
-  </button>
+  <div class="calculator-actions">
 
-  <button type="button" class="calculate-button" onclick="calculateDiscount()">
-    Calculate Discount
-  </button>
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('basicCalculator')">
+      Clear
+    </button>
 
-  <button type="button" class="copy-button" id="discountCopyButton" onclick="copyResult('discountResult', 'discountCopyButton')">
-    Copy
-  </button>
-</div>
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculate()">
+      Calculate
+    </button>
 
-<div class="result" id="discountResult"></div>
+    <button
+      type="button"
+      class="copy-button"
+      id="calcCopyButton"
+      onclick="copyResult('calcResult', 'calcCopyButton')">
+      Copy
+    </button>
 
-  </div>  <!-- Profit Margin Tool -->  <div class="section calculator-section" id="profitCalculator"><div class="calculator-title">
-  <h2>Profit Margin Tool</h2>
-</div>
+  </div>
 
-<p class="calculator-description">
-  Calculate your profit, margin, and markup from your costs and selling price.
-</p>
+  <div class="result" id="calcResult"></div>
 
-<input
-  type="text"
-  id="costPrice"
-  placeholder="Cost Price"
-  inputmode="decimal"
-  autocomplete="off"
->
+</section>
 
-<input
-  type="text"
-  id="sellingPrice"
-  placeholder="Selling Price"
-  inputmode="decimal"
-  autocomplete="off"
->
 
-<select id="profitCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+<!-- =========================
+     CURRENCY CONVERTER
+========================= -->
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('profitCalculator')">
-    Clear
-  </button>
+<section class="section" id="currencyCalculator">
 
-  <button type="button" class="calculate-button" onclick="calculateProfitMargin()">
-    Calculate
-  </button>
+  <div class="calculator-title">
+    <h2>Currency Converter</h2>
+  </div>
 
-  <button type="button" class="copy-button" id="profitCopyButton" onclick="copyResult('profitResult', 'profitCopyButton')">
-    Copy
-  </button>
-</div>
+  <p class="calculator-description">
+    Convert amounts between major world currencies.
+  </p>
 
-<div class="result" id="profitResult"></div>
+  <input
+    type="text"
+    id="amount"
+    placeholder="Enter amount"
+    inputmode="decimal"
+    autocomplete="off"
+  >
 
-  </div>  <!-- Markup Calculator -->  <div class="section calculator-section" id="markupCalculator"><div class="calculator-title">
-  <h2>Markup Calculator</h2>
-</div>
+  <select id="fromCurrency">
+    <option value="USD">USD — US Dollar</option>
+    <option value="NGN">NGN — Nigerian Naira</option>
+    <option value="EUR">EUR — Euro</option>
+    <option value="GBP">GBP — British Pound</option>
+    <option value="CAD">CAD — Canadian Dollar</option>
+    <option value="AUD">AUD — Australian Dollar</option>
+    <option value="JPY">JPY — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">INR — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
 
-<p class="calculator-description">
-  Calculate your markup and selling price from your cost.
-</p>
+  <select id="toCurrency">
+    <option value="USD">USD — US Dollar</option>
+    <option value="NGN">NGN — Nigerian Naira</option>
+    <option value="EUR">EUR — Euro</option>
+    <option value="GBP">GBP — British Pound</option>
+    <option value="CAD">CAD — Canadian Dollar</option>
+    <option value="AUD">AUD — Australian Dollar</option>
+    <option value="JPY">JPY — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">INR — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
 
-<input
-  type="text"
-  id="markupCostPrice"
-  placeholder="Cost Price"
-  inputmode="decimal"
-  autocomplete="off"
->
+  <div class="calculator-actions">
 
-<div class="percentage-input">
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('currencyCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="convertCurrency()">
+      Convert
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="currencyCopyButton"
+      onclick="copyResult('currencyResult', 'currencyCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="currencyResult"></div>
+
+</section>
+
+
+<!-- =========================
+     DISCOUNT CALCULATOR
+========================= -->
+
+<section class="section" id="discountCalculator">
+
+  <div class="calculator-title">
+    <h2>Discount Calculator</h2>
+  </div>
+
+  <p class="calculator-description">
+    Calculate discounts and find the final price after savings.
+  </p>
+
+  <input
+    type="text"
+    id="originalPrice"
+    placeholder="Original Price"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <div class="percentage-input">
+    <input
+      type="text"
+      id="discountPercent"
+      placeholder="Discount %"
+      inputmode="decimal"
+      autocomplete="off"
+    >
+    <span>%</span>
+  </div>
+
+  <select id="discountCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
+
+  <div class="calculator-actions">
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('discountCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateDiscount()">
+      Calculate Discount
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="discountCopyButton"
+      onclick="copyResult('discountResult', 'discountCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="discountResult"></div>
+
+</section>
+
+
+<!-- =========================
+     PROFIT MARGIN
+========================= -->
+
+<section class="section" id="profitCalculator">
+
+  <div class="calculator-title">
+    <h2>Profit Margin Tool</h2>
+  </div>
+
+  <p class="calculator-description">
+    Calculate your profit, margin, and markup from your costs and selling price.
+  </p>
+
+  <input
+    type="text"
+    id="costPrice"
+    placeholder="Cost Price"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <input
+    type="text"
+    id="sellingPrice"
+    placeholder="Selling Price"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <select id="profitCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
+
+  <div class="calculator-actions">
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('profitCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateProfitMargin()">
+      Calculate
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="profitCopyButton"
+      onclick="copyResult('profitResult', 'profitCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="profitResult"></div>
+
+</section>
+
+
+<!-- =========================
+     MARKUP
+========================= -->
+
+<section class="section" id="markupCalculator">
+
+  <div class="calculator-title">
+    <h2>Markup Calculator</h2>
+  </div>
+
+  <p class="calculator-description">
+    Calculate your markup and selling price from your cost.
+  </p>
+
+  <input
+    type="text"
+    id="markupCostPrice"
+    placeholder="Cost Price"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <div class="percentage-input">
+    <input
+      type="text"
+      id="markupRate"
+      placeholder="Markup %"
+      inputmode="decimal"
+      autocomplete="off"
+    >
+    <span>%</span>
+  </div>
+
+  <select id="markupCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
+
+  <div class="calculator-actions">
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('markupCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateMarkup()">
+      Calculate Markup
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="markupCopyButton"
+      onclick="copyResult('markupResult', 'markupCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="markupResult"></div>
+
+</section>
+
+
+<!-- =========================
+     ROI
+========================= -->
+
+<section class="section" id="roiCalculator">
+
+  <div class="calculator-title">
+    <h2>ROI Calculator</h2>
+  </div>
+
+  <p class="calculator-description">
+    Calculate your return on investment and see your profit or loss.
+  </p>
+
+  <input
+    type="text"
+    id="roiInitialInvestment"
+    placeholder="Initial Investment"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <input
+    type="text"
+    id="roiFinalValue"
+    placeholder="Final Value"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <select id="roiCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
+
+  <div class="calculator-actions">
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('roiCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateROI()">
+      Calculate ROI
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="roiCopyButton"
+      onclick="copyResult('roiResult', 'roiCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="roiResult"></div>
+
+</section>
+
+
+<!-- =========================
+     SAVINGS
+========================= -->
+
+<section class="section" id="savingsCalculator">
+
+  <div class="calculator-title">
+    <h2>Savings Calculator</h2>
+  </div>
+
+  <p class="calculator-description">
+    Estimate how much you can save based on your starting balance and monthly contributions.
+  </p>
+
+  <input
+    type="text"
+    id="startingSavings"
+    placeholder="Starting Savings"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <input
+    type="text"
+    id="monthlyContribution"
+    placeholder="Monthly Contribution"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
   <input
     type="number"
-    id="markupRate"
-    placeholder="Markup (%)"
-    step="any"
-    min="0"
+    id="savingsPeriod"
+    placeholder="Savings Period (Months)"
+    min="1"
+    step="1"
   >
-  <span>%</span>
-</div>
 
-<select id="markupCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+  <select id="savingsCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('markupCalculator')">
-    Clear
-  </button>
+  <div class="calculator-actions">
 
-  <button type="button" class="calculate-button" onclick="calculateMarkup()">
-    Calculate Markup
-  </button>
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('savingsCalculator')">
+      Clear
+    </button>
 
-  <button type="button" class="copy-button" id="markupCopyButton" onclick="copyResult('markupResult', 'markupCopyButton')">
-    Copy
-  </button>
-</div>
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateSavings()">
+      Calculate Savings
+    </button>
 
-<div class="result" id="markupResult"></div>
+    <button
+      type="button"
+      class="copy-button"
+      id="savingsCopyButton"
+      onclick="copyResult('savingsResult', 'savingsCopyButton')">
+      Copy
+    </button>
 
-  </div>  <!-- ROI Calculator -->  <div class="section calculator-section" id="roiCalculator"><div class="calculator-title">
-  <h2>ROI Calculator</h2>
-</div>
+  </div>
 
-<p class="calculator-description">
-  Calculate your return on investment and see your profit or loss.
-</p>
+  <div class="result" id="savingsResult"></div>
 
-<input
-  type="text"
-  id="roiInitialInvestment"
-  placeholder="Initial Investment"
-  inputmode="decimal"
-  autocomplete="off"
->
+</section>
 
-<input
-  type="text"
-  id="roiFinalValue"
-  placeholder="Final Value"
-  inputmode="decimal"
-  autocomplete="off"
->
 
-<select id="roiCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+<!-- =========================
+     LOAN
+========================= -->
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('roiCalculator')">
-    Clear
-  </button>
+<section class="section" id="loanCalculator">
 
-  <button type="button" class="calculate-button" onclick="calculateROI()">
-    Calculate ROI
-  </button>
+  <div class="calculator-title">
+    <h2>Loan/Payment Calculator</h2>
+  </div>
 
-  <button type="button" class="copy-button" id="roiCopyButton" onclick="copyResult('roiResult', 'roiCopyButton')">
-    Copy
-  </button>
-</div>
+  <p class="calculator-description">
+    Estimate your monthly loan payment, total repayment, and interest.
+  </p>
 
-<div class="result" id="roiResult"></div>
+  <input
+    type="text"
+    id="loanAmount"
+    placeholder="Loan Amount"
+    inputmode="decimal"
+    autocomplete="off"
+  >
 
-  </div>  <!-- Savings Calculator -->  <div class="section calculator-section" id="savingsCalculator"><div class="calculator-title">
-  <h2>Savings Calculator</h2>
-</div>
+  <div class="percentage-input">
+    <input
+      type="text"
+      id="loanInterestRate"
+      placeholder="Annual Interest Rate (%)"
+      inputmode="decimal"
+      autocomplete="off"
+    >
+    <span>%</span>
+  </div>
 
-<p class="calculator-description">
-  Estimate how much you can save based on your starting balance and monthly contributions.
-</p>
-
-<input
-  type="text"
-  id="startingSavings"
-  placeholder="Starting Savings"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<input
-  type="text"
-  id="monthlyContribution"
-  placeholder="Monthly Contribution"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<input
-  type="number"
-  id="savingsPeriod"
-  placeholder="Savings Period (Months)"
-  min="1"
-  step="1"
->
-
-<select id="savingsCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
-
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('savingsCalculator')">
-    Clear
-  </button>
-
-  <button type="button" class="calculate-button" onclick="calculateSavings()">
-    Calculate Savings
-  </button>
-
-  <button type="button" class="copy-button" id="savingsCopyButton" onclick="copyResult('savingsResult', 'savingsCopyButton')">
-    Copy
-  </button>
-</div>
-
-<div class="result" id="savingsResult"></div>
-
-  </div>  <!-- Loan/Payment Calculator -->  <div class="section calculator-section" id="loanCalculator"><div class="calculator-title">
-  <h2>Loan/Payment Calculator</h2>
-</div>
-
-<p class="calculator-description">
-  Estimate your monthly loan payment, total repayment, and interest.
-</p>
-
-<input
-  type="text"
-  id="loanAmount"
-  placeholder="Loan Amount"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<div class="percentage-input">
   <input
     type="number"
-    id="loanInterestRate"
-    placeholder="Interest Rate (%)"
-    min="0"
-    step="any"
+    id="loanTerm"
+    placeholder="Loan Term (Years)"
+    min="1"
+    step="1"
   >
-  <span>%</span>
-</div>
 
-<input
-  type="number"
-  id="loanTerm"
-  placeholder="Loan Term (Years)"
-  min="1"
-  step="1"
->
+  <select id="loanCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
 
-<select id="loanCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+  <div class="calculator-actions">
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('loanCalculator')">
-    Clear
-  </button>
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('loanCalculator')">
+      Clear
+    </button>
 
-  <button type="button" class="calculate-button" onclick="calculateLoan()">
-    Calculate Payment
-  </button>
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateLoan()">
+      Calculate Payment
+    </button>
 
-  <button type="button" class="copy-button" id="loanCopyButton" onclick="copyResult('loanResult', 'loanCopyButton')">
-    Copy
-  </button>
-</div>
+    <button
+      type="button"
+      class="copy-button"
+      id="loanCopyButton"
+      onclick="copyResult('loanResult', 'loanCopyButton')">
+      Copy
+    </button>
 
-<div class="result" id="loanResult"></div>
+  </div>
 
-  </div>  <!-- Commission Calculator -->  <div class="section calculator-section" id="commissionCalculator"><div class="calculator-title">
-  <h2>Commission Calculator</h2>
-</div>
+  <div class="result" id="loanResult"></div>
 
-<p class="calculator-description">
-  Calculate your commission earnings from a sale.
-</p>
+</section>
 
-<input
-  type="text"
-  id="salesAmount"
-  placeholder="Sales Amount"
-  inputmode="decimal"
-  autocomplete="off"
->
 
-<div class="percentage-input">
+<!-- =========================
+     COMMISSION
+========================= -->
+
+<section class="section" id="commissionCalculator">
+
+  <div class="calculator-title">
+    <h2>Commission Calculator</h2>
+  </div>
+
+  <p class="calculator-description">
+    Calculate your commission earnings from a sale.
+  </p>
+
+  <input
+    type="text"
+    id="salesAmount"
+    placeholder="Sales Amount"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <div class="percentage-input">
+    <input
+      type="text"
+      id="commissionRate"
+      placeholder="Commission %"
+      inputmode="decimal"
+      autocomplete="off"
+    >
+    <span>%</span>
+  </div>
+
+  <select id="commissionCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
+
+  <div class="calculator-actions">
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('commissionCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateCommission()">
+      Calculate Commission
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="commissionCopyButton"
+      onclick="copyResult('commissionResult', 'commissionCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="commissionResult"></div>
+
+</section>
+
+
+<!-- =========================
+     UNIT PRICE
+========================= -->
+
+<section class="section" id="unitPriceCalculator">
+
+  <div class="calculator-title">
+    <h2>Unit Price Calculator</h2>
+  </div>
+
+  <p class="calculator-description">
+    Calculate the price per unit from your total cost and quantity.
+  </p>
+
+  <input
+    type="text"
+    id="totalCost"
+    placeholder="Total Cost"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
   <input
     type="number"
-    id="commissionRate"
-    placeholder="Commission Rate (%)"
+    id="quantity"
+    placeholder="Quantity"
     step="any"
-    min="0"
   >
-  <span>%</span>
-</div>
 
-<select id="commissionCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+  <select id="unitPriceCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('commissionCalculator')">
-    Clear
-  </button>
+  <div class="calculator-actions">
 
-  <button type="button" class="calculate-button" onclick="calculateCommission()">
-    Calculate Commission
-  </button>
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('unitPriceCalculator')">
+      Clear
+    </button>
 
-  <button type="button" class="copy-button" id="commissionCopyButton" onclick="copyResult('commissionResult', 'commissionCopyButton')">
-    Copy
-  </button>
-</div>
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateUnitPrice()">
+      Calculate
+    </button>
 
-<div class="result" id="commissionResult"></div>
+    <button
+      type="button"
+      class="copy-button"
+      id="unitCopyButton"
+      onclick="copyResult('unitResult', 'unitCopyButton')">
+      Copy
+    </button>
 
-  </div>  <!-- Unit Price Calculator -->  <div class="section calculator-section" id="unitPriceCalculator"><div class="calculator-title">
-  <h2>Unit Price Calculator</h2>
-</div>
+  </div>
 
-<p class="calculator-description">
-  Calculate the price per unit from your total cost and quantity.
-</p>
+  <div class="result" id="unitResult"></div>
 
-<input
-  type="text"
-  id="totalCost"
-  placeholder="Total Cost"
-  inputmode="decimal"
-  autocomplete="off"
->
+</section>
 
-<input
-  type="number"
-  id="quantity"
-  placeholder="Quantity"
-  step="any"
->
 
-<select id="unitPriceCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+<!-- =========================
+     BREAK EVEN
+========================= -->
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('unitPriceCalculator')">
-    Clear
-  </button>
+<section class="section" id="breakEvenCalculator">
 
-  <button type="button" class="calculate-button" onclick="calculateUnitPrice()">
-    Calculate
-  </button>
+  <div class="calculator-title">
+    <h2>Break-even Calculator</h2>
+  </div>
 
-  <button type="button" class="copy-button" id="unitCopyButton" onclick="copyResult('unitResult', 'unitCopyButton')">
-    Copy
-  </button>
-</div>
+  <p class="calculator-description">
+    Find how many units you need to sell to cover your costs.
+  </p>
 
-<div class="result" id="unitResult"></div>
-
-  </div>  <!-- Break-even Calculator -->  <div class="section calculator-section" id="breakEvenCalculator"><div class="calculator-title">
-  <h2>Break-even Calculator</h2>
-</div>
-
-<p class="calculator-description">
-  Find how many units you need to sell to cover your costs.
-</p>
-
-<input
-  type="text"
-  id="fixedCosts"
-  placeholder="Fixed Cost"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<input
-  type="text"
-  id="variableCosts"
-  placeholder="Variable Cost per Unit"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<input
-  type="text"
-  id="sellingPriceUnit"
-  placeholder="Selling Price per Unit"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<select id="breakEvenCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
-
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('breakEvenCalculator')">
-    Clear
-  </button>
-
-  <button type="button" class="calculate-button" onclick="calculateBreakEven()">
-    Calculate
-  </button>
-
-  <button type="button" class="copy-button" id="breakEvenCopyButton" onclick="copyResult('breakEvenResult', 'breakEvenCopyButton')">
-    Copy
-  </button>
-</div>
-
-<div class="result" id="breakEvenResult"></div>
-
-  </div>  <!-- Tax Calculator -->  <div class="section calculator-section" id="taxCalculator"><div class="calculator-title">
-  <h2>Tax Calculator</h2>
-</div>
-
-<p class="calculator-description">
-  Calculate prices with tax added or work backward to remove tax.
-</p>
-
-<select id="taxMode">
-  <option value="add">Add Tax</option>
-  <option value="remove">Remove Tax</option>
-</select>
-
-<input
-  type="text"
-  id="taxPrice"
-  placeholder="Price"
-  inputmode="decimal"
-  autocomplete="off"
->
-
-<div class="percentage-input">
   <input
-    type="number"
-    id="taxRate"
-    placeholder="Tax Rate (%)"
-    step="any"
+    type="text"
+    id="fixedCosts"
+    placeholder="Fixed Cost"
+    inputmode="decimal"
+    autocomplete="off"
   >
-  <span>%</span>
-</div>
 
-<select id="taxCurrency">
-  <option value="USD">$ — US Dollar</option>
-  <option value="NGN">₦ — Nigerian Naira</option>
-  <option value="EUR">€ — Euro</option>
-  <option value="GBP">£ — British Pound</option>
-  <option value="CAD">C$ — Canadian Dollar</option>
-  <option value="AUD">A$ — Australian Dollar</option>
-  <option value="JPY">¥ — Japanese Yen</option>
-  <option value="CHF">CHF — Swiss Franc</option>
-  <option value="CNY">CNY — Chinese Yuan</option>
-  <option value="ZAR">ZAR — South African Rand</option>
-  <option value="INR">₹ — Indian Rupee</option>
-  <option value="AED">AED — UAE Dirham</option>
-</select>
+  <input
+    type="text"
+    id="variableCosts"
+    placeholder="Variable Cost per Unit"
+    inputmode="decimal"
+    autocomplete="off"
+  >
 
-<div class="calculator-actions">
-  <button type="button" class="clear-button" onclick="clearCalculator('taxCalculator')">
-    Clear
-  </button>
+  <input
+    type="text"
+    id="sellingPriceUnit"
+    placeholder="Selling Price per Unit"
+    inputmode="decimal"
+    autocomplete="off"
+  >
 
-  <button type="button" class="calculate-button" onclick="calculateTax()">
-    Calculate
-  </button>
+  <select id="breakEvenCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
 
-  <button type="button" class="copy-button" id="taxCopyButton" onclick="copyResult('taxResult', 'taxCopyButton')">
-    Copy
-  </button>
-</div>
+  <div class="calculator-actions">
 
-<div class="result" id="taxResult"></div>
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('breakEvenCalculator')">
+      Clear
+    </button>
 
-  </div>  <!-- Recent Calculations -->  <div class="section" id="historySection"><div class="history-header">
-  <h2>Recent Calculations</h2>
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateBreakEven()">
+      Calculate
+    </button>
 
-  <button type="button" id="clearHistoryButton" onclick="clearHistory()">
-    Clear History
-  </button>
-</div>
+    <button
+      type="button"
+      class="copy-button"
+      id="breakEvenCopyButton"
+      onclick="copyResult('breakEvenResult', 'breakEvenCopyButton')">
+      Copy
+    </button>
 
-<div id="calculationHistory" class="calculation-history">
-  <p class="history-empty">No calculations yet.</p>
-</div>
+  </div>
 
-  </div>  <!-- About Section -->  <div class="section" id="about"><h2>About Profitlator</h2>
+  <div class="result" id="breakEvenResult"></div>
 
-<p>
-  <strong>Who this is for:</strong>
-  Small businesses, online sellers, digital entrepreneurs, freelancers,
-  and anyone who wants to better understand their earnings.
-</p>
+</section>
 
-<p>
-  <strong>What it solves:</strong>
-  Complex pricing, confusing currency conversions, profit planning
-  and discount calculation — all in one tool.
-</p>
 
-<p>
-  <strong>Why use it:</strong>
-  It’s fast, simple, global, free, and designed to help you earn smarter.
-</p>
+<!-- =========================
+     TAX
+========================= -->
 
-  </div>  <!-- Share Buttons -->  <div class="share"><p><strong>Share Profitlator:</strong></p>
+<section class="section" id="taxCalculator">
 
-<div class="share-buttons">
-  <button type="button" onclick="share('whatsapp')">WhatsApp</button>
-  <button type="button" onclick="share('facebook')">Facebook</button>
-  <button type="button" onclick="share('x')">X</button>
-  <button type="button" onclick="share('instagram')">Instagram</button>
-</div>
+  <div class="calculator-title">
+    <h2>Tax Calculator</h2>
+  </div>
 
-  </div></main><footer>
-  <strong>Powered by Di-Gi</strong>
-</footer><script src="script.js"></script></body>
+  <p class="calculator-description">
+    Calculate prices with tax added or work backward to remove tax.
+  </p>
+
+  <select id="taxMode">
+    <option value="add">Add Tax</option>
+    <option value="remove">Remove Tax</option>
+  </select>
+
+  <input
+    type="text"
+    id="taxPrice"
+    placeholder="Price"
+    inputmode="decimal"
+    autocomplete="off"
+  >
+
+  <div class="percentage-input">
+    <input
+      type="text"
+      id="taxRate"
+      placeholder="Tax Rate (%)"
+      inputmode="decimal"
+      autocomplete="off"
+    >
+    <span>%</span>
+  </div>
+
+  <select id="taxCurrency">
+    <option value="USD">$ — US Dollar</option>
+    <option value="NGN">₦ — Nigerian Naira</option>
+    <option value="EUR">€ — Euro</option>
+    <option value="GBP">£ — British Pound</option>
+    <option value="CAD">C$ — Canadian Dollar</option>
+    <option value="AUD">A$ — Australian Dollar</option>
+    <option value="JPY">¥ — Japanese Yen</option>
+    <option value="CHF">CHF — Swiss Franc</option>
+    <option value="CNY">CNY — Chinese Yuan</option>
+    <option value="ZAR">ZAR — South African Rand</option>
+    <option value="INR">₹ — Indian Rupee</option>
+    <option value="AED">AED — UAE Dirham</option>
+  </select>
+
+  <div class="calculator-actions">
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCalculator('taxCalculator')">
+      Clear
+    </button>
+
+    <button
+      type="button"
+      class="calculate-button"
+      onclick="calculateTax()">
+      Calculate
+    </button>
+
+    <button
+      type="button"
+      class="copy-button"
+      id="taxCopyButton"
+      onclick="copyResult('taxResult', 'taxCopyButton')">
+      Copy
+    </button>
+
+  </div>
+
+  <div class="result" id="taxResult"></div>
+
+</section>
+
+
+<!-- =========================
+     HISTORY
+========================= -->
+
+<section class="section">
+
+  <div class="history-header">
+    <h2>Recent Calculations</h2>
+
+    <button type="button" onclick="clearHistory()">
+      Clear History
+    </button>
+  </div>
+
+  <div
+    class="calculation-history"
+    id="calculationHistory">
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section class="section">
+
+  <h2>About Profitlator</h2>
+
+  <p>
+    <strong>Who this is for:</strong><br>
+    Small businesses, online sellers, digital entrepreneurs,
+    freelancers, and anyone who wants to better understand their earnings.
+  </p>
+
+  <p>
+    <strong>What it solves:</strong><br>
+    Complex pricing, confusing currency conversions, profit planning
+    and discount calculation — all in one tool.
+  </p>
+
+  <p>
+    <strong>Why use it:</strong><br>
+    It’s fast, simple, global, free, and designed to help you earn smarter.
+  </p>
+
+</section>
+
+
+<!-- =========================
+     SHARE
+========================= -->
+
+<section class="section share">
+
+  <h2>Share Profitlator</h2>
+
+  <div class="share-buttons">
+
+    <button type="button" onclick="share('whatsapp')">
+      WhatsApp
+    </button>
+
+    <button type="button" onclick="share('facebook')">
+      Facebook
+    </button>
+
+    <button type="button" onclick="share('x')">
+      X
+    </button>
+
+    <button type="button" onclick="share('instagram')">
+      Instagram
+    </button>
+
+  </div>
+
+</section>
+
+
+<footer>
+  Powered by Di-Gi
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
 </html>
