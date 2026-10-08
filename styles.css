@@ -197,40 +197,37 @@ button:active {
 /* =========================
    CALCULATOR ACTIONS
 
-   Calculate = top row
-   Clear + Copy = bottom row
+   ALL BUTTONS ON ONE ROW
+   Clear | Calculate | Copy
 ========================= */
 
 .calculator-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "calculate calculate"
-    "clear copy";
-  gap: 0.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   width: 100%;
   margin: 0.55rem 0 0;
 }
 
-.calculator-actions .calculate-button {
-  grid-area: calculate;
-  justify-self: center;
-  width: auto;
-  min-width: 120px;
-}
-
-.calculator-actions .clear-button {
-  grid-area: clear;
-  justify-self: end;
-  width: 100%;
-  max-width: 100px;
-}
-
+.calculator-actions .clear-button,
+.calculator-actions .calculate-button,
 .calculator-actions .copy-button {
-  grid-area: copy;
-  justify-self: start;
-  width: 100%;
-  max-width: 100px;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.calculator-actions .clear-button,
+.calculator-actions .copy-button {
+  max-width: 82px;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.78rem;
+}
+
+.calculator-actions .calculate-button {
+  min-width: 105px;
 }
 
 
@@ -240,11 +237,7 @@ button:active {
 
 .copy-button,
 .clear-button {
-  min-width: 0;
   min-height: 32px;
-  margin: 0;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.8rem;
   border-radius: 5px;
 }
 
@@ -506,28 +499,25 @@ footer {
   /* Action buttons */
 
   .calculator-actions {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "calculate calculate"
-      "clear copy";
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.4rem;
     margin-top: 0.5rem;
   }
 
-  .calculator-actions .calculate-button {
-    min-width: 110px;
-    min-height: 38px;
-    padding: 0.45rem 0.7rem;
-    font-size: 0.86rem;
-  }
-
   .calculator-actions .clear-button,
   .calculator-actions .copy-button {
-    max-width: 90px;
-    min-width: 0;
-    min-height: 34px;
-    padding: 0.35rem 0.45rem;
-    font-size: 0.8rem;
+    max-width: 75px;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.76rem;
+  }
+
+  .calculator-actions .calculate-button {
+    min-width: 100px;
+    min-height: 38px;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.84rem;
   }
 
 
@@ -671,28 +661,28 @@ footer {
   }
 
 
+  /* Keep all three calculator buttons on ONE row */
+
   .calculator-actions {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "calculate calculate"
-      "clear copy";
-    gap: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .calculator-actions .clear-button,
+  .calculator-actions .copy-button {
+    max-width: 65px;
+    padding: 0.28rem 0.3rem;
+    min-height: 32px;
+    font-size: 0.72rem;
   }
 
   .calculator-actions .calculate-button {
-    min-width: 95px;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    font-size: 0.8rem;
-  }
-
-  .copy-button,
-  .clear-button {
-    min-width: 0;
-    max-width: 82px;
-    width: 100%;
-    padding: 0.32rem 0.4rem;
-    min-height: 33px;
+    min-width: 90px;
+    min-height: 36px;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
     font-size: 0.78rem;
   }
 
