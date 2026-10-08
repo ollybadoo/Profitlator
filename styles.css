@@ -17,6 +17,14 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
+.header-logo {
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin: 0.2rem auto 0.8rem;
+}
+
 .tagline {
   font-size: 1.1rem;
   font-weight: bold;
