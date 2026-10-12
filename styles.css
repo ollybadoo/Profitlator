@@ -23,8 +23,8 @@ h1 {
 
 .header-logo {
   display: block;
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   margin: 0.2rem auto 0.8rem;
 }
