@@ -1194,3 +1194,12 @@ document.addEventListener('DOMContentLoaded', () => {
   arrangeCalculatorButtons();
   renderHistory();
 });
+
+/* Make calculator functions explicitly available to interpretations.js */
+window.calculateDiscount = calculateDiscount;
+window.calculateProfitMargin = calculateProfitMargin;
+window.calculateMarkup = calculateMarkup;
+window.calculateROI = calculateROI;
+window.calculateSavings = calculateSavings;
+window.calculateLoan = calculateLoan;
+window.calculateBreakEven = calculateBreakEven;
