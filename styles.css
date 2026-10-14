@@ -23,24 +23,27 @@ h1 {
 
 .header-logo {
   display: block;
-  max-width: 25%;   /* scales relative to header width */
+  max-width: 70%;   /* much larger baseline */
   height: auto;     /* keeps proportions */
   object-fit: contain;
-  margin: 0.2rem auto 0.8rem;
+  margin: 0.5rem auto 1rem;
 }
 
 /* Mobile adjustments */
 @media (max-width: 600px) {
   .header-logo {
-    max-width: 35%;  /* slightly larger on smaller screens */
+    max-width: 85%;  /* nearly full width on smaller screens */
+    height: auto;
   }
 }
 
 @media (max-width: 380px) {
   .header-logo {
-    max-width: 45%;  /* even larger for very small phones */
+    max-width: 95%;  /* fills almost the entire header on very small phones */
+    height: auto;
   }
 }
+ 
 }
 
 .tagline {
