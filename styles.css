@@ -23,10 +23,24 @@ h1 {
 
 .header-logo {
   display: block;
-  width: 80px;
-  height: 80px;
+  max-width: 25%;   /* scales relative to header width */
+  height: auto;     /* keeps proportions */
   object-fit: contain;
   margin: 0.2rem auto 0.8rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .header-logo {
+    max-width: 35%;  /* slightly larger on smaller screens */
+  }
+}
+
+@media (max-width: 380px) {
+  .header-logo {
+    max-width: 45%;  /* even larger for very small phones */
+  }
+}
 }
 
 .tagline {
