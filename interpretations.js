@@ -231,7 +231,7 @@
         return 'You have recovered the initial amount, so the return is 0%. Fees, taxes, inflation and time invested can affect the real result.';
       }
 
-      return `Your investment gained ${money(g, 'roiCurrency')}, a return of ${pct(r)} on the starting amount. This excludes fees, taxes and inflation. Track risk as well as return—you are learning to assess results more clearly.`;
+      return `Your investment gained ${money(g, 'roiCurrency')}, a return of ${pct(r)} on the starting amount. This excludes fees, taxes and inflation. Every result is a chance to learn and make informed decisions.`;
     });
 
     wrap('calculateSavings', 'savingsResult', () => {
@@ -249,7 +249,7 @@
           : `Your projection is ${money(total, 'savingsCurrency')} of your ${money(g, 'savingsCurrency')} goal. You still need ${money(rem, 'savingsCurrency')}. At the same contribution, that is about ${m > 0 ? Math.ceil(rem / m) + ' extra month(s)' : 'more regular contributions'}. Small consistent deposits add up.`;
       }
 
-      return `You could save ${money(total, 'savingsCurrency')} in ${t} months, excluding interest. Add a savings goal to track progress, and choose a contribution you can maintain comfortably. Every consistent step counts.`;
+      return `You could save ${money(total, 'savingsCurrency')} in ${t} months, excluding interest. Add a savings goal to track progress, and choose a contribution you can maintain comfortably. Small consistent steps can move you towards your goal.`;
     }, addSavingsGoal);
 
     wrap('calculateLoan', 'loanResult', () => {
@@ -264,7 +264,7 @@
           (Math.pow(1 + rate, count) - 1);
       const interest = p * count - a;
 
-      return `The estimated payment is ${money(p, 'loanCurrency')} each month, with about ${money(interest, 'loanCurrency')} in total interest. Check whether the payment fits after essential expenses, and compare lender fees and terms. Borrow only what you can reasonably repay.`;
+      return `The estimated payment is ${money(p, 'loanCurrency')} each month, with about ${money(interest, 'loanCurrency')} in total interest. Check whether the payment fits after essential expenses, and compare lender fees and terms. Planning ahead is a smart step toward borrowing responsibly.`;
     });
 
     wrap('calculateBreakEven', 'breakEvenResult', () => {
@@ -295,7 +295,7 @@
         return `The customer saves ${money(saved, 'discountCurrency')}. Your discounted price is ${money(final - c, 'discountCurrency')} above your stated cost, before other expenses. Check fees and overheads before deciding whether the discount works for you.`;
       }
 
-      return `The customer saves ${money(saved, 'discountCurrency')} and pays ${money(final, 'discountCurrency')}. Add your cost price above to check whether the offer still covers your cost. Clear pricing helps both you and your customer.`;
+      return `The customer saves ${money(saved, 'discountCurrency')} and pays ${money(final, 'discountCurrency')}. Add your cost price above to check whether the offer still covers your cost. Great pricing balances customer value with business sustainability.`;
     }, addDiscountWarning);
 
     document.querySelectorAll('.clear-button[onclick*="clearCalculator"]').forEach(btn => {
