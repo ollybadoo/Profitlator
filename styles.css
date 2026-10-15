@@ -43,24 +43,39 @@ h1 {
 }
 
 /* =========================
-   PROFYNCE BRAND BAR
+   FLOATING PROFYNCE BRAND BAR
 ========================= */
 
 .brand-bar {
-  width: 100%;
+  position: sticky;
+  top: 10px;
+  z-index: 1000;
+
+  width: calc(100% - 32px);
+  max-width: 1100px;
   height: 64px;
   box-sizing: border-box;
-  background: #ffffff;
+
+  margin: 10px auto 14px;
+  padding: 6px 18px;
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 6px 20px;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 3px 12px rgba(15, 39, 71, 0.08);
+
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(210, 224, 240, 0.9);
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 24px rgba(15, 39, 71, 0.12),
+    0 2px 6px rgba(15, 39, 71, 0.05);
+
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
-/* Logo icon + wordmark together */
+/* Logo and wordmark */
 .brand-lockup {
   display: inline-flex;
   align-items: center;
@@ -71,29 +86,29 @@ h1 {
   flex-shrink: 0;
 }
 
-/* Custom SVG growth logo */
+/* Temporary custom SVG icon sizing */
 .brand-icon {
   display: block;
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
-  overflow: visible;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
 }
 
-/* Gradient Profynce text */
+/* Gradient wordmark */
 .brand-wordmark {
   display: inline-block;
-  padding: 0;
   margin: 0;
+  padding: 0;
+
   font-family: 'Segoe UI', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-size: clamp(1.7rem, 4vw, 2.1rem);
   font-weight: 800;
   letter-spacing: -1.2px;
   line-height: 1;
   white-space: nowrap;
 
   background: linear-gradient(
-    to bottom,
+    180deg,
     #39a9ff 0%,
     #1678d4 48%,
     #003f91 100%
@@ -109,6 +124,58 @@ h1 {
 
 .brand-lockup:hover .brand-wordmark {
   filter: brightness(1.12);
+}
+
+/* Keep the blue header visually separate */
+header.site-header {
+  margin-top: 0;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .brand-bar {
+    top: 8px;
+    width: calc(100% - 20px);
+    height: 56px;
+    margin: 8px auto 12px;
+    padding: 5px 12px;
+    border-radius: 15px;
+  }
+
+  .brand-lockup {
+    gap: 7px;
+  }
+
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .brand-wordmark {
+    font-size: 1.75rem;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .brand-bar {
+    width: calc(100% - 16px);
+    height: 53px;
+    padding: 4px 10px;
+    border-radius: 13px;
+  }
+
+  .brand-icon {
+    width: 37px;
+    height: 37px;
+    flex-basis: 37px;
+  }
+
+  .brand-wordmark {
+    font-size: 1.6rem;
+    letter-spacing: -0.9px;
+  }
 }
 
 /* =========================
