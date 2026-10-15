@@ -1,3 +1,4 @@
+
 /* =========================
    GENERAL
 ========================= */
@@ -21,31 +22,6 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
-.header-logo {
-  display: block;
-  max-width: 70%;   /* much larger baseline */
-  height: auto;     /* keeps proportions */
-  object-fit: contain;
-  margin: 0.5rem auto 1rem;
-}
-
-/* Mobile adjustments */
-@media (max-width: 600px) {
-  .header-logo {
-    max-width: 85%;  /* nearly full width on smaller screens */
-    height: auto;
-  }
-}
-
-@media (max-width: 380px) {
-  .header-logo {
-    max-width: 95%;  /* fills almost the entire header on very small phones */
-    height: auto;
-  }
-}
- 
-}
-
 .tagline {
   font-size: 1.1rem;
   font-weight: bold;
@@ -65,6 +41,72 @@ h1 {
 .section h2 {
   margin-top: 0;
   color: #0056b3;
+}
+
+
+/* =========================
+   PROFYNCE BRAND BAR
+========================= */
+
+.brand-bar {
+  width: 100%;
+  min-height: 76px;
+  box-sizing: border-box;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px 24px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 3px 12px rgba(15, 39, 71, 0.08);
+}
+
+.brand-wordmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  color: #0056b3;
+  background: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  line-height: 1.2;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.brand-wordmark:hover {
+  color: #007bff;
+}
+
+/* BLUE HEADER UNDER THE WHITE BRAND BAR */
+
+header.site-header {
+  width: 100%;
+  box-sizing: border-box;
+  background: #0056b3;
+  color: #ffffff;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin: 0;
+  border-radius: 0;
+}
+
+header.site-header h1 {
+  font-size: 2.5rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+header.site-header .tagline {
+  font-size: 1.1rem;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 0;
 }
 
 
@@ -213,9 +255,6 @@ button:active {
 
 /* =========================
    CALCULATOR ACTIONS
-
-   All three buttons stay
-   on ONE horizontal line.
 ========================= */
 
 .calculator-actions {
@@ -438,20 +477,24 @@ footer {
 
 @media (max-width: 600px) {
 
-  header {
+  .brand-bar {
+    min-height: 66px;
+    padding: 8px 16px;
+  }
+
+  .brand-wordmark {
+    font-size: 1.85rem;
+  }
+
+  header.site-header {
     padding: 1.5rem 1rem;
   }
 
-  h1 {
+  header.site-header h1 {
     font-size: 2rem;
   }
 
-  .header-logo {
-    width: 68px;
-    height: 68px;
-  }
-
-  .tagline {
+  header.site-header .tagline {
     font-size: 1rem;
     line-height: 1.5;
   }
@@ -467,7 +510,6 @@ footer {
     line-height: 1.3;
     margin-bottom: 1rem;
   }
-
 
   /* Explore */
 
@@ -499,7 +541,6 @@ footer {
     border-radius: 7px;
   }
 
-
   /* Inputs */
 
   input,
@@ -509,7 +550,6 @@ footer {
     margin: 0.4rem 0;
     padding: 0.7rem;
   }
-
 
   /* Action buttons */
 
@@ -533,7 +573,6 @@ footer {
     font-size: 0.8rem;
   }
 
-
   /* Operations */
 
   .operation-buttons {
@@ -547,7 +586,6 @@ footer {
     font-size: 1.1rem;
   }
 
-
   /* Results */
 
   .result {
@@ -556,7 +594,6 @@ footer {
     font-size: 1rem;
     line-height: 1.55;
   }
-
 
   /* Percentage */
 
@@ -567,7 +604,6 @@ footer {
   .percentage-input input {
     min-height: 46px;
   }
-
 
   /* History */
 
@@ -603,7 +639,6 @@ footer {
     line-height: 1.5;
   }
 
-
   /* Share */
 
   .share-buttons {
@@ -628,6 +663,19 @@ footer {
 
 @media (max-width: 380px) {
 
+  .brand-bar {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .brand-wordmark {
+    font-size: 1.7rem;
+  }
+
+  header.site-header .tagline {
+    font-size: 0.95rem;
+  }
+
   .section {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
@@ -638,11 +686,6 @@ footer {
     font-size: 1.8rem;
   }
 
-  .header-logo {
-    width: 64px;
-    height: 64px;
-  }
-
   .tagline {
     font-size: 0.95rem;
   }
@@ -650,7 +693,6 @@ footer {
   .section h2 {
     font-size: 1.25rem;
   }
-
 
   .calculator-navigation {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -664,7 +706,6 @@ footer {
     border-radius: 7px;
   }
 
-
   .operation-buttons {
     gap: 0.3rem;
   }
@@ -674,8 +715,7 @@ footer {
     min-height: 42px;
   }
 
-
-  /* Keep all three buttons on one level */
+  /* Keep all three calculator buttons on one line */
 
   .calculator-actions {
     display: flex;
@@ -696,7 +736,6 @@ footer {
     font-size: 0.75rem;
   }
 
-
   .history-header {
     align-items: flex-start;
   }
@@ -709,7 +748,6 @@ footer {
     font-size: 0.85rem;
   }
 
-
   .share-buttons {
     gap: 0.3rem;
   }
@@ -717,27 +755,5 @@ footer {
   .share-buttons button {
     padding: 0.38rem 0.55rem;
     font-size: 0.82rem;
-  }
-}
-
-/* PROFYNCE HORIZONTAL WORDMARK */
-.header-logo {
-  display: block;
-  width: min(420px, 90vw);
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  margin: 0.5rem auto 1rem;
-}
-
-@media (max-width: 600px) {
-  .header-logo {
-    width: min(340px, 90vw);
-  }
-}
-
-@media (max-width: 380px) {
-  .header-logo {
-    width: 90vw;
   }
 }
