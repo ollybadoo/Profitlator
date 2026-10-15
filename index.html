@@ -19,15 +19,61 @@
 
 <body>
 
-
-<!-- WHITE BRAND BAR -->
+<!-- WHITE PROFYNCE BRAND BAR -->
 <div class="brand-bar">
-  <a href="./" class="brand-wordmark" aria-label="Profynce home">
-    Profynce
+  <a href="./" class="brand-lockup" aria-label="Profynce home">
+
+    <!-- Custom Profynce Growth Logo -->
+    <svg
+      class="brand-icon"
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Profynce growth logo"
+    >
+      <defs>
+        <linearGradient id="profynceIconGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#39a9ff"/>
+          <stop offset="100%" stop-color="#0046a8"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Bold P symbol -->
+      <path
+        d="M10 56 V9 H31 C44 9 51 16 51 27
+           C51 38 43 44 31 44 H21 V56 Z
+           M21 19 V34 H31 C37 34 40 32 40 26
+           C40 21 37 19 31 19 Z"
+        fill="url(#profynceIconGradient)"
+        fill-rule="evenodd"
+      />
+
+      <!-- Ascending business growth bars -->
+      <path
+        d="M23 39 H28 V47 H23 Z
+           M31 34 H36 V47 H31 Z
+           M39 28 H44 V47 H39 Z"
+        fill="#ffffff"
+      />
+
+      <!-- Upward growth arrow -->
+      <path
+        d="M36 24 L47 13 M38 13 H47 V22"
+        fill="none"
+        stroke="#1688ed"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+
+    <!-- Gradient Profynce wordmark -->
+    <span class="brand-wordmark">Profynce</span>
+
   </a>
 </div>
 
-<!-- MAIN BLUE HEADER -->
+<!-- MAIN BLUE HEADER: KEEP THIS BELOW THE BRAND BAR -->
 <header class="site-header">
   <h1>Profynce</h1>
 
