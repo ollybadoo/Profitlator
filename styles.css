@@ -719,3 +719,25 @@ footer {
     font-size: 0.82rem;
   }
 }
+
+/* PROFYNCE HORIZONTAL WORDMARK */
+.header-logo {
+  display: block;
+  width: min(420px, 90vw);
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.5rem auto 1rem;
+}
+
+@media (max-width: 600px) {
+  .header-logo {
+    width: min(340px, 90vw);
+  }
+}
+
+@media (max-width: 380px) {
+  .header-logo {
+    width: 90vw;
+  }
+}
