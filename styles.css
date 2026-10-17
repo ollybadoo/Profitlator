@@ -142,6 +142,21 @@ h1 {
 
 
 /* =========================
+   HEADER LOGO
+========================= */
+
+.header-logo {
+  display: block;
+  width: 55px;
+  height: 55px;
+  max-width: 100%;
+  object-fit: contain;
+  margin: 0 auto 8px;
+  background: transparent;
+}
+
+
+/* =========================
    BLUE HEADER UNDER BRAND
 ========================= */
 
