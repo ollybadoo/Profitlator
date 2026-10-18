@@ -143,8 +143,8 @@ h1 {
 
 .brand-logo {
   display: block;
-  width: 55px;
-  height: 55px;
+  width: auto;
+  height: 60px;
   max-width: 100%;
   object-fit: contain;
   margin: 0 auto 8px;
