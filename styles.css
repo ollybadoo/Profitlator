@@ -656,25 +656,26 @@ footer {
     margin-bottom: 1rem;
   }
 
+
 /* =========================
    PROFYNCE SMART SCROLL CONTROLS
 ========================= */
 
 .smart-scroll-controls {
   position: fixed;
-  right: 16px;
-  bottom: 24px;
+  right: 10px;
+  top: 50%;
   z-index: 999;
 
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 7px;
 
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 
-  transform: translateY(8px);
+  transform: translateY(calc(-50% + 8px));
 
   transition:
     opacity 0.22s ease,
@@ -686,29 +687,28 @@ footer {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateY(-50%);
 }
 
 .smart-scroll-controls button {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   border: 1px solid #dce8f6;
-  border-radius: 14px;
+  border-radius: 11px;
 
   background: #ffffff;
   color: #1268bd;
 
-  box-shadow:
-    0 5px 16px rgba(0, 55, 120, 0.14),
-    0 2px 5px rgba(0, 55, 120, 0.06);
+  box-shadow: 0 3px 10px rgba(0, 55, 120, 0.12);
 
   font-family: inherit;
-  font-size: 25px;
+  font-size: 21px;
   font-weight: 700;
   line-height: 1;
 
@@ -724,7 +724,7 @@ footer {
 .smart-scroll-controls button:hover {
   background: #1268bd;
   color: #ffffff;
-  box-shadow: 0 7px 18px rgba(18, 104, 189, 0.24);
+  box-shadow: 0 5px 12px rgba(18, 104, 189, 0.2);
 }
 
 .smart-scroll-controls button:active {
@@ -733,20 +733,20 @@ footer {
 
 .smart-scroll-controls button:focus-visible {
   outline: 3px solid #79baff;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 @media (max-width: 600px) {
   .smart-scroll-controls {
-    right: 12px;
-    bottom: 18px;
-    gap: 8px;
+    right: 7px;
+    gap: 6px;
   }
 
   .smart-scroll-controls button {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    font-size: 20px;
   }
 }
 
@@ -756,6 +756,7 @@ footer {
     transition: none;
   }
 }
+
    
 
   /* Explore */
