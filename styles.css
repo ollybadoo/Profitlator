@@ -656,6 +656,107 @@ footer {
     margin-bottom: 1rem;
   }
 
+/* =========================
+   PROFYNCE SMART SCROLL CONTROLS
+========================= */
+
+.smart-scroll-controls {
+  position: fixed;
+  right: 16px;
+  bottom: 24px;
+  z-index: 999;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(8px);
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s ease;
+}
+
+.smart-scroll-controls.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.smart-scroll-controls button {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dce8f6;
+  border-radius: 14px;
+
+  background: #ffffff;
+  color: #1268bd;
+
+  box-shadow:
+    0 5px 16px rgba(0, 55, 120, 0.14),
+    0 2px 5px rgba(0, 55, 120, 0.06);
+
+  font-family: inherit;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.smart-scroll-controls button:hover {
+  background: #1268bd;
+  color: #ffffff;
+  box-shadow: 0 7px 18px rgba(18, 104, 189, 0.24);
+}
+
+.smart-scroll-controls button:active {
+  transform: scale(0.94);
+}
+
+.smart-scroll-controls button:focus-visible {
+  outline: 3px solid #79baff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .smart-scroll-controls {
+    right: 12px;
+    bottom: 18px;
+    gap: 8px;
+  }
+
+  .smart-scroll-controls button {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smart-scroll-controls,
+  .smart-scroll-controls button {
+    transition: none;
+  }
+}
+   
 
   /* Explore */
 
