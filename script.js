@@ -1114,7 +1114,7 @@ function setupSmartScrollControls() {
 
     scrollControlsTimeout = setTimeout(() => {
       controls.classList.remove('is-visible');
-    }, 1800);
+    }, 2800);
   }
 
   // Show controls only after scrolling starts.
@@ -1153,7 +1153,8 @@ function setupSmartScrollControls() {
     if (!calculator) return;
 
     hasUsedCalculator = true;
-    activeCalculatorId = calculator.id;
+activeCalculatorId = calculator.id;
+showScrollControls();
   });
 }
 
