@@ -379,7 +379,6 @@ function calculateDiscount() {
 
   addToHistory('Discount Calculator', historyDetails);
 }
-}
 
 /* =========================
    PROFIT MARGIN
