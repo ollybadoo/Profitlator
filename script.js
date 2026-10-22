@@ -1014,6 +1014,150 @@ function scrollToCalculator(calculatorId) {
 }
 
 /* =========================
+   SMART PAGE NAVIGATION
+========================= */
+
+let hasUsedCalculator = false;
+let activeCalculatorId = null;
+let scrollControlsTimeout = null;
+
+function getCalculatorSections() {
+  return Array.from(
+    document.querySelectorAll('.section[id]')
+  );
+}
+
+function getExploreSection() {
+  return document.querySelector('.explore-section');
+}
+
+function scrollToPageTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+function scrollToPageBottom() {
+  window.scrollTo({
+    top: Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    ),
+    behavior: 'smooth'
+  });
+}
+
+function scrollToExploreCalculators() {
+  const explore = getExploreSection();
+
+  if (!explore) {
+    scrollToPageTop();
+    return;
+  }
+
+  explore.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+}
+
+function scrollToNextCalculator() {
+  const calculators = getCalculatorSections();
+
+  if (calculators.length === 0) {
+    scrollToPageBottom();
+    return;
+  }
+
+  const currentIndex = calculators.findIndex(
+    section => section.id === activeCalculatorId
+  );
+
+  // If no current tool is known, go to the first calculator.
+  if (currentIndex === -1) {
+    calculators[0].scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    return;
+  }
+
+  // Move to the next calculator in the page.
+  const nextCalculator = calculators[currentIndex + 1];
+
+  if (nextCalculator) {
+    nextCalculator.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  } else {
+    // After the final calculator, continue to the page bottom.
+    scrollToPageBottom();
+  }
+}
+
+function setupSmartScrollControls() {
+  const controls = document.getElementById(
+    'smartScrollControls'
+  );
+
+  const upButton = document.getElementById('smartScrollUp');
+  const downButton = document.getElementById('smartScrollDown');
+
+  if (!controls || !upButton || !downButton) return;
+
+  function showScrollControls() {
+    controls.classList.add('is-visible');
+
+    clearTimeout(scrollControlsTimeout);
+
+    scrollControlsTimeout = setTimeout(() => {
+      controls.classList.remove('is-visible');
+    }, 1800);
+  }
+
+  // Show controls only after scrolling starts.
+  window.addEventListener('scroll', showScrollControls, {
+    passive: true
+  });
+
+  upButton.addEventListener('click', () => {
+    if (hasUsedCalculator) {
+      scrollToExploreCalculators();
+    } else {
+      scrollToPageTop();
+    }
+  });
+
+  downButton.addEventListener('click', () => {
+    if (hasUsedCalculator) {
+      scrollToNextCalculator();
+    } else {
+      scrollToPageBottom();
+    }
+  });
+
+  // Track actual calculator action buttons, not ordinary scrolling.
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+
+    const actionButton = event.target.closest(
+      '.calculate-button'
+    );
+
+    if (!actionButton) return;
+
+    const calculator = actionButton.closest('.section[id]');
+
+    if (!calculator) return;
+
+    hasUsedCalculator = true;
+    activeCalculatorId = calculator.id;
+  });
+}
+
+/* =========================
    CLEAR CALCULATOR
 ========================= */
 
