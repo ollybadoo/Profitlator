@@ -299,9 +299,15 @@ function getCurrencyDisplay(currency) {
    DISCOUNT
 ========================= */
 
+
 function calculateDiscount() {
   const price = getNumber('originalPrice');
   const percent = getNumber('discountPercent');
+  const costInput = getElement('discountCostPrice');
+  const costPrice = costInput && costInput.value.trim() !== ''
+    ? getNumber('discountCostPrice')
+    : null;
+
   const currencyCode = getValue('discountCurrency');
   const currency = getCurrencyDisplay(currencyCode);
   const resultBox = getElement('discountResult');
@@ -321,22 +327,58 @@ function calculateDiscount() {
     return;
   }
 
+  if (
+    costPrice !== null &&
+    (!Number.isFinite(costPrice) || costPrice < 0)
+  ) {
+    resultBox.textContent =
+      'Please enter a valid cost price or leave it empty.';
+    return;
+  }
+
   const discountAmount = price * percent / 100;
   const finalPrice = price - discountAmount;
 
   const formattedDiscount = formatNumber(discountAmount, 2);
   const formattedFinalPrice = formatNumber(finalPrice, 2);
 
-  resultBox.innerHTML =
+  let resultHTML =
     `Discount amount: ${currency} ${formattedDiscount}<br>` +
     `Final price: ${currency} ${formattedFinalPrice}`;
 
+  let historyDetails =
+    `Original: ${currency} ${formatNumber(price)} | ` +
+    `Discount: ${percent}% → Final price: ${currency} ${formattedFinalPrice}`;
+
+  if (costPrice !== null) {
+    const profitLoss = finalPrice - costPrice;
+    const formattedProfitLoss = formatNumber(
+      Math.abs(profitLoss),
+      2
+    );
+
+    let status;
+
+    if (profitLoss > 0) {
+      status = `Profit after discount: ${currency} ${formattedProfitLoss}`;
+    } else if (profitLoss < 0) {
+      status = `Loss after discount: ${currency} ${formattedProfitLoss}`;
+    } else {
+      status = 'Break-even: No profit or loss after discount.';
+    }
+
+    resultHTML += `<br>${status}`;
+
+    historyDetails +=
+      ` | Cost: ${currency} ${formatNumber(costPrice)} | ${status}`;
+  }
+
+  resultBox.innerHTML = resultHTML;
+
   showCopyButton('discountCopyButton');
 
-  addToHistory(
-    'Discount Calculator',
-    `Original: ${currency} ${formatNumber(price)} | Discount: ${percent}% → Final price: ${currency} ${formattedFinalPrice}`
-  );
+  addToHistory('Discount Calculator', historyDetails);
+}
 }
 
 /* =========================
