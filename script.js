@@ -1337,6 +1337,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFormattedInputs();
   arrangeCalculatorButtons();
   renderHistory();
+  setupSmartScrollControls();
 });
 
 /* Make calculator functions explicitly available to interpretations.js */
