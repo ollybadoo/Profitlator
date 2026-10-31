@@ -917,7 +917,7 @@ function setupFormattedInputs() {
   const monetaryInputIds = [
     'amount',
     'originalPrice',
-    'discountCostPrice'
+    'discountCostPrice',
     'costPrice',
     'sellingPrice',
     'markupCostPrice',
@@ -1396,64 +1396,6 @@ function setupSmartScrollControls() {
     // Start a fresh navigation sequence after calculator use.
     lastNavigationDirection = null;
     navigationTapCount = 0;
-
-    showScrollControls();
-  });
-}
-
-
-function setupSmartScrollControls() {
-  const controls = getElement('smartScrollControls');
-  const upButton = getElement('smartScrollUp');
-  const downButton = getElement('smartScrollDown');
-
-  if (!controls || !upButton || !downButton) return;
-
-  function showScrollControls() {
-    controls.classList.add('is-visible');
-
-    clearTimeout(scrollControlsTimeout);
-
-    scrollControlsTimeout = setTimeout(() => {
-      controls.classList.remove('is-visible');
-    }, 2800);
-  }
-
-  window.addEventListener('scroll', showScrollControls, {
-    passive: true
-  });
-
-  upButton.addEventListener('click', () => {
-    if (hasUsedCalculator) {
-      scrollToExploreCalculators();
-    } else {
-      scrollToPageTop();
-    }
-  });
-
-  downButton.addEventListener('click', () => {
-    if (hasUsedCalculator) {
-      scrollToNextCalculator();
-    } else {
-      scrollToPageBottom();
-    }
-  });
-
-  document.addEventListener('click', event => {
-    if (!(event.target instanceof Element)) return;
-
-    const actionButton = event.target.closest(
-      '.calculate-button'
-    );
-
-    if (!actionButton) return;
-
-    const calculator = actionButton.closest('.section[id]');
-
-    if (!calculator) return;
-
-    hasUsedCalculator = true;
-    activeCalculatorId = calculator.id;
 
     showScrollControls();
   });
