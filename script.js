@@ -1,13 +1,18 @@
+
 const HISTORY_STORAGE_KEY = 'profitlatorCalculationHistory';
 const MAX_HISTORY_ITEMS = 10;
+
+let autoCalculateMode = false;
+let autoCalculationTimers = {};
+let currencyRequestId = 0;
 
 /* =========================
    BASIC CALCULATOR
 ========================= */
 
 function calculate() {
-  const input = document.getElementById('calculation');
-  const resultBox = document.getElementById('calcResult');
+  const input = getElement('calculation');
+  const resultBox = getElement('calcResult');
 
   hideCopyButton('calcCopyButton');
 
@@ -50,7 +55,7 @@ function calculate() {
 }
 
 function insertOperation(operation) {
-  const input = document.getElementById('calculation');
+  const input = getElement('calculation');
   if (!input) return;
 
   const start = input.selectionStart ?? input.value.length;
@@ -65,6 +70,8 @@ function insertOperation(operation) {
 
   input.focus();
   input.setSelectionRange(newPosition, newPosition);
+
+  scheduleAutoCalculation('basicCalculator');
 }
 
 function evaluateExpression(expression) {
@@ -74,7 +81,6 @@ function evaluateExpression(expression) {
     throw new Error('Empty expression');
   }
 
-  // Only allow numbers, decimal points, operators and parentheses.
   if (!/^[0-9+\-*/().]+$/.test(expression)) {
     throw new Error('Invalid characters');
   }
@@ -198,10 +204,10 @@ function evaluateExpression(expression) {
 ========================= */
 
 async function convertCurrency() {
-  const amountInput = document.getElementById('amount');
-  const fromInput = document.getElementById('fromCurrency');
-  const toInput = document.getElementById('toCurrency');
-  const resultBox = document.getElementById('currencyResult');
+  const amountInput = getElement('amount');
+  const fromInput = getElement('fromCurrency');
+  const toInput = getElement('toCurrency');
+  const resultBox = getElement('currencyResult');
 
   hideCopyButton('currencyCopyButton');
 
@@ -215,6 +221,8 @@ async function convertCurrency() {
     resultBox.textContent = 'Please enter a valid amount.';
     return;
   }
+
+  const requestId = ++currencyRequestId;
 
   if (from === to) {
     const formattedAmount = formatNumber(amount);
@@ -259,6 +267,9 @@ async function convertCurrency() {
       throw new Error('Invalid conversion result');
     }
 
+    // Ignore an older response if a newer request has started.
+    if (requestId !== currencyRequestId) return;
+
     const formattedAmount = formatNumber(convertedAmount);
 
     resultBox.textContent =
@@ -271,6 +282,8 @@ async function convertCurrency() {
       `${formatNumber(amount)} ${from} → ${formattedAmount} ${to}`
     );
   } catch (error) {
+    if (requestId !== currencyRequestId) return;
+
     resultBox.textContent =
       'Exchange rates are currently unavailable. Please try again.';
   }
@@ -299,17 +312,16 @@ function getCurrencyDisplay(currency) {
    DISCOUNT
 ========================= */
 
-
 function calculateDiscount() {
   const price = getNumber('originalPrice');
   const percent = getNumber('discountPercent');
   const costInput = getElement('discountCostPrice');
+
   const costPrice = costInput && costInput.value.trim() !== ''
     ? getNumber('discountCostPrice')
     : null;
 
-  const currencyCode = getValue('discountCurrency');
-  const currency = getCurrencyDisplay(currencyCode);
+  const currency = getCurrencyDisplay(getValue('discountCurrency'));
   const resultBox = getElement('discountResult');
 
   hideCopyButton('discountCopyButton');
@@ -322,8 +334,7 @@ function calculateDiscount() {
     percent < 0 ||
     percent > 100
   ) {
-    resultBox.textContent =
-      'Please enter a valid price and discount.';
+    resultBox.textContent = 'Please enter a valid price and discount.';
     return;
   }
 
@@ -352,10 +363,7 @@ function calculateDiscount() {
 
   if (costPrice !== null) {
     const profitLoss = finalPrice - costPrice;
-    const formattedProfitLoss = formatNumber(
-      Math.abs(profitLoss),
-      2
-    );
+    const formattedProfitLoss = formatNumber(Math.abs(profitLoss), 2);
 
     let status;
 
@@ -368,13 +376,11 @@ function calculateDiscount() {
     }
 
     resultHTML += `<br>${status}`;
-
     historyDetails +=
       ` | Cost: ${currency} ${formatNumber(costPrice)} | ${status}`;
   }
 
   resultBox.innerHTML = resultHTML;
-
   showCopyButton('discountCopyButton');
 
   addToHistory('Discount Calculator', historyDetails);
@@ -587,10 +593,7 @@ function calculateLoan() {
   if (annualInterestRate === 0) {
     monthlyPayment = loanAmount / totalPayments;
   } else {
-    const compoundFactor = Math.pow(
-      1 + monthlyRate,
-      totalPayments
-    );
+    const compoundFactor = Math.pow(1 + monthlyRate, totalPayments);
 
     monthlyPayment =
       loanAmount *
@@ -840,7 +843,6 @@ function formatInputNumber(input) {
   const value = input.value.replace(/,/g, '');
 
   if (value === '') return;
-
   if (!/^\d*\.?\d*$/.test(value)) return;
 
   const parts = value.split('.');
@@ -951,6 +953,170 @@ function setupFormattedInputs() {
 }
 
 /* =========================
+   AUTOMATIC CALCULATIONS
+========================= */
+
+const calculatorConfigs = {
+  basicCalculator: {
+    fn: calculate,
+    required: ['calculation'],
+    expression: true
+  },
+
+  currencyCalculator: {
+    fn: convertCurrency,
+    required: ['amount']
+  },
+
+  discountCalculator: {
+    fn: calculateDiscount,
+    required: ['originalPrice', 'discountPercent']
+  },
+
+  profitCalculator: {
+    fn: calculateProfitMargin,
+    required: ['costPrice', 'sellingPrice']
+  },
+
+  markupCalculator: {
+    fn: calculateMarkup,
+    required: ['markupCostPrice', 'markupRate']
+  },
+
+  roiCalculator: {
+    fn: calculateROI,
+    required: ['roiInitialInvestment', 'roiFinalValue']
+  },
+
+  savingsCalculator: {
+    fn: calculateSavings,
+    required: ['startingSavings', 'monthlyContribution', 'savingsPeriod']
+  },
+
+  loanCalculator: {
+    fn: calculateLoan,
+    required: ['loanAmount', 'loanInterestRate', 'loanTerm']
+  },
+
+  commissionCalculator: {
+    fn: calculateCommission,
+    required: ['salesAmount', 'commissionRate']
+  },
+
+  unitPriceCalculator: {
+    fn: calculateUnitPrice,
+    required: ['totalCost', 'quantity']
+  },
+
+  breakEvenCalculator: {
+    fn: calculateBreakEven,
+    required: ['fixedCosts', 'variableCosts', 'sellingPriceUnit']
+  },
+
+  taxCalculator: {
+    fn: calculateTax,
+    required: ['taxPrice', 'taxRate']
+  }
+};
+
+function isCalculatorReady(sectionId) {
+  const config = calculatorConfigs[sectionId];
+
+  if (!config) return false;
+
+  if (config.expression) {
+    const expression = getValue('calculation')
+      .trim()
+      .replace(/,/g, '')
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/')
+      .replace(/−/g, '-');
+
+    if (!expression || !/[0-9)]$/.test(expression)) {
+      return false;
+    }
+
+    try {
+      evaluateExpression(expression);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return config.required.every(id => {
+    const element = getElement(id);
+
+    if (!element || element.value.trim() === '') {
+      return false;
+    }
+
+    const value = parseFormattedNumber(element.value);
+
+    return Number.isFinite(value);
+  });
+}
+
+function scheduleAutoCalculation(sectionId, delay = 350) {
+  clearTimeout(autoCalculationTimers[sectionId]);
+
+  const section = getElement(sectionId);
+  const resultBox = section
+    ? section.querySelector('.result')
+    : null;
+
+  if (!section || !resultBox) return;
+
+  // Do not show errors while the user is still entering values.
+  if (!isCalculatorReady(sectionId)) {
+    if (resultBox.textContent === 'Converting...') {
+      resultBox.textContent = '';
+    }
+    return;
+  }
+
+  autoCalculationTimers[sectionId] = setTimeout(async () => {
+    if (!isCalculatorReady(sectionId)) return;
+
+    const config = calculatorConfigs[sectionId];
+
+    autoCalculateMode = true;
+
+    try {
+      await config.fn();
+    } finally {
+      autoCalculateMode = false;
+    }
+  }, delay);
+}
+
+function setupAutoCalculations() {
+  Object.keys(calculatorConfigs).forEach(sectionId => {
+    const section = getElement(sectionId);
+
+    if (!section) return;
+
+    section.addEventListener('input', event => {
+      if (event.target.matches('input')) {
+        scheduleAutoCalculation(
+          sectionId,
+          sectionId === 'currencyCalculator' ? 500 : 350
+        );
+      }
+    });
+
+    section.addEventListener('change', event => {
+      if (
+        event.target.matches('select') ||
+        event.target.matches('input')
+      ) {
+        scheduleAutoCalculation(sectionId, 150);
+      }
+    });
+  });
+}
+
+/* =========================
    HISTORY
 ========================= */
 
@@ -980,6 +1146,9 @@ function saveHistory(history) {
 }
 
 function addToHistory(calculatorName, details) {
+  // Automatic updates should not create history entries.
+  if (autoCalculateMode) return;
+
   const history = getHistory();
 
   history.unshift({
@@ -1002,7 +1171,6 @@ function renderHistory(history = getHistory()) {
 
   if (history.length === 0) {
     const emptyMessage = document.createElement('p');
-
     emptyMessage.className = 'history-empty';
     emptyMessage.textContent = 'No calculations yet.';
 
@@ -1115,7 +1283,6 @@ function scrollToNextCalculator() {
     section => section.id === activeCalculatorId
   );
 
-  // If no current tool is known, go to the first calculator.
   if (currentIndex === -1) {
     calculators[0].scrollIntoView({
       behavior: 'smooth',
@@ -1124,7 +1291,6 @@ function scrollToNextCalculator() {
     return;
   }
 
-  // Move to the next calculator in the page.
   const nextCalculator = calculators[currentIndex + 1];
 
   if (nextCalculator) {
@@ -1133,18 +1299,14 @@ function scrollToNextCalculator() {
       block: 'start'
     });
   } else {
-    // After the final calculator, continue to the page bottom.
     scrollToPageBottom();
   }
 }
 
 function setupSmartScrollControls() {
-  const controls = document.getElementById(
-    'smartScrollControls'
-  );
-
-  const upButton = document.getElementById('smartScrollUp');
-  const downButton = document.getElementById('smartScrollDown');
+  const controls = getElement('smartScrollControls');
+  const upButton = getElement('smartScrollUp');
+  const downButton = getElement('smartScrollDown');
 
   if (!controls || !upButton || !downButton) return;
 
@@ -1158,7 +1320,6 @@ function setupSmartScrollControls() {
     }, 2800);
   }
 
-  // Show controls only after scrolling starts.
   window.addEventListener('scroll', showScrollControls, {
     passive: true
   });
@@ -1179,7 +1340,6 @@ function setupSmartScrollControls() {
     }
   });
 
-  // Track actual calculator action buttons, not ordinary scrolling.
   document.addEventListener('click', event => {
     if (!(event.target instanceof Element)) return;
 
@@ -1194,8 +1354,9 @@ function setupSmartScrollControls() {
     if (!calculator) return;
 
     hasUsedCalculator = true;
-activeCalculatorId = calculator.id;
-showScrollControls();
+    activeCalculatorId = calculator.id;
+
+    showScrollControls();
   });
 }
 
@@ -1207,6 +1368,12 @@ function clearCalculator(sectionId) {
   const section = getElement(sectionId);
 
   if (!section) return;
+
+  clearTimeout(autoCalculationTimers[sectionId]);
+
+  if (sectionId === 'currencyCalculator') {
+    currencyRequestId++;
+  }
 
   section.querySelectorAll('input').forEach(input => {
     input.value = '';
@@ -1319,7 +1486,7 @@ async function share(platform) {
   const encodedUrl = encodeURIComponent(url);
 
   const message =
-    'Check out this awesome free profit calculator called Profitlator!';
+    'Check out Profynce, your smart finance and business calculator!';
 
   const encodedMessage = encodeURIComponent(message);
 
@@ -1342,7 +1509,7 @@ async function share(platform) {
         copyUsingFallback(url);
       }
     } catch (error) {
-      // Opening Instagram is still useful if copying fails.
+      // Instagram can still be opened.
     }
 
     window.open('https://www.instagram.com/', '_blank', 'noopener');
@@ -1364,7 +1531,6 @@ function arrangeCalculatorButtons() {
     const calculateButton = row.querySelector('.calculate-button');
     const clearButton = row.querySelector('.clear-button');
 
-    // Reordering preserves the existing button handlers and IDs.
     [copyButton, calculateButton, clearButton].forEach(button => {
       if (button) row.appendChild(button);
     });
@@ -1377,12 +1543,14 @@ function arrangeCalculatorButtons() {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupFormattedInputs();
+  setupAutoCalculations();
   arrangeCalculatorButtons();
   renderHistory();
   setupSmartScrollControls();
 });
 
-/* Make calculator functions explicitly available to interpretations.js */
+/* Make calculator functions available to interpretations.js */
+
 window.calculateDiscount = calculateDiscount;
 window.calculateProfitMargin = calculateProfitMargin;
 window.calculateMarkup = calculateMarkup;
