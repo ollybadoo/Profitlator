@@ -1020,3 +1020,10 @@ footer {
     font-size: 0.82rem;
   }
 }
+
+/* SAVINGS CALCULATOR INPUT FIX */
+#savingsCalculator input,
+#savingsCalculator select {
+  background-color: #ffffff;
+  color: #222222;
+}
