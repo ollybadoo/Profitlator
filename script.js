@@ -1218,9 +1218,18 @@ function scrollToCalculator(calculatorId) {
 
   if (!calculator) return;
 
-  calculator.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
+  const calculatorPosition =
+    calculator.getBoundingClientRect().top + window.scrollY;
+
+  const calculatorHeight = calculator.offsetHeight;
+  const viewportHeight = window.innerHeight;
+
+  const targetPosition =
+    calculatorPosition - (viewportHeight - calculatorHeight) / 2;
+
+  window.scrollTo({
+    top: Math.max(0, targetPosition),
+    behavior: 'smooth'
   });
 }
 
