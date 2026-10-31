@@ -494,20 +494,22 @@ function calculateROI() {
   }
 
   const profitLoss = finalValue - initialInvestment;
-  const roi = profitLoss / initialInvestment * 100;
+  const roi = (profitLoss / initialInvestment) * 100;
+
+  const resultLabel = profitLoss >= 0 ? 'Profit' : 'Loss';
 
   const formattedProfitLoss = formatNumber(profitLoss, 2);
   const formattedROI = formatNumber(roi, 2);
 
   resultBox.innerHTML =
-    `Profit/Loss: ${currency} ${formattedProfitLoss}<br>` +
+    `${resultLabel}: ${currency} ${formattedProfitLoss}<br>` +
     `ROI: ${formattedROI}%`;
 
   showCopyButton('roiCopyButton');
 
   addToHistory(
     'ROI Calculator',
-    `Initial Investment: ${currency} ${formatNumber(initialInvestment)} | Final Value: ${currency} ${formatNumber(finalValue)} → Profit/Loss: ${currency} ${formattedProfitLoss}, ROI: ${formattedROI}%`
+    `Initial Investment: ${currency} ${formatNumber(initialInvestment)} | Final Value: ${currency} ${formatNumber(finalValue)} → ${resultLabel}: ${currency} ${formattedProfitLoss}, ROI: ${formattedROI}%`
   );
 }
 
