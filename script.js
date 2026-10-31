@@ -1222,7 +1222,6 @@ function scrollToCalculator(calculatorId) {
   });
 }
 
-
 /* =========================
    SMART PAGE NAVIGATION
 ========================= */
