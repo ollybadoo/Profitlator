@@ -1,4 +1,3 @@
-
 const HISTORY_STORAGE_KEY = 'profitlatorCalculationHistory';
 const MAX_HISTORY_ITEMS = 10;
 
@@ -918,6 +917,7 @@ function setupFormattedInputs() {
   const monetaryInputIds = [
     'amount',
     'originalPrice',
+    'discountCostPrice'
     'costPrice',
     'sellingPrice',
     'markupCostPrice',
@@ -1222,6 +1222,7 @@ function scrollToCalculator(calculatorId) {
   });
 }
 
+
 /* =========================
    SMART PAGE NAVIGATION
 ========================= */
@@ -1229,6 +1230,10 @@ function scrollToCalculator(calculatorId) {
 let hasUsedCalculator = false;
 let activeCalculatorId = null;
 let scrollControlsTimeout = null;
+
+// Tracks consecutive taps after calculator use.
+let lastNavigationDirection = null;
+let navigationTapCount = 0;
 
 function getCalculatorSections() {
   return Array.from(
@@ -1302,6 +1307,101 @@ function scrollToNextCalculator() {
     scrollToPageBottom();
   }
 }
+
+// Tracks whether the same arrow was tapped twice.
+function handleNavigationTap(direction) {
+  if (lastNavigationDirection === direction) {
+    navigationTapCount++;
+  } else {
+    lastNavigationDirection = direction;
+    navigationTapCount = 1;
+  }
+
+  if (navigationTapCount >= 2) {
+    if (direction === 'down') {
+      scrollToPageBottom();
+    } else {
+      scrollToPageTop();
+    }
+
+    // Reset so the next tap starts the normal sequence.
+    lastNavigationDirection = null;
+    navigationTapCount = 0;
+
+    return;
+  }
+
+  // First-tap behaviour after calculator use.
+  if (direction === 'down') {
+    scrollToNextCalculator();
+  } else {
+    scrollToExploreCalculators();
+  }
+}
+
+function setupSmartScrollControls() {
+  const controls = getElement('smartScrollControls');
+  const upButton = getElement('smartScrollUp');
+  const downButton = getElement('smartScrollDown');
+
+  if (!controls || !upButton || !downButton) return;
+
+  function showScrollControls() {
+    controls.classList.add('is-visible');
+
+    clearTimeout(scrollControlsTimeout);
+
+    scrollControlsTimeout = setTimeout(() => {
+      controls.classList.remove('is-visible');
+    }, 2800);
+  }
+
+  window.addEventListener('scroll', showScrollControls, {
+    passive: true
+  });
+
+  upButton.addEventListener('click', () => {
+    if (hasUsedCalculator) {
+      handleNavigationTap('up');
+    } else {
+      // Original behaviour before calculator use.
+      scrollToPageTop();
+    }
+  });
+
+  downButton.addEventListener('click', () => {
+    if (hasUsedCalculator) {
+      handleNavigationTap('down');
+    } else {
+      // Original behaviour before calculator use.
+      scrollToPageBottom();
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+
+    const actionButton = event.target.closest(
+      '.calculate-button'
+    );
+
+    if (!actionButton) return;
+
+    const calculator = actionButton.closest('.section[id]');
+
+    if (!calculator) return;
+
+    hasUsedCalculator = true;
+    activeCalculatorId = calculator.id;
+
+    // Start a fresh navigation sequence after calculator use.
+    lastNavigationDirection = null;
+    navigationTapCount = 0;
+
+    showScrollControls();
+  });
+}
+
 
 function setupSmartScrollControls() {
   const controls = getElement('smartScrollControls');
