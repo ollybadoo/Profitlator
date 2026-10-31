@@ -1235,9 +1235,9 @@ let lastNavigationDirection = null;
 let navigationTapCount = 0;
 
 function getCalculatorSections() {
-  return Array.from(
-    document.querySelectorAll('.section[id]')
-  );
+  return Object.keys(calculatorConfigs)
+    .map(id => getElement(id))
+    .filter(Boolean);
 }
 
 function getExploreSection() {
@@ -1278,10 +1278,7 @@ function scrollToExploreCalculators() {
 function scrollToNextCalculator() {
   const calculators = getCalculatorSections();
 
-  if (calculators.length === 0) {
-    scrollToPageBottom();
-    return;
-  }
+  if (calculators.length === 0) return;
 
   const currentIndex = calculators.findIndex(
     section => section.id === activeCalculatorId
@@ -1302,8 +1299,29 @@ function scrollToNextCalculator() {
       behavior: 'smooth',
       block: 'start'
     });
-  } else {
-    scrollToPageBottom();
+  }
+}
+
+function markCalculatorUsed(calculator) {
+  if (!calculator || !calculatorConfigs[calculator.id]) return;
+
+  hasUsedCalculator = true;
+  activeCalculatorId = calculator.id;
+
+  // Start a fresh navigation sequence after calculator interaction.
+  lastNavigationDirection = null;
+  navigationTapCount = 0;
+
+  const controls = getElement('smartScrollControls');
+
+  if (controls) {
+    controls.classList.add('is-visible');
+
+    clearTimeout(scrollControlsTimeout);
+
+    scrollControlsTimeout = setTimeout(() => {
+      controls.classList.remove('is-visible');
+    }, 2800);
   }
 }
 
@@ -1323,7 +1341,6 @@ function handleNavigationTap(direction) {
       scrollToPageTop();
     }
 
-    // Reset so the next tap starts the normal sequence.
     lastNavigationDirection = null;
     navigationTapCount = 0;
 
@@ -1359,11 +1376,36 @@ function setupSmartScrollControls() {
     passive: true
   });
 
+  // Track actual calculator input interaction.
+  ['input', 'change'].forEach(eventName => {
+    document.addEventListener(eventName, event => {
+      if (!(event.target instanceof Element)) return;
+
+      const calculator = event.target.closest('.section[id]');
+
+      if (!calculator) return;
+
+      markCalculatorUsed(calculator);
+    });
+  });
+
+  // Also track manual Calculate button clicks.
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+
+    const actionButton = event.target.closest('.calculate-button');
+
+    if (!actionButton) return;
+
+    const calculator = actionButton.closest('.section[id]');
+
+    markCalculatorUsed(calculator);
+  });
+
   upButton.addEventListener('click', () => {
     if (hasUsedCalculator) {
       handleNavigationTap('up');
     } else {
-      // Original behaviour before calculator use.
       scrollToPageTop();
     }
   });
@@ -1372,32 +1414,8 @@ function setupSmartScrollControls() {
     if (hasUsedCalculator) {
       handleNavigationTap('down');
     } else {
-      // Original behaviour before calculator use.
       scrollToPageBottom();
     }
-  });
-
-  document.addEventListener('click', event => {
-    if (!(event.target instanceof Element)) return;
-
-    const actionButton = event.target.closest(
-      '.calculate-button'
-    );
-
-    if (!actionButton) return;
-
-    const calculator = actionButton.closest('.section[id]');
-
-    if (!calculator) return;
-
-    hasUsedCalculator = true;
-    activeCalculatorId = calculator.id;
-
-    // Start a fresh navigation sequence after calculator use.
-    lastNavigationDirection = null;
-    navigationTapCount = 0;
-
-    showScrollControls();
   });
 }
 
