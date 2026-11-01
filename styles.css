@@ -52,7 +52,7 @@ h1 {
   z-index: 1;
 
   width: calc(100% - 24px);
-  height: 88px;
+  height: 100px;
 
   margin: 12px auto 14px;
   padding: 8px 20px;
@@ -194,7 +194,7 @@ header.site-header .tagline {
 @media (max-width: 600px) {
 
    .brand-bar {
-  height: 82px;
+  height: 100px;
   margin: 10px 12px 14px;
   padding: 6px 14px;
 }
@@ -240,7 +240,7 @@ header.site-header .tagline {
 @media (max-width: 380px) {
 
 .brand-bar {
-  height: 82px;
+  height: 100px;
   padding-left: 14px;
   padding-right: 14px;
 }
@@ -1023,51 +1023,4 @@ footer {
 #savingsCalculator select {
   background-color: #ffffff;
   color: #222222;
-}
-
-/* PROFYNCE FLOATING BRAND BAR */
-.brand-bar {
-  height: 100px !important;
-  min-height: 100px;
-  padding: 10px 24px;
-  display: flex;
-  align-items: center;
-  overflow: visible;
-}
-
-.brand-lockup {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.brand-logo {
-  height: 76px;
-  max-height: 76px;
-  width: auto;
-  object-fit: contain;
-}
-
-@media (max-width: 600px) {
-  .brand-bar {
-    height: 94px !important;
-    min-height: 94px;
-  }
-
-  .brand-logo {
-    height: 70px;
-    max-height: 70px;
-  }
-}
-
-@media (max-width: 380px) {
-  .brand-bar {
-    height: 90px !important;
-    min-height: 90px;
-  }
-
-  .brand-logo {
-    height: 66px;
-    max-height: 66px;
-  }
 }
