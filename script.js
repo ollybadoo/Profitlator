@@ -701,13 +701,13 @@ function calculateUnitPrice() {
   const formattedUnitPrice = formatNumber(unitPrice, 10);
 
   resultBox.textContent =
-    `Unit Price: ${currency} ${formattedUnitPrice}`;
+    `Price per Unit: ${currency} ${formattedUnitPrice}`;
 
   showCopyButton('unitCopyButton');
 
   addToHistory(
     'Unit Price Calculator',
-    `Total: ${currency} ${formatNumber(total)} ÷ ${formatNumber(quantity)} → Unit Price: ${currency} ${formattedUnitPrice}`
+    `Total: ${currency} ${formatNumber(total)} ÷ ${formatNumber(quantity)} → Price per Unit: ${currency} ${formattedUnitPrice}`
   );
 }
 
