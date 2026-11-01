@@ -52,7 +52,7 @@ h1 {
   z-index: 1;
 
   width: calc(100% - 24px);
-  height: 64px;
+  height: 78px;
 
   margin: 12px auto 14px;
   padding: 0 20px;
@@ -243,7 +243,7 @@ header.site-header .tagline {
 @media (max-width: 380px) {
 
 .brand-bar {
-  height: 54px;
+  height: 68px;
   padding-left: 14px;
   padding-right: 14px;
 }
